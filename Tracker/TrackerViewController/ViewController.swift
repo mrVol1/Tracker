@@ -29,31 +29,45 @@ class TrackerViewController: UIViewController {
             plusButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 6)
         ])
         
-        //Создание контейнера под дату
-        let container = UIView()
-        container.frame = CGRect(origin: CGPoint(), size: CGSize(width: 77, height: 34))
-        container.backgroundColor = grayColor.grayColor
+        //Создание контейнера для даты
+        let container=UIDatePicker()
         view.addSubview(container)
         
         container.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            container.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
-            container.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+            container.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
+            container.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            container.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -789),
+            container.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 222)
         ])
         
-        //создание даты
-        let labelData = UILabel()
-        labelData.text = "24.01.2024"
-        labelData.textColor = .black
-        labelData.font = UIFont(name: "SF Pro", size: 17)
-        view.addSubview(labelData)
+        //создание лейбла "Трекеры"
         
-        labelData.translatesAutoresizingMaskIntoConstraints = false
+        for family in UIFont.familyNames.sorted() {
+            let names = UIFont.fontNames(forFamilyName: family)
+            print("Family: \(family) Font names: \(names)")
+        }
+        
+        guard let customFont = UIFont(name: "SF-Pro-Display-Bold", size: UIFont.labelFontSize) else {
+            fatalError("""
+                Failed to load the "SF-Pro-Display-Bold" font.
+                Make sure the font file is included in the project and the font name is spelled correctly.
+                """
+            )
+        }
+        
+        let label = UILabel()
+        label.font = UIFontMetrics.default.scaledFont(for: customFont)
+        label.textColor = .black
+        label.text = "Трекеры"
+        view.addSubview(label)
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            labelData.topAnchor.constraint(equalTo: container.topAnchor, constant: 6),
-            labelData.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -5.5)
+            label.bottomAnchor.constraint(equalTo: plusButton.bottomAnchor, constant: 13),
+            label.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
         ])
     }
 }
