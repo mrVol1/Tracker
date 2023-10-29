@@ -44,12 +44,13 @@ class TrackerViewController: UIViewController {
         
         //создание лейбла "Трекеры"
         
+        let label = UILabel()
+        
         for family in UIFont.familyNames.sorted() {
             let names = UIFont.fontNames(forFamilyName: family)
-            print("Family: \(family) Font names: \(names)")
         }
         
-        guard let customFont = UIFont(name: "SF-Pro-Display-Bold", size: UIFont.labelFontSize) else {
+        guard let customFont = UIFont(name: "SFProDisplay-Bold", size: UIFont.labelFontSize) else {
             fatalError("""
                 Failed to load the "SF-Pro-Display-Bold" font.
                 Make sure the font file is included in the project and the font name is spelled correctly.
@@ -57,8 +58,7 @@ class TrackerViewController: UIViewController {
             )
         }
         
-        let label = UILabel()
-        label.font = UIFontMetrics.default.scaledFont(for: customFont)
+        label.font = UIFontMetrics.default.scaledFont(for: customFont).withSize(34)
         label.textColor = .black
         label.text = "Трекеры"
         view.addSubview(label)
@@ -66,8 +66,23 @@ class TrackerViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            label.bottomAnchor.constraint(equalTo: plusButton.bottomAnchor, constant: 13),
+            label.bottomAnchor.constraint(equalTo: plusButton.bottomAnchor, constant: 32),
             label.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
+        ])
+        
+        //добавление поиска
+        let search = UISearchBar()
+        search.placeholder = "Поиск"
+        search.tintColor = .separator.cgColor(red: 0, green: 0, blue: 0, alpha: 0)
+        search.layer.borderColor = CGColor(red: 0, green: 0, blue: 0, alpha: 0)
+        view.addSubview(search)
+        
+        search.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            search.bottomAnchor.constraint(equalTo: label.safeAreaLayoutGuide.bottomAnchor, constant: 54),
+            search.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            search.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
     }
 }
