@@ -4,6 +4,7 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>SF-Pro-Display-Medium.ttf</string>
 		<string>SF-Pro-Display-Bold.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
