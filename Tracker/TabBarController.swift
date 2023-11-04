@@ -16,23 +16,35 @@ final class TabBarController: UITabBarController {
         let trackerViewController = TrackerViewController()
         let statViewController = StatViewController()
         
-        let activeImage = UIImage(named: "Tab Bar Item")
-        let inactiveImage = UIImage(named: "Tab Bar Item2")
+        let activeImageTracker = UIImage(named: "Tab Bar Item")
+        let inactiveImageTracker = UIImage(named: "Tab Bar Item inactive")
         
         trackerViewController.tabBarItem = UITabBarItem(
             title: nil,
-            image: inactiveImage,
-            selectedImage: activeImage
+            image: inactiveImageTracker,
+            selectedImage: activeImageTracker
         )
         
-//        statViewController.tabBarItem = UITabBarItem(
-//            title: nil, image: inactiveImage, selectedImage: activeImage
-//        )
+        let activeImageStat = UIImage(named: "Tab Bar Item stat active")
+        let inactiveImageStat = UIImage(named: "Tab Bar Item2")
+        
+        statViewController.tabBarItem = UITabBarItem(
+            title: nil, 
+            image: inactiveImageStat,
+            selectedImage: activeImageStat
+        )
         
         let trackerNavigationController = UINavigationController(rootViewController: trackerViewController)
 
-  //      let statNavigationController = UINavigationController(rootViewController: statViewController)
+        let statNavigationController = UINavigationController(rootViewController: statViewController)
         
-        self.viewControllers = [trackerViewController]
+        self.viewControllers = [trackerNavigationController, statNavigationController]
+        
+        tabBar.barTintColor = UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 1.0)
+        
+        if let navController = viewControllers?.first as? UINavigationController {
+            for _ in navController.viewControllers {
+            }
+        }
     }
 }

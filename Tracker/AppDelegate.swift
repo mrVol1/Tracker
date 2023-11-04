@@ -15,6 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
         ) -> Bool {
                         
+//            let tabBarController = TabBarController()
+//            let window = UIWindow(frame: UIScreen.main.bounds)
+//            window.rootViewController = tabBarController
+//            window.makeKeyAndVisible()
+            
             return true
         }
 

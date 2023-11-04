@@ -10,14 +10,14 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    var trackerViewController: TrackerViewController?
+    var tabBarViewController: TabBarController?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
             guard let windowScene = (scene as? UIWindowScene) else { return }
             window = UIWindow(windowScene: windowScene)
             
-            trackerViewController = TrackerViewController()
-            window?.rootViewController = trackerViewController
+            tabBarViewController = TabBarController()
+            window?.rootViewController = tabBarViewController
             
             window?.makeKeyAndVisible()
         }

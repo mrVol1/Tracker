@@ -6,7 +6,8 @@
 //
 
 import Foundation
+import UIKit
 
-final class StatViewController {
+final class StatViewController: UIViewController {
     
 }

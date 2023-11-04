@@ -30,6 +30,7 @@ class TrackerViewController: UIViewController {
         
         //Создание контейнера для даты
         let container = UIDatePicker()
+        container.datePickerMode = .date
         view.addSubview(container)
         
         container.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +38,6 @@ class TrackerViewController: UIViewController {
         NSLayoutConstraint.activate([
             container.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
             container.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            container.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -789),
             container.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 222)
         ])
         
@@ -60,14 +60,14 @@ class TrackerViewController: UIViewController {
         ])
         
         //добавление поиска
-        let search = UISearchBar()
+        let search = UISearchTextField()
         search.placeholder = "Поиск"
         view.addSubview(search)
         
         search.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            search.bottomAnchor.constraint(equalTo: label.safeAreaLayoutGuide.bottomAnchor, constant: 54),
+            search.bottomAnchor.constraint(equalTo: label.safeAreaLayoutGuide.bottomAnchor, constant: 34),
             search.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             search.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
