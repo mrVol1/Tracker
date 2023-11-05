@@ -9,6 +9,20 @@ import UIKit
 
 class TrackerViewController: UIViewController {
     let grayColor = UIColorsForProject()
+    var categories: [TrackerCategory]
+    var completedTrackers: [TrackerRecord]
+    var newCategories: [Tracker]
+    
+    init(categories: [TrackerCategory], completedTrackers: [TrackerRecord], newCategories: [Tracker]) {
+        self.categories = categories
+        self.completedTrackers = completedTrackers
+        self.newCategories = newCategories
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
