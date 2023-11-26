@@ -34,6 +34,7 @@ class TrackerViewController: UIViewController {
         
         //Создание кнопки "+"
         let plusButton = UIButton()
+        plusButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         plusButton.setImage(UIImage(named: "Add tracker"), for: .normal)
         plusButton.translatesAutoresizingMaskIntoConstraints = false
         plusButton.setTitleColor(.black, for: .normal)
@@ -115,6 +116,11 @@ class TrackerViewController: UIViewController {
             defultLabel.bottomAnchor.constraint(equalTo: imageView.safeAreaLayoutGuide.bottomAnchor, constant: 28),
             defultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
+    }
+    
+    @objc func buttonAction() {
+        let createHabbit = NewHabitController()
+        navigationController?.pushViewController(createHabbit, animated: true)
     }
 }
 
