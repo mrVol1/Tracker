@@ -9,11 +9,12 @@ import Foundation
 import UIKit
 
 final class TabBarController: UITabBarController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Экземпляры контроллеров
-        let trackerViewController = TrackerViewController()
+        let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
         let statViewController = StatViewController()
         
         let activeImageTracker = UIImage(named: "Tab Bar Item")

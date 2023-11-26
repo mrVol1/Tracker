@@ -21,7 +21,10 @@ class TrackerViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        self.categories = []
+        self.completedTrackers = [] 
+        self.newCategories = []
+        super.init(coder: coder)
     }
     
     override func viewDidLoad() {
@@ -101,7 +104,7 @@ class TrackerViewController: UIViewController {
         //добавление надписи
         
         let defultLabel = UILabel()
-                
+        
         defultLabel.textColor = .black
         defultLabel.text = "Что будем отслеживать?"
         view.addSubview(defultLabel)
