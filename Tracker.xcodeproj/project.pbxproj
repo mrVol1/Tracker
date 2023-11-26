@@ -20,6 +20,7 @@
 		D7B12CAB2AED9E830006205D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7B12CA92AED9E830006205D /* LaunchScreen.storyboard */; };
 		D7B12CBA2AEE16DC0006205D /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B12CB92AEE16DC0006205D /* Colors.swift */; };
 		D7C650F52B130EE800A9F116 /* NewHabitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C650F42B130EE800A9F116 /* NewHabitController.swift */; };
+		D7C650F72B133FCE00A9F116 /* NewHabitCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C650F62B133FCE00A9F116 /* NewHabitCreateController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		D7B12CAC2AED9E830006205D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7B12CB92AEE16DC0006205D /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		D7C650F42B130EE800A9F116 /* NewHabitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitController.swift; sourceTree = "<group>"; };
+		D7C650F62B133FCE00A9F116 /* NewHabitCreateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitCreateController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				D7C650F42B130EE800A9F116 /* NewHabitController.swift */,
+				D7C650F62B133FCE00A9F116 /* NewHabitCreateController.swift */,
 			);
 			path = CreateNewHabit;
 			sourceTree = "<group>";
@@ -197,6 +200,7 @@
 				D7B12C9F2AED9E800006205D /* AppDelegate.swift in Sources */,
 				D711B8952AF184C60064AAFE /* TabBarController.swift in Sources */,
 				D7A6AC992AF769D400851329 /* TrackerRecord.swift in Sources */,
+				D7C650F72B133FCE00A9F116 /* NewHabitCreateController.swift in Sources */,
 				D711B8972AF1858D0064AAFE /* StatViewController.swift in Sources */,
 				D7B12CA12AED9E800006205D /* SceneDelegate.swift in Sources */,
 				D7C650F52B130EE800A9F116 /* NewHabitController.swift in Sources */,

@@ -38,6 +38,7 @@ final class NewHabitController: UIViewController {
         habbitButton.layer.cornerRadius = 16
         habbitButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         habbitButton.backgroundColor = .black
+        habbitButton.addTarget(self, action: #selector(buttonActionForCreateHabbit), for: .touchUpInside)
         view.addSubview(habbitButton)
         
         //констрейты кнопки
@@ -73,5 +74,10 @@ final class NewHabitController: UIViewController {
             iventButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
             iventButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20)
         ])
+    }
+    
+    @objc private func buttonActionForCreateHabbit() {
+        let createHabbitbutton = NewHabitCreateController()
+        navigationController?.pushViewController(createHabbitbutton, animated: true)
     }
 }
