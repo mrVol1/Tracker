@@ -31,6 +31,47 @@ final class NewHabitController: UIViewController {
         ])
         
         //создание кнопки "Привычка"
+        let habbitButton = UIButton()
+        habbitButton.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 16)
+        habbitButton.setTitle("Привычка", for: .normal)
+        habbitButton.setTitleColor(.white, for: .normal)
+        habbitButton.layer.cornerRadius = 16
+        habbitButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        habbitButton.backgroundColor = .black
+        view.addSubview(habbitButton)
         
+        //констрейты кнопки
+        habbitButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        habbitButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+
+        NSLayoutConstraint.activate([
+            habbitButton.bottomAnchor.constraint(equalTo: label.bottomAnchor, constant: 300),
+            habbitButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            habbitButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
+            habbitButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20)
+        ])
+        
+        //создание кнопки "Нерегулярные события"
+        let iventButton = UIButton()
+        iventButton.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 16)
+        iventButton.setTitle("Нерегулярные события", for: .normal)
+        iventButton.setTitleColor(.white, for: .normal)
+        iventButton.layer.cornerRadius = 16
+        iventButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        iventButton.backgroundColor = .black
+        view.addSubview(iventButton)
+        
+        //констрейты кнопки
+        iventButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        iventButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+
+        NSLayoutConstraint.activate([
+            iventButton.bottomAnchor.constraint(equalTo: habbitButton.bottomAnchor, constant: 78),
+            iventButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            iventButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
+            iventButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20)
+        ])
     }
 }
