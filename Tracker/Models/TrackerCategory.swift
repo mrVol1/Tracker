@@ -9,9 +9,9 @@ import Foundation
 
 final class TrackerCategory {
     let label: String
-    let trackerMassiv: Tracker
+    let trackerMassiv: [Tracker]
     
-    init(label: String, trackerMassiv: Tracker) {
+    init(label: String, trackerMassiv: [Tracker]) {
         self.label = label
         self.trackerMassiv = trackerMassiv
     }

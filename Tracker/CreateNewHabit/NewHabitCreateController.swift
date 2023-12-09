@@ -94,6 +94,7 @@ final class NewHabitCreateController: UIViewController {
         
         timeButton.semanticContentAttribute = .forceRightToLeft
         timeButton.clipsToBounds = true
+        timeButton.addTarget(self, action: #selector(buttonActionForCreateSculde), for: .touchUpInside)
         view.addSubview(timeButton)
         
         // Установка констрейнтов для кнопки
@@ -156,6 +157,12 @@ final class NewHabitCreateController: UIViewController {
         let createCategoryButton = NewHabbitCategory()
         let createCategotuButtonNavigationController = UINavigationController(rootViewController: createCategoryButton)
         present(createCategotuButtonNavigationController, animated: true, completion: nil)
+    }
+    
+    @objc private func buttonActionForCreateSculde() {
+        let createScheduleButton = ScheduleViewController()
+        let createScheduleButtonNavigationController = UINavigationController(rootViewController: createScheduleButton)
+        present(createScheduleButtonNavigationController, animated: true, completion: nil)
     }
 }
 
