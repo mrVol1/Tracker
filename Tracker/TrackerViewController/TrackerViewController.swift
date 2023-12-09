@@ -73,7 +73,7 @@ class TrackerViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            label.bottomAnchor.constraint(equalTo: plusButton.bottomAnchor, constant: 32),
+            label.bottomAnchor.constraint(equalTo: plusButton.bottomAnchor, constant: 48),
             label.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
         ])
         
@@ -85,7 +85,8 @@ class TrackerViewController: UIViewController {
         search.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            search.bottomAnchor.constraint(equalTo: label.safeAreaLayoutGuide.bottomAnchor, constant: 34),
+            search.heightAnchor.constraint(equalToConstant: 36),
+            search.topAnchor.constraint(equalTo: label.safeAreaLayoutGuide.topAnchor, constant: 48),
             search.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             search.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
@@ -120,7 +121,8 @@ class TrackerViewController: UIViewController {
     
     @objc func buttonAction() {
         let createHabbit = NewHabitController()
-        navigationController?.pushViewController(createHabbit, animated: true)
+        let createHabbitNavigationController = UINavigationController(rootViewController: createHabbit)
+        present(createHabbitNavigationController, animated: true, completion: nil)
     }
 }
 

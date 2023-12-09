@@ -69,7 +69,7 @@ final class NewHabitController: UIViewController {
         iventButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
 
         NSLayoutConstraint.activate([
-            iventButton.bottomAnchor.constraint(equalTo: habbitButton.bottomAnchor, constant: 78),
+            iventButton.bottomAnchor.constraint(equalTo: habbitButton.bottomAnchor, constant: 64),
             iventButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             iventButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
             iventButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20)
@@ -78,6 +78,6 @@ final class NewHabitController: UIViewController {
     
     @objc private func buttonActionForCreateHabbit() {
         let createHabbitbutton = NewHabitCreateController()
-        navigationController?.pushViewController(createHabbitbutton, animated: true)
-    }
+        let createNewHabbitButtonNavigationController = UINavigationController(rootViewController: createHabbitbutton)
+        present(createNewHabbitButtonNavigationController, animated: true, completion: nil)    }
 }

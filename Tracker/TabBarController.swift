@@ -43,9 +43,5 @@ final class TabBarController: UITabBarController {
         
         tabBar.barTintColor = UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 1.0)
         
-        if let navController = viewControllers?.first as? UINavigationController {
-            for _ in navController.viewControllers {
-            }
-        }
     }
 }

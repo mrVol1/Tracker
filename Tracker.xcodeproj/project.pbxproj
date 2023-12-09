@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		D711B8952AF184C60064AAFE /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D711B8942AF184C60064AAFE /* TabBarController.swift */; };
 		D711B8972AF1858D0064AAFE /* StatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D711B8962AF1858D0064AAFE /* StatViewController.swift */; };
+		D774245A2B24575E00C8E065 /* NewHabbitCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77424592B24575E00C8E065 /* NewHabbitCategory.swift */; };
+		D774245D2B2476E600C8E065 /* CreateCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D774245C2B2476E600C8E065 /* CreateCategory.swift */; };
 		D7A6AC952AF7685C00851329 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A6AC942AF7685C00851329 /* Tracker.swift */; };
 		D7A6AC972AF7698E00851329 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A6AC962AF7698E00851329 /* TrackerCategory.swift */; };
 		D7A6AC992AF769D400851329 /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A6AC982AF769D400851329 /* TrackerRecord.swift */; };
@@ -26,6 +28,8 @@
 /* Begin PBXFileReference section */
 		D711B8942AF184C60064AAFE /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		D711B8962AF1858D0064AAFE /* StatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatViewController.swift; sourceTree = "<group>"; };
+		D77424592B24575E00C8E065 /* NewHabbitCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabbitCategory.swift; sourceTree = "<group>"; };
+		D774245C2B2476E600C8E065 /* CreateCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCategory.swift; sourceTree = "<group>"; };
 		D7A6AC942AF7685C00851329 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		D7A6AC962AF7698E00851329 /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		D7A6AC982AF769D400851329 /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
@@ -53,6 +57,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D774245B2B2476C700C8E065 /* CreateCategory */ = {
+			isa = PBXGroup;
+			children = (
+				D77424592B24575E00C8E065 /* NewHabbitCategory.swift */,
+				D774245C2B2476E600C8E065 /* CreateCategory.swift */,
+			);
+			path = CreateCategory;
+			sourceTree = "<group>";
+		};
 		D7A6AC932AF7684600851329 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -82,6 +95,7 @@
 		D7B12C9D2AED9E800006205D /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				D774245B2B2476C700C8E065 /* CreateCategory */,
 				D7C650F32B130EAD00A9F116 /* CreateNewHabit */,
 				D7A6AC932AF7684600851329 /* Models */,
 				D711B8942AF184C60064AAFE /* TabBarController.swift */,
@@ -202,6 +216,8 @@
 				D7A6AC992AF769D400851329 /* TrackerRecord.swift in Sources */,
 				D7C650F72B133FCE00A9F116 /* NewHabitCreateController.swift in Sources */,
 				D711B8972AF1858D0064AAFE /* StatViewController.swift in Sources */,
+				D774245D2B2476E600C8E065 /* CreateCategory.swift in Sources */,
+				D774245A2B24575E00C8E065 /* NewHabbitCategory.swift in Sources */,
 				D7B12CA12AED9E800006205D /* SceneDelegate.swift in Sources */,
 				D7C650F52B130EE800A9F116 /* NewHabitController.swift in Sources */,
 				D7A6AC952AF7685C00851329 /* Tracker.swift in Sources */,
