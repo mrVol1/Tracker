@@ -7,7 +7,75 @@
 
 import UIKit
 
-final class NewHabitCreateController: UIViewController {
+enum TableSection: Int, CaseIterable {
+    case categories
+    case schedule
+}
+
+final class NewHabitCreateController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return TableSection.allCases.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch TableSection(rawValue: section) {
+        case .categories:
+            return 1
+        case .schedule:
+            return 1
+        case .none:
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = ""
+        
+        switch TableSection(rawValue: indexPath.section) {
+        case .categories:
+            cell.textLabel?.text = "Категории"
+            cell.accessoryType = .disclosureIndicator
+            cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
+        case .schedule:
+            cell.textLabel?.text = "Расписание"
+            cell.accessoryType = .disclosureIndicator
+            cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
+        case .none:
+            break
+        }
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        switch TableSection(rawValue: indexPath.section) {
+        case .categories:
+            buttonActionForCreateCategory()
+        case .schedule:
+            buttonActionForCreateSculde()
+        case .none:
+            break
+        }
+    }
+    
+    private let tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.backgroundColor = .white
+        tableView.layer.cornerRadius = 16
+        tableView.clipsToBounds = true
+        tableView.sectionHeaderHeight = 0
+        tableView.separatorStyle = .none
+        return tableView
+    }()
+    
     override func viewDidLoad() {
         view.backgroundColor = .white
         
@@ -53,59 +121,36 @@ final class NewHabitCreateController: UIViewController {
             trackerName.topAnchor.constraint(equalTo: label.topAnchor, constant: 38)
         ])
         
-        
-        //кнопка "Категории"
-        
-        let categoryButton = UIButton()
-        categoryButton.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
-        categoryButton.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 17)
-        categoryButton.setTitle("Категория", for: .normal)
-        categoryButton.setTitleColor(.black, for: .normal)
-        categoryButton.setImage(UIImage(systemName: "arrow.right")?.withRenderingMode(.alwaysOriginal).withTintColor(.black), for: .normal)
-        categoryButton.layer.cornerRadius = 16
-        categoryButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: -240, bottom: 0, right: 0)
-        categoryButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -240)
-        
-        categoryButton.semanticContentAttribute = .forceRightToLeft
-        categoryButton.clipsToBounds = true
-        categoryButton.addTarget(self, action: #selector(buttonActionForCreateCategory), for: .touchUpInside)
-        view.addSubview(categoryButton)
-        
-        // Установка констрейнтов для кнопки
-        categoryButton.translatesAutoresizingMaskIntoConstraints = false
+        //таблица с кнопками
+        view.addSubview(tableView)
+        tableView.dataSource = self
+        tableView.delegate = self
+
+        // Добавление необходимых констрейнтов для tableView
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        let cellHeight: CGFloat = 75
+        let tableHeight = 2 * cellHeight
         NSLayoutConstraint.activate([
-            categoryButton.bottomAnchor.constraint(equalTo: trackerName.bottomAnchor, constant: 78),
-            categoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            categoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            categoryButton.heightAnchor.constraint(equalToConstant: 60)
+            tableView.topAnchor.constraint(equalTo: trackerName.bottomAnchor, constant: 24),
+            tableView.heightAnchor.constraint(equalToConstant: tableHeight),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
+        //установка разделителя между ячейками
         
-        //кнопка "расписание"
-        
-        let timeButton = UIButton()
-        timeButton.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
-        timeButton.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 17)
-        timeButton.setTitle("Расписание", for: .normal)
-        timeButton.setTitleColor(.black, for: .normal)
-        timeButton.setImage(UIImage(systemName: "arrow.right")?.withRenderingMode(.alwaysOriginal).withTintColor(.black), for: .normal)
-        timeButton.layer.cornerRadius = 16
-        timeButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: -230, bottom: 0, right: 0)
-        timeButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -230)
-        
-        timeButton.semanticContentAttribute = .forceRightToLeft
-        timeButton.clipsToBounds = true
-        timeButton.addTarget(self, action: #selector(buttonActionForCreateSculde), for: .touchUpInside)
-        view.addSubview(timeButton)
-        
-        // Установка констрейнтов для кнопки
-        timeButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            timeButton.bottomAnchor.constraint(equalTo: categoryButton.bottomAnchor, constant: 64),
-            timeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            timeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            timeButton.heightAnchor.constraint(equalToConstant: 60)
-        ])
-        
+        tableView.separatorStyle = .singleLine
+        tableView.separatorColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1.0)
+
+        // Установка поведения отступов контента
+        tableView.contentInset = UIEdgeInsets(top: -1, left: 0, bottom: 0, right: 0)
+        tableView.contentInsetAdjustmentBehavior = .never
+        tableView.layoutIfNeeded()
+
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 0
+        tableView.sectionHeaderHeight = 0
+        tableView.sectionFooterHeight = 0
+
         //кнопка "сохранить"
         
         let saveButton = UIButton()
@@ -120,7 +165,7 @@ final class NewHabitCreateController: UIViewController {
         // Установка констрейнтов для кнопки
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            saveButton.bottomAnchor.constraint(equalTo: timeButton.bottomAnchor, constant: 420),
+            saveButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -120),
             saveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             saveButton.heightAnchor.constraint(equalToConstant: 60)
