@@ -11,19 +11,19 @@ final class CreateCategory: UIViewController, UITextFieldDelegate {
     private var category: TrackerCategory?
     private var enteredText: String = ""
     private let doneButton: UIButton = {
-            let button = UIButton()
-            button.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 16)
-            button.setTitle("Готово", for: .normal)
-            button.setTitleColor(.white, for: .normal)
-            button.layer.cornerRadius = 16
-            button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-            button.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
-            button.isEnabled = false
-            return button
-        }()
+        let button = UIButton()
+        button.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 16)
+        button.setTitle("Готово", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 16
+        button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+        button.isEnabled = false
+        return button
+    }()
     
     private let categoryName: UITextField = {
-            let textField = UITextField()
+        let textField = UITextField()
         textField.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
         textField.placeholder = "Введите название категории"
         textField.font = UIFont(name: "SFProDisplay-Medium", size: 17)
@@ -32,7 +32,7 @@ final class CreateCategory: UIViewController, UITextFieldDelegate {
         textField.clipsToBounds = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
-        }()
+    }()
     
     override func viewDidLoad() {
         view.backgroundColor = .white
@@ -88,21 +88,22 @@ final class CreateCategory: UIViewController, UITextFieldDelegate {
         ])
     }
     @objc func textFieldDidChange(_ textField: UITextField) {
-            enteredText = textField.text ?? ""
-            doneButton.isEnabled = !enteredText.isEmpty
-            doneButton.backgroundColor = doneButton.isEnabled ? .black : UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
-        }
+        enteredText = textField.text ?? ""
+        doneButton.isEnabled = !enteredText.isEmpty
+        doneButton.backgroundColor = doneButton.isEnabled ? .black : UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+    }
     @objc func сreatedCategory() {
         guard let enteredText = categoryName.text, !enteredText.isEmpty else {
             return
         }
-
-        let tracker = Tracker(id: 1, name: "хуй", color: "", emodji: "", timetable: "")
-        category = TrackerCategory(label: enteredText, trackerMassiv: [tracker])
         
+        let tracker = Tracker(id: 1, name: "", color: "", emodji: "", timetable: "")
+        category = TrackerCategory(label: enteredText, trackerMassiv: [tracker])
+                
         let newHabbitCategoryScreen = NewHabbitCategory()
         newHabbitCategoryScreen.selectedCategory = category
-
-        dismiss(animated: true, completion: nil)
+                
+        present(newHabbitCategoryScreen, animated: true) {
+        }
     }
 }

@@ -141,11 +141,6 @@ final class NewHabitCreateController: UIViewController, UITableViewDataSource, U
         tableView.separatorStyle = .singleLine
         tableView.separatorColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1.0)
 
-        // Установка поведения отступов контента
-        tableView.contentInset = UIEdgeInsets(top: -1, left: 0, bottom: 0, right: 0)
-        tableView.contentInsetAdjustmentBehavior = .never
-        tableView.layoutIfNeeded()
-
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 0
         tableView.sectionHeaderHeight = 0
@@ -174,7 +169,7 @@ final class NewHabitCreateController: UIViewController, UITableViewDataSource, U
         //кнопка "отмена"
         
         let cancelButton = UIButton()
-        //cancelButton.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
+        cancelButton.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
         cancelButton.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 17)
         cancelButton.setTitle("Отменить", for: .normal)
         cancelButton.setTitleColor(.red, for: .normal)
