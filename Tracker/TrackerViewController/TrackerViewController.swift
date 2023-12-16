@@ -7,11 +7,14 @@
 
 import UIKit
 
-class TrackerViewController: UIViewController {
+class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
     let grayColor = UIColorsForProject()
     var categories: [TrackerCategory]
     var completedTrackers: [TrackerRecord]
     var newCategories: [Tracker]
+    private let tableViewTrackers = UITableView()
+    var tableViewHeightAnchor: NSLayoutConstraint?
     
     init(categories: [TrackerCategory], completedTrackers: [TrackerRecord], newCategories: [Tracker]) {
         self.categories = categories
@@ -22,7 +25,7 @@ class TrackerViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         self.categories = []
-        self.completedTrackers = [] 
+        self.completedTrackers = []
         self.newCategories = []
         super.init(coder: coder)
     }
@@ -60,7 +63,6 @@ class TrackerViewController: UIViewController {
         ])
         
         //создание лейбла "Трекеры"
-        
         let label = UILabel()
         
         let customFontBold = UIFont(name: "SFProDisplay-Bold", size: UIFont.labelFontSize)
@@ -91,39 +93,68 @@ class TrackerViewController: UIViewController {
             search.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
         
-        //добавление картинки
-        guard let defaultImage = UIImage(named: "1") else { return }
-        let imageView = UIImageView(image: defaultImage)
-        view.addSubview(imageView)
+        // создание таблицы
+        tableViewTrackers.delegate = self
+        tableViewTrackers.dataSource = self
+        tableViewTrackers.register(CustomCategoryTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableViewTrackers.separatorStyle = .none
+        view.addSubview(tableViewTrackers)
         
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        // создание констрейтов для таблицы
+        tableViewTrackers.translatesAutoresizingMaskIntoConstraints = false
+        tableViewHeightAnchor = tableViewTrackers.heightAnchor.constraint(equalToConstant: newCategories.isEmpty ? 75 : 0)
+        tableViewHeightAnchor?.isActive = true
         
-        NSLayoutConstraint.activate([
-            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-        
-        //добавление надписи
-        
-        let defultLabel = UILabel()
-        
-        defultLabel.textColor = .black
-        defultLabel.text = "Что будем отслеживать?"
-        view.addSubview(defultLabel)
-        
-        defultLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            defultLabel.bottomAnchor.constraint(equalTo: imageView.safeAreaLayoutGuide.bottomAnchor, constant: 28),
-            defultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            tableViewTrackers.topAnchor.constraint(equalTo: search.bottomAnchor, constant: 16),
+            tableViewTrackers.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableViewTrackers.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])
+        
+        if newCategories.isEmpty {
+            
+            //добавление картинки
+            guard let defaultImage = UIImage(named: "1") else { return }
+            let imageView = UIImageView(image: defaultImage)
+            view.addSubview(imageView)
+            
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            ])
+            
+            //добавление надписи
+            
+            let defultLabel = UILabel()
+            
+            defultLabel.textColor = .black
+            defultLabel.text = "Что будем отслеживать?"
+            view.addSubview(defultLabel)
+            
+            defultLabel.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                defultLabel.bottomAnchor.constraint(equalTo: imageView.safeAreaLayoutGuide.bottomAnchor, constant: 28),
+                defultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            ])
+        }
     }
-    
     @objc func buttonAction() {
         let createHabbit = NewHabitController()
         let createHabbitNavigationController = UINavigationController(rootViewController: createHabbit)
         present(createHabbitNavigationController, animated: true, completion: nil)
     }
+    
+    // MARK: - table settings
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        <#code#>
+    }
 }
-
-
