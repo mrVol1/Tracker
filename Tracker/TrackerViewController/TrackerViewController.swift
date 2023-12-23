@@ -16,6 +16,9 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
     private let tableViewTrackers = UITableView()
     var tableViewHeightAnchor: NSLayoutConstraint?
     var selectedCategoryLabel: String?
+    let search = UISearchTextField()
+    let nameForLabelCategory = UILabel()
+    let label = UILabel()
     
     init(categories: [TrackerCategory], completedTrackers: [TrackerRecord], newCategories: [Tracker]) {
         self.categories = categories
@@ -66,8 +69,6 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
         ])
         
         //создание лейбла "Трекеры"
-        let label = UILabel()
-        
         let customFontBold = UIFont(name: "SFProDisplay-Bold", size: UIFont.labelFontSize)
         
         label.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 34, weight: UIFont.Weight.bold)).withSize(34)
@@ -83,7 +84,6 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
         ])
         
         //добавление поиска
-        let search = UISearchTextField()
         search.placeholder = "Поиск"
         view.addSubview(search)
         
@@ -94,25 +94,6 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
             search.topAnchor.constraint(equalTo: label.safeAreaLayoutGuide.topAnchor, constant: 48),
             search.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             search.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
-        ])
-        
-        // создание таблицы
-        tableViewTrackers.delegate = self
-        tableViewTrackers.dataSource = self
-        tableViewTrackers.register(CustomCategoryTrackerViewCell.self, forCellReuseIdentifier: "cell")
-        tableViewTrackers.separatorStyle = .none
-        view.addSubview(tableViewTrackers)
-        
-        // создание констрейтов для таблицы
-        tableViewTrackers.translatesAutoresizingMaskIntoConstraints = false
-        tableViewHeightAnchor = tableViewTrackers.heightAnchor.constraint(equalToConstant: newCategories.isEmpty ? 0 : 320)
-        tableViewHeightAnchor?.isActive = true
-        
-        
-        NSLayoutConstraint.activate([
-            tableViewTrackers.topAnchor.constraint(equalTo: search.bottomAnchor, constant: 16),
-            tableViewTrackers.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tableViewTrackers.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])
     }
     
@@ -126,6 +107,40 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
         if let selectedLabel = selectedCategoryLabel {
                 categories = [TrackerCategory(label: selectedLabel, trackerMassiv: [])]
                 newCategories = [Tracker(id: 1, name: selectedLabel, color: "", emodji: "", timetable: "")]
+            
+            //Добавление заголовка
+            let customFontBoldMidle = UIFont(name: "SFProDisplay-Medium", size: 19)
+            nameForLabelCategory.textColor = .black
+            nameForLabelCategory.text = "Домашний уют"
+            nameForLabelCategory.font = UIFontMetrics.default.scaledFont(for: customFontBoldMidle ?? UIFont.systemFont(ofSize: 19, weight: UIFont.Weight.bold)).withSize(19)
+            view.addSubview(nameForLabelCategory)
+            
+            nameForLabelCategory.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                nameForLabelCategory.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 148),
+                nameForLabelCategory.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16)
+            ])
+            
+            // создание таблицы
+            tableViewTrackers.delegate = self
+            tableViewTrackers.dataSource = self
+            tableViewTrackers.register(CustomCategoryTrackerViewCell.self, forCellReuseIdentifier: "cell")
+            tableViewTrackers.separatorStyle = .none
+            view.addSubview(tableViewTrackers)
+            
+            // создание констрейтов для таблицы
+            tableViewTrackers.translatesAutoresizingMaskIntoConstraints = false
+            tableViewHeightAnchor = tableViewTrackers.heightAnchor.constraint(equalToConstant: newCategories.isEmpty ? 0 : 320)
+            tableViewHeightAnchor?.isActive = true
+            
+            
+            NSLayoutConstraint.activate([
+                tableViewTrackers.topAnchor.constraint(equalTo: nameForLabelCategory.bottomAnchor, constant: 12),
+                tableViewTrackers.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                tableViewTrackers.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            ])
+            
             } else {
                 //добавление картинки
                 guard let defaultImage = UIImage(named: "1") else { return }
