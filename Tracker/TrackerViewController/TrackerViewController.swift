@@ -10,11 +10,12 @@ import UIKit
 class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     let grayColor = UIColorsForProject()
-    var categories: [TrackerCategory]
+    var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord]
     var newCategories: [Tracker]
     private let tableViewTrackers = UITableView()
     var tableViewHeightAnchor: NSLayoutConstraint?
+    var selectedCategoryLabel: String?
     
     init(categories: [TrackerCategory], completedTrackers: [TrackerRecord], newCategories: [Tracker]) {
         self.categories = categories
@@ -32,6 +33,8 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loadCategories()
         
         view.backgroundColor = .white
         
@@ -96,13 +99,13 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
         // создание таблицы
         tableViewTrackers.delegate = self
         tableViewTrackers.dataSource = self
-        tableViewTrackers.register(CustomCategoryTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableViewTrackers.register(CustomCategoryTrackerViewCell.self, forCellReuseIdentifier: "cell")
         tableViewTrackers.separatorStyle = .none
         view.addSubview(tableViewTrackers)
         
         // создание констрейтов для таблицы
         tableViewTrackers.translatesAutoresizingMaskIntoConstraints = false
-        tableViewHeightAnchor = tableViewTrackers.heightAnchor.constraint(equalToConstant: newCategories.isEmpty ? 0 : 75)
+        tableViewHeightAnchor = tableViewTrackers.heightAnchor.constraint(equalToConstant: newCategories.isEmpty ? 0 : 320)
         tableViewHeightAnchor?.isActive = true
         
         
@@ -111,52 +114,64 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
             tableViewTrackers.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableViewTrackers.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])
-        
-        if newCategories.isEmpty {
-            
-            //добавление картинки
-            guard let defaultImage = UIImage(named: "1") else { return }
-            let imageView = UIImageView(image: defaultImage)
-            view.addSubview(imageView)
-            
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            
-            NSLayoutConstraint.activate([
-                imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-            ])
-            
-            //добавление надписи
-            
-            let defultLabel = UILabel()
-            
-            defultLabel.textColor = .black
-            defultLabel.text = "Что будем отслеживать?"
-            view.addSubview(defultLabel)
-            
-            defultLabel.translatesAutoresizingMaskIntoConstraints = false
-            
-            NSLayoutConstraint.activate([
-                defultLabel.bottomAnchor.constraint(equalTo: imageView.safeAreaLayoutGuide.bottomAnchor, constant: 28),
-                defultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-            ])
-        }
     }
+    
     @objc func buttonAction() {
         let createHabbit = NewHabitController()
         let createHabbitNavigationController = UINavigationController(rootViewController: createHabbit)
         present(createHabbitNavigationController, animated: true, completion: nil)
     }
     
+    func loadCategories() {
+        if let selectedLabel = selectedCategoryLabel {
+                categories = [TrackerCategory(label: selectedLabel, trackerMassiv: [])]
+                newCategories = [Tracker(id: 1, name: selectedLabel, color: "", emodji: "", timetable: "")]
+            } else {
+                //добавление картинки
+                guard let defaultImage = UIImage(named: "1") else { return }
+                let imageView = UIImageView(image: defaultImage)
+                view.addSubview(imageView)
+                
+                imageView.translatesAutoresizingMaskIntoConstraints = false
+                
+                NSLayoutConstraint.activate([
+                    imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                    imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+                ])
+                
+                //добавление надписи
+                
+                let defultLabel = UILabel()
+                
+                defultLabel.textColor = .black
+                defultLabel.text = "Что будем отслеживать?"
+                view.addSubview(defultLabel)
+                
+                defultLabel.translatesAutoresizingMaskIntoConstraints = false
+                
+                NSLayoutConstraint.activate([
+                    defultLabel.bottomAnchor.constraint(equalTo: imageView.safeAreaLayoutGuide.bottomAnchor, constant: 28),
+                    defultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+                ])
+            }
+            tableViewTrackers.reloadData()
+        }
+    
     // MARK: - table settings
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCategoryTrackerViewCell
+
+        if !newCategories.isEmpty {
+            let firstCategory = newCategories[0]
+            cell.configure(with: firstCategory.name)
+        }
+
+        return cell
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCategoryTableViewCell
-        return cell
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return newCategories.count
     }
 }
 

@@ -14,6 +14,8 @@ enum TableSection: Int, CaseIterable {
 
 final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate {
     
+    var selectedCategoryLabel: String?
+    
     let label = UILabel()
     let trackerName = UITextField()
     let saveButton = UIButton()
@@ -74,6 +76,7 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
         
         //таблица с кнопками
         setupTableHeader()
+        tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: "categoryCell")
         view.addSubview(tableView)
         tableView.dataSource = self
         tableView.delegate = self
@@ -86,7 +89,6 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
         ])
         
         // Кнопка "сохранить"
-        saveButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
         saveButton.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 17)
         saveButton.setTitle("Создать", for: .normal)
         saveButton.setTitleColor(.white, for: .normal)
@@ -135,21 +137,35 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
         switch TableSection(rawValue: indexPath.section) {
         case .categories:
-            cell.textLabel?.text = "Категории"
+            let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as! CategoryTableViewCell
+            cell.titleLabel.text = "Категории"
+            cell.titleLabel.textColor = UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 1.0)
+            cell.titleLabel.textAlignment = .center
             cell.accessoryType = .disclosureIndicator
+            
+            if let selectedCategoryLabel = selectedCategoryLabel {
+                cell.categoryLabel.text = selectedCategoryLabel
+                saveButton.backgroundColor = .black
+                saveButton.addTarget(self, action: #selector(buttonActionForHabbitSave), for: .touchUpInside)
+            } else {
+                cell.categoryLabel.removeFromSuperview()
+                saveButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+            }
+            
             cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
+            return cell
+            
         case .schedule:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             cell.textLabel?.text = "Расписание"
             cell.accessoryType = .disclosureIndicator
             cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
+            return cell
         case .none:
-            break
+            return UITableViewCell()
         }
-        return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -175,6 +191,14 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
         let separator = UIView(frame: CGRect(x: (cell.frame.width - separatorWidth) / 2, y: cell.frame.height - separatorHeight, width: separatorWidth, height: separatorHeight))
         separator.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
         cell.contentView.addSubview(separator)
+    }
+    
+    @objc private func buttonActionForHabbitSave() {
+        let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
+        trackerViewController.selectedCategoryLabel = selectedCategoryLabel
+        trackerViewController.loadCategories()
+        let newHabitCreatedButton = UINavigationController(rootViewController: trackerViewController)
+        present(newHabitCreatedButton, animated: true, completion: nil)
     }
     
     @objc private func buttonActionForHabbitCancel() {

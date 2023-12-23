@@ -18,7 +18,7 @@ class CustomCategoryTableViewCell: UITableViewCell {
 
     let checkmarkImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "checkmark"))
-        imageView.tintColor = .systemGreen
+        imageView.tintColor = .systemBlue
         imageView.contentMode = .scaleAspectFit
         imageView.isHidden = true
         return imageView
@@ -59,7 +59,7 @@ class CustomCategoryTableViewCell: UITableViewCell {
 
     func updateCellAppearance(isSelected: Bool) {
         checkmarkImageView.isHidden = !isSelected
-        backgroundColor = isSelected ? .lightGray : UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
+        backgroundColor = isSelected ? UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3) : UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3).withAlphaComponent(0.3)
     }
 }
 
