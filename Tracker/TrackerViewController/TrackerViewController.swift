@@ -8,7 +8,7 @@
 import UIKit
 
 class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
+    
     let grayColor = UIColorsForProject()
     var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord]
@@ -21,12 +21,12 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
     let label = UILabel()
     
     let labelCount: UILabel = {
-            let labelCount = UILabel()
-            labelCount.textColor = .black
-            labelCount.text = "0 дней"
-            labelCount.translatesAutoresizingMaskIntoConstraints = false
-            return labelCount
-        }()
+        let labelCount = UILabel()
+        labelCount.textColor = .black
+        labelCount.text = "0 дней"
+        labelCount.translatesAutoresizingMaskIntoConstraints = false
+        return labelCount
+    }()
     
     let plusButton: UIButton = {
         let button = UIButton()
@@ -125,8 +125,8 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func loadCategories() {
         if let selectedLabel = selectedCategoryLabel {
-                categories = [TrackerCategory(label: selectedLabel, trackerMassiv: [])]
-                newCategories = [Tracker(id: 1, name: selectedLabel, color: "", emodji: "", timetable: "")]
+            categories = [TrackerCategory(label: selectedLabel, trackerMassiv: [])]
+            newCategories = [Tracker(id: 1, name: selectedLabel, color: "", emodji: "", timetable: "")]
             
             //Добавление заголовка
             let customFontBoldMidle = UIFont(name: "SFProDisplay-Medium", size: 19)
@@ -176,43 +176,43 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
                 plusButton.topAnchor.constraint(equalTo: tableViewTrackers.bottomAnchor, constant: 12),
                 plusButton.leftAnchor.constraint(equalTo: labelCount.leftAnchor, constant: 135),
             ])
-            } else {
-                //добавление картинки
-                guard let defaultImage = UIImage(named: "1") else { return }
-                let imageView = UIImageView(image: defaultImage)
-                view.addSubview(imageView)
-                
-                imageView.translatesAutoresizingMaskIntoConstraints = false
-                
-                NSLayoutConstraint.activate([
-                    imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                    imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-                ])
-                
-                //добавление надписи
-                
-                let defultLabel = UILabel()
-                
-                defultLabel.textColor = .black
-                defultLabel.text = "Что будем отслеживать?"
-                view.addSubview(defultLabel)
-                
-                defultLabel.translatesAutoresizingMaskIntoConstraints = false
-                
-                NSLayoutConstraint.activate([
-                    defultLabel.bottomAnchor.constraint(equalTo: imageView.safeAreaLayoutGuide.bottomAnchor, constant: 28),
-                    defultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-                ])
-            }
-            tableViewTrackers.reloadData()
+        } else {
+            //добавление картинки
+            guard let defaultImage = UIImage(named: "1") else { return }
+            let imageView = UIImageView(image: defaultImage)
+            view.addSubview(imageView)
+            
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            ])
+            
+            //добавление надписи
+            
+            let defultLabel = UILabel()
+            
+            defultLabel.textColor = .black
+            defultLabel.text = "Что будем отслеживать?"
+            view.addSubview(defultLabel)
+            
+            defultLabel.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                defultLabel.bottomAnchor.constraint(equalTo: imageView.safeAreaLayoutGuide.bottomAnchor, constant: 28),
+                defultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            ])
         }
+        tableViewTrackers.reloadData()
+    }
     
     // MARK: - table settings
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCategoryTrackerViewCell
         cell.layoutIfNeeded()
-
+        
         if !newCategories.isEmpty {
             let firstCategory = newCategories[0]
             cell.configure(with: firstCategory.name)
@@ -224,16 +224,31 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
         return newCategories.count
     }
     
+    var isButtonPressed = false
+
     @objc func plusButtonAction() {
-        // Изменяем иконку кнопки на галочку
-        plusButton.setTitle("✓", for: .normal)
-        // Делаем кнопку неактивной с прозрачностью в 30%
-        plusButton.isEnabled = false
-        plusButton.alpha = 0.3
-        // Увеличиваем значение счетчика
-        if let currentCount = Int(labelCount.text?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined() ?? "0") {
-            labelCount.text = "\(currentCount + 1) дней"
+        if isButtonPressed {
+            plusButton.setTitle("+", for: .normal)
+            plusButton.setTitleColor(.white, for: .normal)
+            plusButton.backgroundColor = UIColor(red: 51/255, green: 207/255, blue: 105/255, alpha: 1)
+            plusButton.layer.cornerRadius = 17
+
+            plusButton.widthAnchor.constraint(equalToConstant: 34).isActive = true
+            plusButton.heightAnchor.constraint(equalToConstant: 34).isActive = true
+
+            plusButton.alpha = 1.0
+
+            if let currentCount = Int(labelCount.text?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined() ?? "0") {
+                labelCount.text = "0 дней"
+            }
+        } else {
+            plusButton.setTitle("✓", for: .normal)
+           plusButton.alpha = 0.3
+            if let currentCount = Int(labelCount.text?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined() ?? "0") {
+                labelCount.text = "\(currentCount + 1) дней"
+            }
         }
+        isButtonPressed = !isButtonPressed // Переключение значения isButtonPressed
     }
 }
 
