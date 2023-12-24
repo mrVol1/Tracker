@@ -20,6 +20,26 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
     let nameForLabelCategory = UILabel()
     let label = UILabel()
     
+    let labelCount: UILabel = {
+            let labelCount = UILabel()
+            labelCount.textColor = .black
+            labelCount.text = "0 дней"
+            labelCount.translatesAutoresizingMaskIntoConstraints = false
+            return labelCount
+        }()
+    
+    let plusButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("+", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor(red: 51/255, green: 207/255, blue: 105/255, alpha: 1)
+        button.widthAnchor.constraint(equalToConstant: 34).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 34).isActive = true
+        button.layer.cornerRadius = 17
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     init(categories: [TrackerCategory], completedTrackers: [TrackerRecord], newCategories: [Tracker]) {
         self.categories = categories
         self.completedTrackers = completedTrackers
@@ -131,7 +151,7 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             // создание констрейтов для таблицы
             tableViewTrackers.translatesAutoresizingMaskIntoConstraints = false
-            tableViewHeightAnchor = tableViewTrackers.heightAnchor.constraint(equalToConstant: newCategories.isEmpty ? 0 : 320)
+            tableViewHeightAnchor = tableViewTrackers.heightAnchor.constraint(equalToConstant: newCategories.isEmpty ? 0 : 90)
             tableViewHeightAnchor?.isActive = true
             
             
@@ -141,6 +161,21 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
                 tableViewTrackers.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             ])
             
+            //Настройка констрейтов счетчика
+            view.addSubview(labelCount)
+            NSLayoutConstraint.activate([
+                labelCount.topAnchor.constraint(equalTo: tableViewTrackers.bottomAnchor, constant: 20),
+                labelCount.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                labelCount.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            ])
+            
+            //Настройка констрейтов плюса
+            view.addSubview(plusButton)
+            plusButton.addTarget(self, action: #selector(plusButtonAction), for: .touchUpInside)
+            NSLayoutConstraint.activate([
+                plusButton.topAnchor.constraint(equalTo: tableViewTrackers.bottomAnchor, constant: 12),
+                plusButton.leftAnchor.constraint(equalTo: labelCount.leftAnchor, constant: 135),
+            ])
             } else {
                 //добавление картинки
                 guard let defaultImage = UIImage(named: "1") else { return }
@@ -176,17 +211,29 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCategoryTrackerViewCell
+        cell.layoutIfNeeded()
 
         if !newCategories.isEmpty {
             let firstCategory = newCategories[0]
             cell.configure(with: firstCategory.name)
         }
-
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return newCategories.count
+    }
+    
+    @objc func plusButtonAction() {
+        // Изменяем иконку кнопки на галочку
+        plusButton.setTitle("✓", for: .normal)
+        // Делаем кнопку неактивной с прозрачностью в 30%
+        plusButton.isEnabled = false
+        plusButton.alpha = 0.3
+        // Увеличиваем значение счетчика
+        if let currentCount = Int(labelCount.text?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined() ?? "0") {
+            labelCount.text = "\(currentCount + 1) дней"
+        }
     }
 }
 

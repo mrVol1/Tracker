@@ -9,17 +9,17 @@ import UIKit
 
 class CustomCategoryTrackerViewCell: UITableViewCell {
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        contentView.frame = CGRect(x: contentView.frame.origin.x, y: contentView.frame.origin.y, width: 167, height: 90)
-    }
-
     let label: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.frame = CGRect(x: contentView.frame.origin.x, y: contentView.frame.origin.y, width: 167, height: 90)
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
