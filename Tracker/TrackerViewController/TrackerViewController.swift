@@ -7,18 +7,31 @@
 
 import UIKit
 
-class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TrackerViewController: UIViewController, UITextFieldDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return newCategories.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! CombinedTrackerViewCell
+        
+        let category = newCategories[indexPath.item]
+        cell.configure(with: category.name)
+        
+        return cell
+    }
+    
     
     let grayColor = UIColorsForProject()
     var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord]
     var newCategories: [Tracker]
-    private let tableViewTrackers = UITableView()
-    var tableViewHeightAnchor: NSLayoutConstraint?
     var selectedCategoryLabel: String?
     let search = UISearchTextField()
     let nameForLabelCategory = UILabel()
     let label = UILabel()
+    let customFontBoldMidle = UIFont(name: "SFProDisplay-Medium", size: 19)
     
     let labelCount: UILabel = {
         let labelCount = UILabel()
@@ -40,6 +53,14 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
         return button
     }()
     
+    var labelCategory: UILabel {
+        let labelCategory = UILabel()
+        labelCategory.textColor = .black
+        labelCategory.text = selectedCategoryLabel //добавить сюда значение из категории
+        labelCategory.font = UIFontMetrics.default.scaledFont(for: customFontBoldMidle ?? UIFont.systemFont(ofSize: 19, weight: UIFont.Weight.bold) ).withSize(19)
+        return labelCategory
+    }
+    
     init(categories: [TrackerCategory], completedTrackers: [TrackerRecord], newCategories: [Tracker]) {
         self.categories = categories
         self.completedTrackers = completedTrackers
@@ -54,8 +75,19 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.init(coder: coder)
     }
     
+    private let collectionViewTrackers: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(CombinedTrackerViewCell.self, forCellWithReuseIdentifier: "trackerCell")
+        collectionView.backgroundColor = .white
+        return collectionView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        search.delegate = self
         
         loadCategories()
         
@@ -88,6 +120,9 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
             container.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 222)
         ])
         
+        container.minimumDate = Date()
+        container.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
+        
         //создание лейбла "Трекеры"
         let customFontBold = UIFont(name: "SFProDisplay-Bold", size: UIFont.labelFontSize)
         
@@ -117,66 +152,38 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
         ])
     }
     
-    @objc func buttonAction() {
-        let createHabbit = NewHabitController()
-        let createHabbitNavigationController = UINavigationController(rootViewController: createHabbit)
-        present(createHabbitNavigationController, animated: true, completion: nil)
-    }
-    
     func loadCategories() {
         if let selectedLabel = selectedCategoryLabel {
+            
+            //Добавление заголовка категории
+            view.addSubview(labelCategory)
+            labelCategory.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                labelCategory.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 148),
+                labelCategory.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16)
+            ])
+            
             categories = [TrackerCategory(label: selectedLabel, trackerMassiv: [])]
             newCategories = [Tracker(id: 1, name: selectedLabel, color: "", emodji: "", timetable: "")]
             
-            //Добавление заголовка
-            let customFontBoldMidle = UIFont(name: "SFProDisplay-Medium", size: 19)
-            nameForLabelCategory.textColor = .black
-            nameForLabelCategory.text = "Домашний уют"
-            nameForLabelCategory.font = UIFontMetrics.default.scaledFont(for: customFontBoldMidle ?? UIFont.systemFont(ofSize: 19, weight: UIFont.Weight.bold)).withSize(19)
-            view.addSubview(nameForLabelCategory)
+            //добавление списка трекеров
+            collectionViewTrackers.delegate = self
+            collectionViewTrackers.dataSource = self
+            collectionViewTrackers.register(CombinedTrackerViewCell.self, forCellWithReuseIdentifier: "trackerCell")
+            let cell = CombinedTrackerViewCell()
+            collectionViewTrackers.addSubview(cell)
+            view.addSubview(collectionViewTrackers)
             
-            nameForLabelCategory.translatesAutoresizingMaskIntoConstraints = false
-            
+            collectionViewTrackers.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                nameForLabelCategory.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 148),
-                nameForLabelCategory.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16)
+                collectionViewTrackers.topAnchor.constraint(equalTo: search.bottomAnchor, constant: 8),
+                collectionViewTrackers.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+                collectionViewTrackers.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+                collectionViewTrackers.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
             
-            // создание таблицы
-            tableViewTrackers.delegate = self
-            tableViewTrackers.dataSource = self
-            tableViewTrackers.register(CustomCategoryTrackerViewCell.self, forCellReuseIdentifier: "cell")
-            tableViewTrackers.separatorStyle = .none
-            view.addSubview(tableViewTrackers)
-            
-            // создание констрейтов для таблицы
-            tableViewTrackers.translatesAutoresizingMaskIntoConstraints = false
-            tableViewHeightAnchor = tableViewTrackers.heightAnchor.constraint(equalToConstant: newCategories.isEmpty ? 0 : 90)
-            tableViewHeightAnchor?.isActive = true
-            
-            
-            NSLayoutConstraint.activate([
-                tableViewTrackers.topAnchor.constraint(equalTo: nameForLabelCategory.bottomAnchor, constant: 12),
-                tableViewTrackers.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                tableViewTrackers.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            ])
-            
-            //Настройка констрейтов счетчика
-            view.addSubview(labelCount)
-            NSLayoutConstraint.activate([
-                labelCount.topAnchor.constraint(equalTo: tableViewTrackers.bottomAnchor, constant: 20),
-                labelCount.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                labelCount.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            ])
-            
-            //Настройка констрейтов плюса
-            view.addSubview(plusButton)
-            plusButton.addTarget(self, action: #selector(plusButtonAction), for: .touchUpInside)
-            NSLayoutConstraint.activate([
-                plusButton.topAnchor.constraint(equalTo: tableViewTrackers.bottomAnchor, constant: 12),
-                plusButton.leftAnchor.constraint(equalTo: labelCount.leftAnchor, constant: 135),
-            ])
         } else {
+            
             //добавление картинки
             guard let defaultImage = UIImage(named: "1") else { return }
             let imageView = UIImageView(image: defaultImage)
@@ -204,54 +211,56 @@ class TrackerViewController: UIViewController, UITableViewDelegate, UITableViewD
                 defultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         }
-        tableViewTrackers.reloadData()
+        collectionViewTrackers.reloadData()
     }
     
     // MARK: - table settings
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCategoryTrackerViewCell
-        cell.layoutIfNeeded()
-        
-        if !newCategories.isEmpty {
-            let firstCategory = newCategories[0]
-            cell.configure(with: firstCategory.name)
-        }
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return newCategories.count
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return true
     }
     
     var isButtonPressed = false
-
+    
     @objc func plusButtonAction() {
         if isButtonPressed {
             plusButton.setTitle("+", for: .normal)
             plusButton.setTitleColor(.white, for: .normal)
             plusButton.backgroundColor = UIColor(red: 51/255, green: 207/255, blue: 105/255, alpha: 1)
             plusButton.layer.cornerRadius = 17
-
+            
             plusButton.widthAnchor.constraint(equalToConstant: 34).isActive = true
             plusButton.heightAnchor.constraint(equalToConstant: 34).isActive = true
-
+            
             plusButton.alpha = 1.0
-
-            if let currentCount = Int(labelCount.text?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined() ?? "0") {
+            
+            if Int(labelCount.text?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined() ?? "0") != nil {
                 labelCount.text = "0 дней"
             }
         } else {
             plusButton.setTitle("✓", for: .normal)
-           plusButton.alpha = 0.3
+            plusButton.alpha = 0.3
             if let currentCount = Int(labelCount.text?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined() ?? "0") {
                 labelCount.text = "\(currentCount + 1) дней"
             }
         }
         isButtonPressed = !isButtonPressed // Переключение значения isButtonPressed
     }
+    
+    @objc func buttonAction() {
+        let createHabbit = NewHabitController()
+        let createHabbitNavigationController = UINavigationController(rootViewController: createHabbit)
+        present(createHabbitNavigationController, animated: true, completion: nil)
+    }
+    
+    @objc func datePickerValueChanged(_ sender: UIDatePicker) {
+        let selectedDate = sender.date
+        print("Selected Date: \(selectedDate)")
+        
+        // Фильтрация массива данных по выбранной дате
+        let filteredData = completedTrackers.filter { trackerRecord in
+            return Calendar.current.isDate(trackerRecord.date, inSameDayAs: selectedDate)
+        }
+        print("Filtered Data: \(filteredData)")
+    }
 }
-
-
-
-

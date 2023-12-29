@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CustomCategoryTrackerViewCell: UITableViewCell {
+class CombinedTrackerViewCell: UICollectionViewCell {
     
     let label: UILabel = {
         let label = UILabel()
@@ -16,39 +16,68 @@ class CustomCategoryTrackerViewCell: UITableViewCell {
         return label
     }()
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        contentView.frame = CGRect(x: contentView.frame.origin.x, y: contentView.frame.origin.y, width: 167, height: 90)
-    }
+    let labelCount: UILabel = {
+        let labelCount = UILabel()
+        labelCount.textColor = .black
+        labelCount.text = "0 дней"
+        labelCount.translatesAutoresizingMaskIntoConstraints = false
+        return labelCount
+    }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupUI()
-    }
+    let addButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("+", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .green
+        return button
+    }()
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupUI()
     }
 
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     private func setupUI() {
-        contentView.addSubview(label)
-        
-        // Установка констрейтов для лейбла
+        addSubview(label)
+        addSubview(labelCount)
+        addSubview(addButton)
+
+        // Настройте констрейты элементов интерфейса
+        label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
+            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+        ])
+
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            addButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            addButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            addButton.widthAnchor.constraint(equalToConstant: 50),
+            addButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         
-        // Настройка внешнего вида ячейки
-        contentView.backgroundColor = UIColor(red: 51/255, green: 207/255, blue: 105/255, alpha: 1)
-        contentView.layer.cornerRadius = 16
-        contentView.layer.masksToBounds = true
+        labelCount.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            labelCount.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            labelCount.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            labelCount.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+        ])
+
+        layer.cornerRadius = 16
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.lightGray.cgColor
+        backgroundColor = .white
     }
     
     func configure(with text: String) {
         label.text = text
     }
 }
+
 
