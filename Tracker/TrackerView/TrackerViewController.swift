@@ -158,7 +158,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             //Добавление заголовка категории
             view.addSubview(labelCategory)
             labelCategory.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
+            NSLayoutConstraint.activate([ //здесь ошибка, потому что в лейбл не передается значение трекера
                 labelCategory.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 148),
                 labelCategory.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16)
             ])
