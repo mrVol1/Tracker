@@ -8,6 +8,7 @@
 import UIKit
 
 final class CreateCategory: UIViewController, UITextFieldDelegate {
+    
     private var category: TrackerCategory?
     private var enteredText: String = ""
     private let doneButton: UIButton = {
@@ -61,6 +62,7 @@ final class CreateCategory: UIViewController, UITextFieldDelegate {
         categoryName.leftView = leftPaddingView
         categoryName.leftViewMode = .always
         categoryName.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        categoryName.textColor = .black
         
         // Установка констрейтов для размеров текстового поля
         NSLayoutConstraint.activate([
@@ -92,17 +94,19 @@ final class CreateCategory: UIViewController, UITextFieldDelegate {
         doneButton.isEnabled = !enteredText.isEmpty
         doneButton.backgroundColor = doneButton.isEnabled ? .black : UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
     }
+    
     @objc func сreatedCategory() {
         guard let enteredText = categoryName.text, !enteredText.isEmpty else {
             return
         }
         
-        let tracker = Tracker(id: 1, name: "", color: "", emodji: "", timetable: "")
-        category = TrackerCategory(label: enteredText, trackerMassiv: [tracker])
-                
+        // Создание экземпляра TrackerCategory с введенным текстом
+        let category = TrackerCategory(label: enteredText, trackerMassiv: [])
+        
+        // Передача созданной категории в NewHabitCategory
         let newHabbitCategoryScreen = NewHabbitCategory()
         newHabbitCategoryScreen.selectedCategory = category
-                
+        
         present(newHabbitCategoryScreen, animated: true) {
         }
     }

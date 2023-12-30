@@ -7,11 +7,18 @@
 
 import UIKit
 
+protocol NewHabitCategoryDelegate: AnyObject {
+    func didSelectCategory(_ selectedCategory: TrackerCategory)
+}
+
 final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var selectedCategory: TrackerCategory?
     var textImageBottomAnchor: NSLayoutYAxisAnchor?
     var buttonTopAnchor: NSLayoutConstraint?
     var tableViewHeightAnchor: NSLayoutConstraint?
+    weak var delegate: NewHabitCategoryDelegate?
+    
+    private var selectedCategoryLabel: String?
     
     private var isCellSelected: Bool = false {
         didSet {
@@ -99,7 +106,7 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
         categoryButton.layer.cornerRadius = 16
         categoryButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         categoryButton.backgroundColor = .black
-        categoryButton.addTarget(self, action: #selector(screenForCreatedCategory), for: .touchUpInside)
+        categoryButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         view.addSubview(categoryButton)
         
         // констрейты кнопки
@@ -136,14 +143,11 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
         tableView.deselectRow(at: indexPath, animated: true)
         
         // Обработка нажатия на ячейку
-        if selectedCategory == nil {
+        if selectedCategory != nil {
             // Если категория не выбрана, выбираем её
-            selectedCategory = TrackerCategory(label: "Выбранная категория", trackerMassiv: [])
+            selectedCategoryLabel = selectedCategory?.label
+            selectedCategory = TrackerCategory(label: selectedCategoryLabel ?? "", trackerMassiv: [])
             isCellSelected = true
-        } else {
-            // Если категория уже выбрана, снимаем выбор
-            selectedCategory = nil
-            isCellSelected = false
         }
         
         // Обновление кнопки "Готово" / "Добавить категорию"
@@ -152,6 +156,25 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
     
     private func updateCategoryButtonTitle() {
         let categoryButton = view.subviews.compactMap { $0 as? UIButton }.first
-        categoryButton?.setTitle(selectedCategory != nil ? "Готово" : "Добавить категорию", for: .normal)
+        categoryButton?.setTitle(selectedCategory == nil ? "Готово" : "Добавить категорию", for: .normal)
     }
-}
+    
+    private func navigateToNewHabitCreateController(selectedCategory: TrackerCategory) {
+        let newHabitCreateController = NewHabitCreateController()
+        newHabitCreateController.selectedCategoryLabel = selectedCategory.label
+        
+        present(newHabitCreateController, animated: true, completion: nil)
+        delegate?.didSelectCategory(selectedCategory)
+        
+    }
+    
+    @objc private func buttonAction() {
+        if let selectedCategory = selectedCategory {
+            // Если категория уже выбрана, передайте ее делегату
+            delegate?.didSelectCategory(selectedCategory)
+            navigateToNewHabitCreateController(selectedCategory: selectedCategory)
+        } else {
+            // Если категория не выбрана, откройте экран создания категории
+            screenForCreatedCategory()
+        }
+    }}
