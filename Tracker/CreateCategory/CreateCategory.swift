@@ -11,6 +11,13 @@ final class CreateCategory: UIViewController, UITextFieldDelegate {
     
     private var category: TrackerCategory?
     private var enteredText: String = ""
+    
+    // Assuming these properties are defined in your class
+    private var selectedCategory: TrackerCategory?
+    private var savedCategories: [TrackerCategory] = []
+    
+    weak var delegate: NewHabitCategoryDelegate? // Add this delegate property
+    
     private let doneButton: UIButton = {
         let button = UIButton()
         button.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 16)
@@ -36,26 +43,26 @@ final class CreateCategory: UIViewController, UITextFieldDelegate {
     }()
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         view.backgroundColor = .white
         
-        //создание лейбла
-        let labelNewCategory = UILabel()
+        if let selectedCategory = selectedCategory, savedCategories.contains(where: { $0.label == selectedCategory.label }) {
+            // Handle the case where selectedCategory is already in savedCategories
+        }
         
-        let customFontBold = UIFont(name: "SFProDisplay-Medium", size: UIFont.labelFontSize)
-        labelNewCategory.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.semibold)).withSize(16)
+        let labelNewCategory = UILabel()
+        labelNewCategory.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         labelNewCategory.textColor = .black
         labelNewCategory.text = "Новая категория"
         view.addSubview(labelNewCategory)
         
-        //создание констрейтов для лейбла
         labelNewCategory.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
             labelNewCategory.topAnchor.constraint(equalTo: view.topAnchor, constant: 73),
             labelNewCategory.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
         
-        //создание текстового поля
         view.addSubview(categoryName)
         
         let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: categoryName.frame.height))
@@ -64,7 +71,6 @@ final class CreateCategory: UIViewController, UITextFieldDelegate {
         categoryName.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         categoryName.textColor = .black
         
-        // Установка констрейтов для размеров текстового поля
         NSLayoutConstraint.activate([
             categoryName.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
             categoryName.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
@@ -73,13 +79,10 @@ final class CreateCategory: UIViewController, UITextFieldDelegate {
             categoryName.topAnchor.constraint(equalTo: labelNewCategory.topAnchor, constant: 38)
         ])
         
-        //кнопка "Готово"
-        doneButton.addTarget(self, action: #selector(сreatedCategory), for: .touchUpInside)
+        doneButton.addTarget(self, action: #selector(createdCategory), for: .touchUpInside)
         view.addSubview(doneButton)
         
-        //констрейты кнопки
         doneButton.translatesAutoresizingMaskIntoConstraints = false
-        
         doneButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         NSLayoutConstraint.activate([
@@ -89,25 +92,49 @@ final class CreateCategory: UIViewController, UITextFieldDelegate {
             doneButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20)
         ])
     }
+    
     @objc func textFieldDidChange(_ textField: UITextField) {
         enteredText = textField.text ?? ""
         doneButton.isEnabled = !enteredText.isEmpty
         doneButton.backgroundColor = doneButton.isEnabled ? .black : UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
     }
     
-    @objc func сreatedCategory() {
+    @objc func createdCategory() {
         guard let enteredText = categoryName.text, !enteredText.isEmpty else {
             return
         }
         
-        // Создание экземпляра TrackerCategory с введенным текстом
         let category = TrackerCategory(label: enteredText, trackerMassiv: [])
+        saveCategoryToUserDefaults(category)
         
-        // Передача созданной категории в NewHabitCategory
-        let newHabbitCategoryScreen = NewHabbitCategory()
-        newHabbitCategoryScreen.selectedCategory = category
+        delegate?.didSelectCategory(category)
         
-        present(newHabbitCategoryScreen, animated: true) {
+        let newHabitCategoryScreen = NewHabbitCategory()
+        newHabitCategoryScreen.selectedCategory = category
+        
+        present(newHabitCategoryScreen, animated: true)
+    }
+    
+    private func saveCategoryToUserDefaults(_ category: TrackerCategory) {
+        let existingCategories = UserDefaults.standard.object(forKey: "Categories") as? Data
+        
+        if existingCategories == nil {
+            let initialCategories = [category]
+            do {
+                let encodedData = try NSKeyedArchiver.archivedData(withRootObject: initialCategories, requiringSecureCoding: false)
+                UserDefaults.standard.set(encodedData, forKey: "Categories")
+            } catch {
+                print("Error encoding categories: \(error)")
+            }
+        } else {
+            do {
+                var decodedCategories = try NSKeyedUnarchiver.unarchivedObject(ofClass: NSArray.self, from: existingCategories!) as? [TrackerCategory] ?? []
+                decodedCategories.append(category)
+                let encodedData = try NSKeyedArchiver.archivedData(withRootObject: decodedCategories, requiringSecureCoding: false)
+                UserDefaults.standard.set(encodedData, forKey: "Categories")
+            } catch {
+                print("Error decoding categories: \(error)")
+            }
         }
     }
 }

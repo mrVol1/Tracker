@@ -43,12 +43,15 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
         configureTrackerName()
         configureTableView()
         configureButtonsContainer()
+        
+        updateCreateButtonState()
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == trackerName {
             textField.textColor = UIColor.black
         }
+        updateCreateButtonState()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -243,6 +246,19 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 343, height: 1))
         tableView.tableHeaderView = headerView
     }
+    
+    private func updateCreateButtonState() {
+        guard let selectedCategoryLabel = selectedCategoryLabel,
+              !selectedScheduleDays.isEmpty,
+              let trackerNameText = trackerName.text, !trackerNameText.isEmpty else {
+            saveButton.isEnabled = false
+            saveButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+            return
+        }
+
+        saveButton.isEnabled = true
+        saveButton.backgroundColor = .black
+    }
 }
 
 extension NewHabitCreateController: ScheduleViewControllerDelegate {
@@ -250,10 +266,12 @@ extension NewHabitCreateController: ScheduleViewControllerDelegate {
     func didSelectScheduleDays(_ selectedDays: [WeekDay]) {
         self.selectedScheduleDays = selectedDays
         tableView.reloadData()
+        updateCreateButtonState()
     }
     
     func didSelectCategory(_ selectedCategory: TrackerCategory) {
         self.selectedCategoryLabel = selectedCategory.label
         tableView.reloadData()
+        updateCreateButtonState()
     }
 }

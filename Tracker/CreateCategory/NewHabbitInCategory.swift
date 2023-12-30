@@ -67,6 +67,11 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])
         
+        let savedCategories = loadCategoriesFromUserDefaults()
+        if let selectedCategory = selectedCategory, savedCategories.contains(selectedCategory) {
+            isCellSelected = true
+        }
+        
         if selectedCategory == nil {
             // дефолтное состояние
             let defaultImageView = UIImageView(image: UIImage(named: "1"))
@@ -135,9 +140,18 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCategoryTableViewCell
         cell.categoryLabel.text = selectedCategory?.label
+        
+        // Проверка, содержится ли выбранная категория среди сохраненных
+        if let selectedCategory = selectedCategory {
+            let savedCategories = loadCategoriesFromUserDefaults()
+            isCellSelected = savedCategories.contains { $0.label == selectedCategory.label }
+        }
+        
         cell.updateCellAppearance(isSelected: isCellSelected)
         return cell
     }
+    
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -148,10 +162,58 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
             selectedCategoryLabel = selectedCategory?.label
             selectedCategory = TrackerCategory(label: selectedCategoryLabel ?? "", trackerMassiv: [])
             isCellSelected = true
+            
+            // Сохранение выбранной категории в UserDefaults
+            if let selectedCategory = selectedCategory {
+                saveCategoryToUserDefaults(selectedCategory)
+            }
         }
         
         // Обновление кнопки "Готово" / "Добавить категорию"
         updateCategoryButtonTitle()
+    }
+    
+    
+    private func saveCategoryToUserDefaults(_ category: TrackerCategory) {
+        // Получение текущего массива категорий из UserDefaults
+        let existingCategories = UserDefaults.standard.object(forKey: "Categories") as? Data
+        
+        if existingCategories == nil {
+            // Если массива нет, создайте новый
+            let initialCategories = [category]
+            do {
+                let encodedData = try NSKeyedArchiver.archivedData(withRootObject: initialCategories, requiringSecureCoding: false)
+                UserDefaults.standard.set(encodedData, forKey: "Categories")
+            } catch {
+                print("Error encoding categories: \(error)")
+            }
+        } else {
+            // Если массив уже существует, добавьте новую категорию
+            do {
+                var decodedCategories = loadCategoriesFromUserDefaults()
+                decodedCategories.append(category)
+                let encodedData = try NSKeyedArchiver.archivedData(withRootObject: decodedCategories, requiringSecureCoding: false)
+                UserDefaults.standard.set(encodedData, forKey: "Categories")
+            } catch {
+                print("Error decoding or encoding categories: \(error)")
+            }
+        }
+    }
+    
+    private func loadCategoriesFromUserDefaults() -> [TrackerCategory] {
+        guard let categoriesData = UserDefaults.standard.object(forKey: "Categories") as? Data else {
+            return []
+        }
+
+        do {
+            if let categories = try NSKeyedUnarchiver.unarchivedObject(ofClasses: [NSArray.self, TrackerCategory.self], from: categoriesData) as? [TrackerCategory] {
+                return categories
+            }
+        } catch {
+            print("Error decoding categories: \(error)")
+        }
+
+        return []
     }
     
     private func updateCategoryButtonTitle() {
