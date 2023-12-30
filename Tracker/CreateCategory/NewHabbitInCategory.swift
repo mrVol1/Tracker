@@ -7,11 +7,17 @@
 
 import UIKit
 
+protocol NewHabitCategoryDelegate: AnyObject {
+    func didSelectCategory(_ selectedCategory: TrackerCategory)
+}
+
 final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var selectedCategory: TrackerCategory?
     var textImageBottomAnchor: NSLayoutYAxisAnchor?
     var buttonTopAnchor: NSLayoutConstraint?
     var tableViewHeightAnchor: NSLayoutConstraint?
+    weak var delegate: NewHabitCategoryDelegate?
+    
     private var selectedCategoryLabel: String?
     
     private var isCellSelected: Bool = false {
@@ -153,18 +159,22 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
         categoryButton?.setTitle(selectedCategory == nil ? "Готово" : "Добавить категорию", for: .normal)
     }
     
-    @objc private func navigateToNewHabitCreateController() {
+    private func navigateToNewHabitCreateController(selectedCategory: TrackerCategory) {
         let newHabitCreateController = NewHabitCreateController()
-        newHabitCreateController.selectedCategoryLabel = selectedCategoryLabel
-
+        newHabitCreateController.selectedCategoryLabel = selectedCategory.label
+        
         present(newHabitCreateController, animated: true, completion: nil)
+        delegate?.didSelectCategory(selectedCategory)
+        
     }
     
     @objc private func buttonAction() {
-        if selectedCategory == nil {
-            screenForCreatedCategory()
+        if let selectedCategory = selectedCategory {
+            // Если категория уже выбрана, передайте ее делегату
+            delegate?.didSelectCategory(selectedCategory)
+            navigateToNewHabitCreateController(selectedCategory: selectedCategory)
         } else {
-            navigateToNewHabitCreateController()
+            // Если категория не выбрана, откройте экран создания категории
+            screenForCreatedCategory()
         }
-    }
-}
+    }}

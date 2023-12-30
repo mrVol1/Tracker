@@ -100,12 +100,13 @@ final class CreateCategory: UIViewController, UITextFieldDelegate {
             return
         }
         
-        let tracker = Tracker(id: 1, name: "", color: "", emodji: "", timetable: "")
-        category = TrackerCategory(label: enteredText, trackerMassiv: [tracker])
-                
+        // Создание экземпляра TrackerCategory с введенным текстом
+        let category = TrackerCategory(label: enteredText, trackerMassiv: [])
+        
+        // Передача созданной категории в NewHabitCategory
         let newHabbitCategoryScreen = NewHabbitCategory()
         newHabbitCategoryScreen.selectedCategory = category
-                
+        
         present(newHabbitCategoryScreen, animated: true) {
         }
     }

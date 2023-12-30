@@ -22,7 +22,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         return cell
     }
     
-    
     let grayColor = UIColorsForProject()
     var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord]
@@ -45,7 +44,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         let button = UIButton()
         button.setTitle("+", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(red: 51/255, green: 207/255, blue: 105/255, alpha: 1)
         button.widthAnchor.constraint(equalToConstant: 34).isActive = true
         button.heightAnchor.constraint(equalToConstant: 34).isActive = true
         button.layer.cornerRadius = 17
@@ -93,8 +91,10 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
         view.backgroundColor = .white
         
+        view.addSubview(labelCategory)
+        view.addSubview(collectionViewTrackers)
+        
         //Создание кнопки "+"
-        let plusButton = UIButton()
         plusButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         plusButton.setImage(UIImage(named: "Add tracker"), for: .normal)
         plusButton.translatesAutoresizingMaskIntoConstraints = false
@@ -156,7 +156,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         if let selectedLabel = selectedCategoryLabel {
             
             //Добавление заголовка категории
-            view.addSubview(labelCategory)
             labelCategory.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([ //здесь ошибка, потому что в лейбл не передается значение трекера
                 labelCategory.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 148),
@@ -172,7 +171,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             collectionViewTrackers.register(CombinedTrackerViewCell.self, forCellWithReuseIdentifier: "trackerCell")
             let cell = CombinedTrackerViewCell()
             collectionViewTrackers.addSubview(cell)
-            view.addSubview(collectionViewTrackers)
             
             collectionViewTrackers.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
@@ -183,7 +181,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             ])
             
         } else {
-            
             //добавление картинки
             guard let defaultImage = UIImage(named: "1") else { return }
             let imageView = UIImageView(image: defaultImage)
@@ -196,10 +193,8 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                 imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
             ])
             
-            //добавление надписи
-            
+            //добавление надписи под картинкой
             let defultLabel = UILabel()
-            
             defultLabel.textColor = .black
             defultLabel.text = "Что будем отслеживать?"
             view.addSubview(defultLabel)
@@ -220,32 +215,32 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         return true
     }
     
-    var isButtonPressed = false
+ //   var isButtonPressed = false
     
-    @objc func plusButtonAction() {
-        if isButtonPressed {
-            plusButton.setTitle("+", for: .normal)
-            plusButton.setTitleColor(.white, for: .normal)
-            plusButton.backgroundColor = UIColor(red: 51/255, green: 207/255, blue: 105/255, alpha: 1)
-            plusButton.layer.cornerRadius = 17
-            
-            plusButton.widthAnchor.constraint(equalToConstant: 34).isActive = true
-            plusButton.heightAnchor.constraint(equalToConstant: 34).isActive = true
-            
-            plusButton.alpha = 1.0
-            
-            if Int(labelCount.text?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined() ?? "0") != nil {
-                labelCount.text = "0 дней"
-            }
-        } else {
-            plusButton.setTitle("✓", for: .normal)
-            plusButton.alpha = 0.3
-            if let currentCount = Int(labelCount.text?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined() ?? "0") {
-                labelCount.text = "\(currentCount + 1) дней"
-            }
-        }
-        isButtonPressed = !isButtonPressed // Переключение значения isButtonPressed
-    }
+//    @objc func plusButtonAction() {
+//        if isButtonPressed {
+//            plusButton.setTitle("+", for: .normal)
+//            plusButton.setTitleColor(.white, for: .normal)
+//            plusButton.backgroundColor = UIColor(red: 51/255, green: 207/255, blue: 105/255, alpha: 1)
+//            plusButton.layer.cornerRadius = 17
+//            
+//            plusButton.widthAnchor.constraint(equalToConstant: 34).isActive = true
+//            plusButton.heightAnchor.constraint(equalToConstant: 34).isActive = true
+//            
+//            plusButton.alpha = 1.0
+//            
+//            if Int(labelCount.text?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined() ?? "0") != nil {
+//                labelCount.text = "0 дней"
+//            }
+//        } else {
+//            plusButton.setTitle("✓", for: .normal)
+//            plusButton.alpha = 0.3
+//            if let currentCount = Int(labelCount.text?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined() ?? "0") {
+//                labelCount.text = "\(currentCount + 1) дней"
+//            }
+//        }
+//        isButtonPressed = !isButtonPressed // Переключение значения isButtonPressed
+//    }
     
     @objc func buttonAction() {
         let createHabbit = NewHabitController()

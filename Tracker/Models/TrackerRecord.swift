@@ -10,9 +10,11 @@ import Foundation
 final class TrackerRecord {
     let id: UUID
     let date: Date
+    var selectedDays: [WeekDay]
     
-    init(id: UUID, date: Date) {
+    init(id: UUID, date: Date, selectedDays: [WeekDay] = []) {
         self.id = id
         self.date = date
+        self.selectedDays = selectedDays
     }
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum WeekDay: String, CaseIterable {
+enum WeekDay: String, CaseIterable, Codable {
     case monday = "Понедельник"
     case tuesday = "Вторник"
     case wednesday = "Среда"
@@ -17,18 +17,26 @@ enum WeekDay: String, CaseIterable {
     case sunday = "Воскресенье"
 }
 
+protocol ScheduleViewControllerDelegate: AnyObject {
+    func didSelectScheduleDays(_ selectedDays: [WeekDay])
+}
+
 class ScheduleViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    weak var delegate: ScheduleViewControllerDelegate?
     
     private var selectedDays: [WeekDay] = []
     
-    private let tableView: UITableView = {
+    private let selectedDaysKey = "SelectedDaysKey"
+    
+    private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
         return tableView
     }()
     
-    let doneButton: UIButton = {
+    private lazy var doneButton: UIButton = {
         let button = UIButton()
         button.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 16)
         button.setTitle("Готово", for: .normal)
@@ -36,6 +44,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         button.layer.cornerRadius = 16
         button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         button.backgroundColor = .black
+        button.addTarget(self, action: #selector(buttonActionForCreateSchedule), for: .touchUpInside)
         return button
     }()
     
@@ -44,18 +53,21 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         title = "Расписание"
         view.backgroundColor = .white
         
+        if let savedDaysData = UserDefaults.standard.data(forKey: selectedDaysKey),
+           let savedDays = try? JSONDecoder().decode([WeekDay].self, from: savedDaysData) {
+            selectedDays = savedDays
+        }
+        
+        configureTableView()
+        configureDoneButton()
+        
+    }
+    
+    private func configureTableView() {
         view.addSubview(tableView)
         tableView.dataSource = self
         tableView.delegate = self
         
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 0))
-        tableView.tableFooterView = footerView
-        
-        tableView.separatorStyle = .singleLine
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        tableView.layer.cornerRadius = 16
-        
-        // Добавление необходимых констрейнтов для tableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 56),
@@ -64,13 +76,12 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
         
-        // Установка поведения отступов контента
         tableView.contentInsetAdjustmentBehavior = .never
         tableView.layoutIfNeeded()
-        
+    }
+    
+    private func configureDoneButton() {
         view.addSubview(doneButton)
-        doneButton.addTarget(self, action: #selector(buttonActionForCreateSchedule), for: .touchUpInside)
-        //констрейты кнопки
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         NSLayoutConstraint.activate([
@@ -126,9 +137,12 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     @objc private func buttonActionForCreateSchedule() {
-        let buttonDoneScheldule = NewHabitCreateController()
-        let buttonDoneSchelduleNavigationController = UINavigationController(rootViewController: buttonDoneScheldule)
-        present(buttonDoneSchelduleNavigationController, animated: true, completion: nil)
-    }
-}
+           // Сохранение выбранных дней в UserDefaults
+           if let savedDaysData = try? JSONEncoder().encode(selectedDays) {
+               UserDefaults.standard.set(savedDaysData, forKey: selectedDaysKey)
+           }
 
+           delegate?.didSelectScheduleDays(selectedDays)
+           dismiss(animated: true, completion: nil)
+       }
+}
