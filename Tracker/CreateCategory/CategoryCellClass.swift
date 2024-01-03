@@ -62,4 +62,3 @@ class CustomCategoryTableViewCell: UITableViewCell {
         backgroundColor = isSelected ? UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3) : UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3).withAlphaComponent(0.3)
     }
 }
-

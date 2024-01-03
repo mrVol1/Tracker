@@ -12,7 +12,7 @@ enum TableSection: Int, CaseIterable {
     case schedule
 }
 
-final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, NewHabitCategoryDelegate {
+final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate {
     
     var selectedCategoryLabel: String?
     var selectedScheduleDays: [WeekDay] = []
@@ -143,7 +143,6 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
     
     @objc private func buttonActionForCreateCategory() {
         let createCategoryButton = NewHabbitCategory()
-        createCategoryButton.delegate = self
         present(createCategoryButton, animated: true, completion: nil)
     }
     
