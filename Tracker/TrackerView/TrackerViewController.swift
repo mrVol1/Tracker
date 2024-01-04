@@ -9,19 +9,6 @@ import UIKit
 
 class TrackerViewController: UIViewController, UITextFieldDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return newCategories.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! CombinedTrackerViewCell
-        
-        let category = newCategories[indexPath.item]
-        cell.configure(with: category.name)
-        
-        return cell
-    }
-    
     let grayColor = UIColorsForProject()
     var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord]
@@ -152,6 +139,19 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         ])
     }
     
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return newCategories.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! CombinedTrackerViewCell
+        
+        let category = newCategories[indexPath.item]
+        cell.configure(with: category.name)
+        
+        return cell
+    }
+    
     func loadCategories() {
         if let selectedLabel = selectedCategoryLabel {
             
@@ -209,38 +209,16 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         collectionViewTrackers.reloadData()
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            textField.resignFirstResponder()
+            return true
+        }
+    
     // MARK: - table settings
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return true
     }
-    
- //   var isButtonPressed = false
-    
-//    @objc func plusButtonAction() {
-//        if isButtonPressed {
-//            plusButton.setTitle("+", for: .normal)
-//            plusButton.setTitleColor(.white, for: .normal)
-//            plusButton.backgroundColor = UIColor(red: 51/255, green: 207/255, blue: 105/255, alpha: 1)
-//            plusButton.layer.cornerRadius = 17
-//            
-//            plusButton.widthAnchor.constraint(equalToConstant: 34).isActive = true
-//            plusButton.heightAnchor.constraint(equalToConstant: 34).isActive = true
-//            
-//            plusButton.alpha = 1.0
-//            
-//            if Int(labelCount.text?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined() ?? "0") != nil {
-//                labelCount.text = "0 дней"
-//            }
-//        } else {
-//            plusButton.setTitle("✓", for: .normal)
-//            plusButton.alpha = 0.3
-//            if let currentCount = Int(labelCount.text?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined() ?? "0") {
-//                labelCount.text = "\(currentCount + 1) дней"
-//            }
-//        }
-//        isButtonPressed = !isButtonPressed // Переключение значения isButtonPressed
-//    }
     
     @objc func buttonAction() {
         let createHabbit = NewHabitController()

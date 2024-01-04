@@ -44,7 +44,11 @@ final class CreateCategory: UIViewController, UITextFieldDelegate, NewHabbitCate
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         view.backgroundColor = .white
+        
+        categoryName.delegate = self
         
         //создание лейбла
         let labelNewCategory = UILabel()
@@ -127,5 +131,11 @@ final class CreateCategory: UIViewController, UITextFieldDelegate, NewHabbitCate
         delegate?.didSelectCategory(category)
         present(newHabbitCategoryScreen, animated: true) {
         }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Скрываем клавиатуру
+        textField.resignFirstResponder()
+        return true
     }
 }

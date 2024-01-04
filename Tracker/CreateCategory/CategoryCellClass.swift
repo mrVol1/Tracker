@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol CustomCategoryCellDelegate: AnyObject {
+    func cellSelectionChanged(isSelected: Bool)
+}
+
 class CustomCategoryTableViewCell: UITableViewCell {
+    
+    weak var delegate: CustomCategoryCellDelegate?
 
     let categoryLabel: UILabel = {
         let label = UILabel()
@@ -56,9 +62,15 @@ class CustomCategoryTableViewCell: UITableViewCell {
             checkmarkImageView.heightAnchor.constraint(equalToConstant: 20),
         ])
     }
-
+    
     func updateCellAppearance(isSelected: Bool) {
         checkmarkImageView.isHidden = !isSelected
         backgroundColor = isSelected ? UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3) : UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3).withAlphaComponent(0.3)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        categoryLabel.text = nil
+        checkmarkImageView.isHidden = true
     }
 }
