@@ -271,6 +271,8 @@ extension NewHabitCreateController: ScheduleViewControllerDelegate {
     func didSelectCategory(_ selectedCategory: TrackerCategory) {
         self.selectedCategoryLabel = selectedCategory.label
         tableView.reloadData()
-        updateCreateButtonState()
-    }
-}
+        
+        DispatchQueue.main.async {
+            self.updateCreateButtonState()
+        }
+    }}

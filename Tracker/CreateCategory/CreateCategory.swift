@@ -7,7 +7,8 @@
 
 import UIKit
 
-final class CreateCategory: UIViewController, UITextFieldDelegate {
+final class CreateCategory: UIViewController, UITextFieldDelegate, NewHabbitCategoryDelegate {
+    
     private var category: TrackerCategory?
     private var enteredText: String = ""
     
@@ -36,6 +37,11 @@ final class CreateCategory: UIViewController, UITextFieldDelegate {
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
+    
+    convenience init(delegate: NewHabbitCategoryDelegate) {
+        self.init()
+        self.delegate = delegate
+    }
     
     override func viewDidLoad() {
         view.backgroundColor = .white
@@ -91,6 +97,10 @@ final class CreateCategory: UIViewController, UITextFieldDelegate {
         ])
     }
     
+    func didSelectCategory(_ selectedCategory: TrackerCategory) {
+        
+    }
+    
     @objc func textFieldDidChange(_ textField: UITextField) {
         enteredText = textField.text ?? ""
         doneButton.isEnabled = !enteredText.isEmpty
@@ -104,11 +114,17 @@ final class CreateCategory: UIViewController, UITextFieldDelegate {
         }
         
         let tracker = Tracker(id: 1, name: "", color: "", emodji: "", timetable: "")
-        category = TrackerCategory(label: enteredText, trackerMassiv: [tracker])
-                
+        let category = TrackerCategory(label: enteredText, trackerMassiv: [tracker])
+        
+        // Возможно, вам нужно что-то сделать с category здесь, например, добавить его в массив категорий
+        // categoriesArray.append(category)
+        
         let newHabbitCategoryScreen = NewHabbitCategory()
         newHabbitCategoryScreen.selectedCategory = category
-                
+        newHabbitCategoryScreen.delegate = self
+        
+        // Передача делегата
+        delegate?.didSelectCategory(category)
         present(newHabbitCategoryScreen, animated: true) {
         }
     }

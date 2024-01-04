@@ -13,15 +13,11 @@ protocol NewHabbitCategoryDelegate: AnyObject {
 
 final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableViewDataSource, NewHabbitCategoryDelegate {
     
-    func didSelectCategory(_ selectedCategory: TrackerCategory) {
-        print("Delegate method didSelectCategory called with category: \(selectedCategory)")
-        let newHabitCreateController = NewHabitCreateController()
-        newHabitCreateController.selectedCategoryLabel = selectedCategory.label
-        present(newHabitCreateController, animated: true, completion: nil)
+    weak var delegate: NewHabbitCategoryDelegate? {
+        didSet {
+            print("Delegate set")
+        }
     }
-    
-    weak var delegate: NewHabbitCategoryDelegate?
-
     var selectedCategory: TrackerCategory?
     var textImageBottomAnchor: NSLayoutYAxisAnchor?
     var buttonTopAnchor: NSLayoutConstraint?
@@ -39,7 +35,8 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("ViewDidLoad. Delegate: \(String(describing: delegate))")
+
         view.backgroundColor = .white
         
         // создание лейбла
@@ -143,8 +140,16 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+       
+        if let delegate = delegate {
+                delegate.didSelectCategory(selectedCategory!)
+                print("Delegate is not nil")
+            } else {
+                print("Delegate is nil")
+            }
+        
         tableView.deselectRow(at: indexPath, animated: true)
-
+        
         // Обработка нажатия на ячейку
         isCellSelected = !isCellSelected
         
@@ -156,42 +161,72 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
             // Если категория уже выбрана, снимаем выбор
             selectedCategory = nil
         }
-
+        
         // Обновление кнопки "Готово" / "Добавить категорию"
         updateCategoryButtonTitle()
         print("Did select row at indexPath: \(indexPath)")
-
+        if let delegate = delegate {
+            delegate.didSelectCategory(selectedCategory!)
+        } else {
+            print("Delegate is nil")
+        }
     }
+    
+    func didSelectCategory(_ selectedCategory: TrackerCategory) {
+        print("Delegate method didSelectCategory called with category: \(selectedCategory)")
+        
+        // Опционально представить NewHabitCreateController
+        if let presentedController = presentedViewController,
+            !(presentedController is NewHabitCreateController || presentedController is UINavigationController) {
+            navigateToNewHabitCreateController(selectedCategory: selectedCategory)
+        }
+        
+        // Продолжить обработку выбора категории, если необходимо
+    }
+
+    private func navigateToNewHabitCreateController(selectedCategory: TrackerCategory) {
+        print("Navigating to NewHabitCreateController with category: \(selectedCategory)")
+        
+        // Проверяем, представлен ли NewHabitCreateController или UINavigationController
+        if let presentedController = presentedViewController as? NewHabitCreateController {
+            print("NewHabitCreateController is already presented")
+            presentedController.selectedCategoryLabel = selectedCategory.label
+            delegate?.didSelectCategory(selectedCategory)
+        } else {
+            print("Presenting NewHabitCreateController")
+            
+            let newHabitCreateController = NewHabitCreateController()
+            newHabitCreateController.selectedCategoryLabel = selectedCategory.label
+
+            // Проверяем, есть ли у нас UINavigationController, иначе представляем просто контроллер
+            if let navigationController = self.navigationController {
+                navigationController.present(newHabitCreateController, animated: true, completion: nil)
+            } else {
+                present(newHabitCreateController, animated: true, completion: nil)
+            }
+            
+            delegate?.didSelectCategory(selectedCategory)
+        }
+    }
+
+
     
     private func updateCategoryButtonTitle() {
         let categoryButton = view.subviews.compactMap { $0 as? UIButton }.first
         categoryButton?.setTitle(selectedCategory != nil ? "Готово" : "Добавить категорию", for: .normal)
     }
-    
-    private func navigateToNewHabitCreateController(selectedCategory: TrackerCategory) {
-            let newHabitCreateController = NewHabitCreateController()
-            newHabitCreateController.selectedCategoryLabel = selectedCategory.label
-            
-            present(newHabitCreateController, animated: true, completion: nil)
-            delegate?.didSelectCategory(selectedCategory)
-            
-        }
-        
-    @objc private func screenForCreatedCategory() {
-        let createCategoryButton = CreateCategory()
-        createCategoryButton.delegate = self // Установите делегат для CreateCategory
-        let createCategoryNavigationController = UINavigationController(rootViewController: createCategoryButton)
-        present(createCategoryNavigationController, animated: true, completion: nil)
-    }
 
-    @objc private func buttonAction() {
+    @objc private func screenForCreatedCategory() {
         if let selectedCategory = selectedCategory {
             // Если категория уже выбрана, передайте ее делегату
             delegate?.didSelectCategory(selectedCategory)
             navigateToNewHabitCreateController(selectedCategory: selectedCategory)
         } else {
             // Если категория не выбрана, откройте экран создания категории
-            screenForCreatedCategory()
+            let createCategoryButton = CreateCategory(delegate: self)  // Здесь делегат устанавливается как self
+            let createCategoryNavigationController = UINavigationController(rootViewController: createCategoryButton)
+            createCategoryButton.delegate = self
+            present(createCategoryNavigationController, animated: true, completion: nil)
         }
         print("Button tapped")
     }
