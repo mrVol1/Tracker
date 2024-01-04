@@ -254,12 +254,13 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
     private func updateCreateButtonState() {
         guard selectedCategoryLabel != nil,
               !selectedScheduleDays.isEmpty,
-              let trackerNameText = trackerName.text, !trackerNameText.isEmpty else {
+              let trackerNameText = trackerName.text, 
+              !trackerNameText.isEmpty 
+        else {
             saveButton.isEnabled = false
             saveButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
             return
         }
-        
         saveButton.isEnabled = true
         saveButton.backgroundColor = .black
     }
@@ -278,10 +279,7 @@ extension NewHabitCreateController: ScheduleViewControllerDelegate {
     func didSelectCategory(_ selectedCategory: TrackerCategory) {
         self.selectedCategoryLabel = selectedCategory.label
         tableView.reloadData()
-        
-        DispatchQueue.main.async {
-            self.updateCreateButtonState()
-        }
+        updateCreateButtonState()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
