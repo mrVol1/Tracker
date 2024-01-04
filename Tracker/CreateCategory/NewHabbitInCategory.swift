@@ -16,7 +16,6 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
     
     weak var delegate: NewHabbitCategoryDelegate? {
         didSet {
-            print("Delegate set")
         }
     }
     var selectedCategory: TrackerCategory?
@@ -40,9 +39,7 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
         
         let newHabitCategoryController = NewHabbitCategory()
         newHabitCategoryController.delegate = self
-        
-        print("ViewDidLoad. Delegate: \(String(describing: delegate))")
-        
+                
         view.backgroundColor = .white
         
         // создание лейбла

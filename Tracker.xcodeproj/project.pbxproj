@@ -65,6 +65,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D72ECD212B471FB100D1A11D /* StateView */ = {
+			isa = PBXGroup;
+			children = (
+				D711B8962AF1858D0064AAFE /* StatViewController.swift */,
+			);
+			path = StateView;
+			sourceTree = "<group>";
+		};
 		D774245B2B2476C700C8E065 /* CreateCategory */ = {
 			isa = PBXGroup;
 			children = (
@@ -112,12 +120,13 @@
 		D7B12C9D2AED9E800006205D /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				D72ECD212B471FB100D1A11D /* StateView */,
 				D774245E2B2490BB00C8E065 /* Schedule */,
 				D774245B2B2476C700C8E065 /* CreateCategory */,
 				D7C650F32B130EAD00A9F116 /* CreateNewHabit */,
 				D7A6AC932AF7684600851329 /* Models */,
 				D711B8942AF184C60064AAFE /* TabBarController.swift */,
-				D711B8962AF1858D0064AAFE /* StatViewController.swift */,
+				D7C650F42B130EE800A9F116 /* CreateTracker.swift */,
 				D7B12CB82AEE16CE0006205D /* Colors */,
 				D7B12CB72AEE0EA80006205D /* TrackerView */,
 				D7B12C9E2AED9E800006205D /* AppDelegate.swift */,
@@ -133,7 +142,6 @@
 		D7B12CB72AEE0EA80006205D /* TrackerView */ = {
 			isa = PBXGroup;
 			children = (
-				D7C650F42B130EE800A9F116 /* CreateTracker.swift */,
 				D7B12CA22AED9E800006205D /* TrackerViewController.swift */,
 				D7F67EF52B375B2B00F81F06 /* TrackerViewCell.swift */,
 			);

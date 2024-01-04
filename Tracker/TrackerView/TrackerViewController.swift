@@ -9,6 +9,7 @@ import UIKit
 
 class TrackerViewController: UIViewController, UITextFieldDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
     
+    
     let grayColor = UIColorsForProject()
     var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord]
@@ -18,6 +19,9 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     let nameForLabelCategory = UILabel()
     let label = UILabel()
     let customFontBoldMidle = UIFont(name: "SFProDisplay-Medium", size: 19)
+    let newHabitCreateController = NewHabitCreateController()
+    var selectedTrackerName: String?
+    var selectedScheduleDays: [WeekDay] = []
     
     let labelCount: UILabel = {
         let labelCount = UILabel()
@@ -38,13 +42,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         return button
     }()
     
-    var labelCategory: UILabel {
-        let labelCategory = UILabel()
-        labelCategory.textColor = .black
-        labelCategory.text = selectedCategoryLabel //добавить сюда значение из категории
-        labelCategory.font = UIFontMetrics.default.scaledFont(for: customFontBoldMidle ?? UIFont.systemFont(ofSize: 19, weight: UIFont.Weight.bold) ).withSize(19)
-        return labelCategory
-    }
+    var labelCategory: UILabel!
     
     init(categories: [TrackerCategory], completedTrackers: [TrackerRecord], newCategories: [Tracker]) {
         self.categories = categories
@@ -78,8 +76,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
         view.backgroundColor = .white
         
-        view.addSubview(labelCategory)
-        view.addSubview(collectionViewTrackers)
+        newHabitCreateController.habitCreateDelegate = self
         
         //Создание кнопки "+"
         plusButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
@@ -155,30 +152,37 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     func loadCategories() {
         if let selectedLabel = selectedCategoryLabel {
             
-            //Добавление заголовка категории
-            labelCategory.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([ //здесь ошибка, потому что в лейбл не передается значение трекера
-                labelCategory.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 148),
-                labelCategory.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16)
-            ])
+            //настройка лейбла категории
             
-            categories = [TrackerCategory(label: selectedLabel, trackerMassiv: [])]
-            newCategories = [Tracker(id: 1, name: selectedLabel, color: "", emodji: "", timetable: "")]
+            labelCategory = UILabel()
+            labelCategory.textColor = .black
+            labelCategory.text = selectedCategoryLabel
+            labelCategory.font = UIFontMetrics.default.scaledFont(for: customFontBoldMidle ?? UIFont.systemFont(ofSize: 19, weight: UIFont.Weight.bold) ).withSize(19)
+            view.addSubview(labelCategory)
+            view.addSubview(collectionViewTrackers)
+            
+            labelCategory.translatesAutoresizingMaskIntoConstraints = false
+               NSLayoutConstraint.activate([
+                   labelCategory.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 148),
+                   labelCategory.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16)
+               ])
             
             //добавление списка трекеров
             collectionViewTrackers.delegate = self
             collectionViewTrackers.dataSource = self
             collectionViewTrackers.register(CombinedTrackerViewCell.self, forCellWithReuseIdentifier: "trackerCell")
-            let cell = CombinedTrackerViewCell()
-            collectionViewTrackers.addSubview(cell)
-            
+            view.addSubview(collectionViewTrackers)
+
             collectionViewTrackers.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                collectionViewTrackers.topAnchor.constraint(equalTo: search.bottomAnchor, constant: 8),
+                collectionViewTrackers.topAnchor.constraint(equalTo: labelCategory.topAnchor, constant: 48),
                 collectionViewTrackers.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
                 collectionViewTrackers.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
                 collectionViewTrackers.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
+            
+            categories = [TrackerCategory(label: selectedLabel, trackerMassiv: [])]
+            newCategories = [Tracker(id: 1, name: selectedLabel, color: "", emodji: "", timetable: "")]
             
         } else {
             //добавление картинки
@@ -210,9 +214,17 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            textField.resignFirstResponder()
-            return true
-        }
+        textField.resignFirstResponder()
+        return true
+    }
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//           // Здесь укажите желаемые размеры ячейки
+//        let cellWidth: CGFloat = 167 // ширина минус отступы слева и справа
+//           let cellHeight: CGFloat = 148 // высота ячейки
+//           
+//           return CGSize(width: cellWidth, height: cellHeight)
+//       }
     
     // MARK: - table settings
     
@@ -228,12 +240,47 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         let selectedDate = sender.date
-        print("Selected Date: \(selectedDate)")
         
         // Фильтрация массива данных по выбранной дате
-        let filteredData = completedTrackers.filter { trackerRecord in
+        _ = completedTrackers.filter { trackerRecord in
             return Calendar.current.isDate(trackerRecord.date, inSameDayAs: selectedDate)
         }
-        print("Filtered Data: \(filteredData)")
+    }
+    
+    func applyScheduleFilter(_ scheduleDays: [WeekDay]) {
+        if !scheduleDays.isEmpty {
+//                let filteredData = completedTrackers.filter { trackerRecord in
+//                    return scheduleDays.contains(trackerRecord.weekDay)
+//                }
+                
+                // Теперь у вас есть отфильтрованный массив `filteredData`, который содержит только трекеры для выбранных дней недели
+                
+                // Обновите интерфейс или выполняйте другие действия с отфильтрованными данными
+                // Например, обновите collectionView или другие элементы пользовательского интерфейса
+                // collectionView.reloadData()
+            } else {
+                // Если не выбраны дни недели, можете сбросить фильтр и отобразить все трекеры
+                // collectionView.reloadData()
+            }
+        }
+}
+
+extension TrackerViewController: NewHabitCreateDelegate {
+    func didCreateHabit(
+        withCategoryLabel selectedCategoryLabel: String?,
+        selectedTrackerName: String?,
+        selectedScheduleDays: [WeekDay]?
+    ) {
+        // Обновление данных в TrackerViewController
+        self.selectedCategoryLabel = selectedCategoryLabel
+        self.selectedTrackerName = selectedTrackerName
+        self.selectedScheduleDays = selectedScheduleDays ?? []
+        
+        // Обновление интерфейса
+        labelCategory.text = selectedCategoryLabel
+        
+        if let scheduleDays = selectedScheduleDays {
+            applyScheduleFilter(scheduleDays)
+        }
     }
 }

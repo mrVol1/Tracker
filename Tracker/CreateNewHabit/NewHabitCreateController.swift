@@ -12,13 +12,18 @@ enum TableSection: Int, CaseIterable {
     case schedule
 }
 
+protocol NewHabitCreateDelegate: AnyObject {
+    func didCreateHabit(withCategoryLabel selectedCategoryLabel: String?, selectedTrackerName: String?, selectedScheduleDays: [WeekDay]?)
+}
+
 final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate {
     
     var selectedCategoryLabel: String?
     var selectedScheduleDays: [WeekDay] = []
     var selectedTrackerName: String?
     weak var scheduleDelegate: ScheduleViewControllerDelegate?
-    
+    weak var habitCreateDelegate: NewHabitCreateDelegate?
+
     let label = UILabel()
     let trackerName = UITextField()
     let saveButton = UIButton()
@@ -50,6 +55,7 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
         configureButtonsContainer()
         
         updateCreateButtonState()
+
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -140,6 +146,12 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
         trackerViewController.loadCategories()
         let newHabitCreatedButton = UINavigationController(rootViewController: trackerViewController)
         present(newHabitCreatedButton, animated: true, completion: nil)
+        
+        habitCreateDelegate?.didCreateHabit(
+                withCategoryLabel: selectedCategoryLabel,
+                selectedTrackerName: selectedTrackerName,
+                selectedScheduleDays: selectedScheduleDays
+            )
     }
     
     @objc private func buttonActionForHabitCancel() {
