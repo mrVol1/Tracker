@@ -9,6 +9,7 @@ import UIKit
 
 protocol CustomCategoryCellDelegate: AnyObject {
     func cellSelectionChanged(isSelected: Bool)
+    func cellUpdateCheckmarkAppearance(isSelected: Bool)
 }
 
 class CustomCategoryTableViewCell: UITableViewCell {
@@ -63,8 +64,13 @@ class CustomCategoryTableViewCell: UITableViewCell {
         ])
     }
     
-    func updateCellAppearance(isSelected: Bool) {
+    func updateCheckmarkAppearance(isSelected: Bool) {
         checkmarkImageView.isHidden = !isSelected
+        delegate?.cellUpdateCheckmarkAppearance(isSelected: isSelected)
+    }
+    
+    func updateCellAppearance(isSelected: Bool) {
+        updateCheckmarkAppearance(isSelected: isSelected)
         backgroundColor = isSelected ? UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3) : UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3).withAlphaComponent(0.3)
     }
     

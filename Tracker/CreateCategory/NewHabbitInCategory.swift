@@ -23,7 +23,8 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
     var textImageBottomAnchor: NSLayoutYAxisAnchor?
     var buttonTopAnchor: NSLayoutConstraint?
     var tableViewHeightAnchor: NSLayoutConstraint?
-    
+    private var isCheckmarkSelected: Bool = false
+
     private var selectedCategoryLabel: String?
     
     private var isCellSelected: Bool = false {
@@ -112,7 +113,7 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
         // создание кнопки
         let categoryButton = UIButton()
         categoryButton.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 16)
-        categoryButton.setTitle(selectedCategory != nil ? "Готово" : "Добавить категорию", for: .normal)
+        categoryButton.setTitle("Добавить категорию", for: .normal)
         categoryButton.setTitleColor(.white, for: .normal)
         categoryButton.layer.cornerRadius = 16
         categoryButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
@@ -139,10 +140,16 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCategoryTableViewCell
-        cell.delegate = self // Установите делегат ячейки
+        cell.delegate = self
         cell.categoryLabel.text = selectedCategory?.label
-        cell.updateCellAppearance(isSelected: isCellSelected)
+        cell.updateCheckmarkAppearance(isSelected: isCellSelected)
         return cell
+    }
+
+    func cellSelectionChanged(isSelected: Bool) {
+        // Обрабатываем изменение состояния ячейки
+        isCellSelected = isSelected
+        updateCategoryButtonTitle()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -153,52 +160,34 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
         if isCellSelected {
             selectedCategoryLabel = selectedCategory?.label
             selectedCategory = TrackerCategory(label: selectedCategoryLabel ?? "", trackerMassiv: [])
-        } else {
-            selectedCategory = nil
         }
         
         updateCategoryButtonTitle()
         
-        if let delegate = delegate {
-            delegate.didSelectCategory(selectedCategory!)
-        } else {
-            print("Delegate is nil")
+        if let delegate = delegate, let selectedCategory = selectedCategory {
+            delegate.didSelectCategory(selectedCategory)
         }
     }
     
     
     func didSelectCategory(_ selectedCategory: TrackerCategory) {
-        print("Delegate method didSelectCategory called with category: \(selectedCategory)")
         
-        // Опционально представить NewHabitCreateController
         if let presentedController = presentedViewController,
             !(presentedController is NewHabitCreateController || presentedController is UINavigationController) {
             navigateToNewHabitCreateController(selectedCategory: selectedCategory)
         }
     }
     
-    func cellSelectionChanged(isSelected: Bool) {
-        // Обрабатываем изменение состояния ячейки
-        isCellSelected = isSelected
-        updateCategoryButtonTitle()
-        updateCreateButtonState()
-    }
-    
     private func navigateToNewHabitCreateController(selectedCategory: TrackerCategory) {
-        print("Navigating to NewHabitCreateController with category: \(selectedCategory)")
         
-        // Проверяем, представлен ли NewHabitCreateController или UINavigationController
         if let presentedController = presentedViewController as? NewHabitCreateController {
-            print("NewHabitCreateController is already presented")
             presentedController.selectedCategoryLabel = selectedCategory.label
             delegate?.didSelectCategory(selectedCategory)
         } else {
-            print("Presenting NewHabitCreateController")
             
             let newHabitCreateController = NewHabitCreateController()
             newHabitCreateController.selectedCategoryLabel = selectedCategory.label
             
-            // Проверяем, есть ли у нас UINavigationController, иначе представляем просто контроллер
             if let navigationController = self.navigationController {
                 navigationController.present(newHabitCreateController, animated: true, completion: nil)
             } else {
@@ -212,40 +201,31 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
-    private func updateCreateButtonState() {
-        guard selectedCategory != nil else {
-            let categoryButton = view.subviews.compactMap { $0 as? UIButton }.first
-            categoryButton?.isEnabled = false
-            categoryButton?.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
-            return
+    func cellUpdateCheckmarkAppearance(isSelected: Bool) {
+        if isSelected == true {
+            isCheckmarkSelected = true
+        } else {
+            isCheckmarkSelected = false
         }
-        
-        let categoryButton = view.subviews.compactMap { $0 as? UIButton }.first
-        categoryButton?.isEnabled = true
-        categoryButton?.backgroundColor = .black
+        updateCategoryButtonTitle()
     }
     
     private func updateCategoryButtonTitle() {
         let categoryButton = view.subviews.compactMap { $0 as? UIButton }.first
-        categoryButton?.setTitle(selectedCategory != nil ? "Готово" : "Добавить категорию", for: .normal)
-        categoryButton?.backgroundColor = .black
-        updateCreateButtonState()
+        categoryButton?.setTitle(isCheckmarkSelected ? "Готово" : "Добавить категорию", for: .normal)
     }
     
     @objc private func screenForCreatedCategory() {
-        if selectedCategory != nil {
-            // Если категория уже выбрана, передайте ее делегату
+        if isCheckmarkSelected == true {
             delegate?.didSelectCategory(selectedCategory!)
             navigateToNewHabitCreateController(selectedCategory: selectedCategory!)
         } else {
-            // Если категория не выбрана, откройте экран создания категории
-            let createCategoryButton = CreateCategory(delegate: self)  // Здесь делегат устанавливается как self
+            let createCategoryButton = CreateCategory(delegate: self)
             let createCategoryNavigationController = UINavigationController(rootViewController: createCategoryButton)
             createCategoryButton.delegate = self
             present(createCategoryNavigationController, animated: true, completion: nil)
         }
-        updateCreateButtonState()
-        print("Button tapped")
+        updateCategoryButtonTitle()
     }
     
     func didCreateTrackerRecord(_ trackerRecord: TrackerRecord) {
