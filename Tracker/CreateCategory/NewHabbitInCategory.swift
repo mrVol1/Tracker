@@ -9,6 +9,7 @@ import UIKit
 
 protocol NewHabbitCategoryDelegate: AnyObject {
     func didSelectCategory(_ selectedCategory: TrackerCategory)
+    func didCreateTrackerRecord(_ trackerRecord: TrackerRecord)
 }
 
 final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableViewDataSource, NewHabbitCategoryDelegate, CustomCategoryCellDelegate {
@@ -245,5 +246,9 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
         }
         updateCreateButtonState()
         print("Button tapped")
+    }
+    
+    func didCreateTrackerRecord(_ trackerRecord: TrackerRecord) {
+        print("Created Tracker Record: \(trackerRecord)")
     }
 }

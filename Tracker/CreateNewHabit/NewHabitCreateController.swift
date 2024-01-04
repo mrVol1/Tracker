@@ -35,11 +35,13 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
         return tableView
     }()
     
+    private var trackerRecord: TrackerRecord?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         trackerName.delegate = self
-
+        
         view.backgroundColor = .white
         
         configureLabel()
@@ -257,7 +259,7 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
             saveButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
             return
         }
-
+        
         saveButton.isEnabled = true
         saveButton.backgroundColor = .black
     }
@@ -266,6 +268,8 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
 extension NewHabitCreateController: ScheduleViewControllerDelegate {
     
     func didSelectScheduleDays(_ selectedDays: [WeekDay]) {
+        let newTrackerRecord = TrackerRecord(id: UUID(), date: Date(), selectedDays: selectedDays)
+        self.trackerRecord = newTrackerRecord
         self.selectedScheduleDays = selectedDays
         tableView.reloadData()
         updateCreateButtonState()

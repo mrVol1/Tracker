@@ -8,6 +8,9 @@
 import UIKit
 
 final class CreateCategory: UIViewController, UITextFieldDelegate, NewHabbitCategoryDelegate {
+    func didCreateTrackerRecord(_ trackerRecord: TrackerRecord) {
+        
+    }
     
     private var category: TrackerCategory?
     private var enteredText: String = ""
