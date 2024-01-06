@@ -9,31 +9,49 @@ import UIKit
 
 class CombinedTrackerViewCell: UICollectionViewCell {
     
-    let label: UILabel = {
+    private var isChecked = false
+    
+    private let containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 0x33 / 255.0, green: 0xCF / 255.0, blue: 0x69 / 255.0, alpha: 1.0)
+        view.layer.cornerRadius = 16
+        view.layer.masksToBounds = true
+        return view
+    }()
+    
+    private let label: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
         return label
     }()
     
-    let labelCount: UILabel = {
+    private let labelCount: UILabel = {
         let labelCount = UILabel()
         labelCount.textColor = .black
         labelCount.text = "0 дней"
-        labelCount.translatesAutoresizingMaskIntoConstraints = false
         return labelCount
     }()
     
-    let addButton: UIButton = {
+    private let addButton: UIButton = {
         let button = UIButton()
         button.setTitle("+", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .green
+        button.backgroundColor = UIColor(red: 0x33 / 255.0, green: 0xCF / 255.0, blue: 0x69 / 255.0, alpha: 1.0)
+        button.layer.cornerRadius = 17
         return button
+    }()
+    
+    private let checkmarkImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "checkmark"))
+        imageView.contentMode = .scaleAspectFit
+        imageView.isHidden = true
+        return imageView
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        isUserInteractionEnabled = true
         setupUI()
     }
 
@@ -42,42 +60,72 @@ class CombinedTrackerViewCell: UICollectionViewCell {
     }
 
     private func setupUI() {
-        addSubview(label)
+        addSubview(containerView)
+        containerView.addSubview(label)
         addSubview(labelCount)
         addSubview(addButton)
+        addSubview(checkmarkImageView)
 
-        // Настройте констрейты элементов интерфейса
+        // Настройка констретов элементов интерфейса
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(equalTo: topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerView.widthAnchor.constraint(equalToConstant: 167),
+            containerView.heightAnchor.constraint(equalToConstant: 90)
+        ])
+        
         label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+            label.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
+            label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12),
+            label.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -24) 
         ])
 
         addButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
+            addButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 8),
             addButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            addButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            addButton.widthAnchor.constraint(equalToConstant: 50),
-            addButton.heightAnchor.constraint(equalToConstant: 50)
+            addButton.widthAnchor.constraint(equalToConstant: 34),
+            addButton.heightAnchor.constraint(equalToConstant: 34),
+            addButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
         ])
         
         labelCount.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            labelCount.topAnchor.constraint(equalTo: topAnchor, constant: 12),
-            labelCount.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            labelCount.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            labelCount.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 16),
+            labelCount.leftAnchor.constraint(equalTo: leftAnchor, constant: 0)
         ])
-
-        layer.cornerRadius = 16
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.lightGray.cgColor
-        backgroundColor = .white
+        
+        checkmarkImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            checkmarkImageView.centerXAnchor.constraint(equalTo: addButton.centerXAnchor),
+            checkmarkImageView.centerYAnchor.constraint(equalTo: addButton.centerYAnchor),
+            checkmarkImageView.widthAnchor.constraint(equalToConstant: 20),
+            checkmarkImageView.heightAnchor.constraint(equalToConstant: 20)
+        ])
+        
+        addButton.isUserInteractionEnabled = true
+        addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
     }
     
-    func configure(with text: String) {
-        label.text = text
+    func configure(with tracker: Tracker) {
+        label.text = tracker.name
+    }
+    
+    @objc private func addButtonTapped() {
+        isChecked.toggle()
+        
+        if isChecked {
+            addButton.setTitle("", for: .normal)
+            checkmarkImageView.isHidden = false
+            addButton.alpha = 0.3
+            labelCount.text = "1 дней"
+        } else {
+            addButton.setTitle("+", for: .normal)
+            checkmarkImageView.isHidden = true
+            addButton.alpha = 1.0
+            labelCount.text = "0 дней"
+        }
     }
 }
-
-

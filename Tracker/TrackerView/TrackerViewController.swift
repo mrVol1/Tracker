@@ -76,6 +76,9 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
         view.backgroundColor = .white
         
+        collectionViewTrackers.delegate = self
+        collectionViewTrackers.dataSource = self
+        
         newHabitCreateController.habitCreateDelegate = self
         
         //Создание кнопки "+"
@@ -143,8 +146,8 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! CombinedTrackerViewCell
         
-        let category = newCategories[indexPath.item]
-        cell.configure(with: category.name)
+        let tracker = newCategories[indexPath.item]
+        cell.configure(with: tracker)
         
         return cell
     }
@@ -159,7 +162,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             labelCategory.text = selectedCategoryLabel
             labelCategory.font = UIFontMetrics.default.scaledFont(for: customFontBoldMidle ?? UIFont.systemFont(ofSize: 19, weight: UIFont.Weight.bold) ).withSize(19)
             view.addSubview(labelCategory)
-            view.addSubview(collectionViewTrackers)
             
             labelCategory.translatesAutoresizingMaskIntoConstraints = false
                NSLayoutConstraint.activate([
@@ -168,14 +170,12 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                ])
             
             //добавление списка трекеров
-            collectionViewTrackers.delegate = self
-            collectionViewTrackers.dataSource = self
             collectionViewTrackers.register(CombinedTrackerViewCell.self, forCellWithReuseIdentifier: "trackerCell")
             view.addSubview(collectionViewTrackers)
 
             collectionViewTrackers.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                collectionViewTrackers.topAnchor.constraint(equalTo: labelCategory.topAnchor, constant: 48),
+                collectionViewTrackers.topAnchor.constraint(equalTo: labelCategory.topAnchor, constant: 24),
                 collectionViewTrackers.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
                 collectionViewTrackers.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
                 collectionViewTrackers.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -247,22 +247,22 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         }
     }
     
-    func applyScheduleFilter(_ scheduleDays: [WeekDay]) {
-        if !scheduleDays.isEmpty {
-//                let filteredData = completedTrackers.filter { trackerRecord in
-//                    return scheduleDays.contains(trackerRecord.weekDay)
-//                }
-                
-                // Теперь у вас есть отфильтрованный массив `filteredData`, который содержит только трекеры для выбранных дней недели
-                
-                // Обновите интерфейс или выполняйте другие действия с отфильтрованными данными
-                // Например, обновите collectionView или другие элементы пользовательского интерфейса
-                // collectionView.reloadData()
-            } else {
-                // Если не выбраны дни недели, можете сбросить фильтр и отобразить все трекеры
-                // collectionView.reloadData()
-            }
-        }
+//    func applyScheduleFilter(_ scheduleDays: [WeekDay]) {
+//        if !scheduleDays.isEmpty {
+////                let filteredData = completedTrackers.filter { trackerRecord in
+////                    return scheduleDays.contains(trackerRecord.weekDay)
+////                }
+//                
+//                // Теперь у вас есть отфильтрованный массив `filteredData`, который содержит только трекеры для выбранных дней недели
+//                
+//                // Обновите интерфейс или выполняйте другие действия с отфильтрованными данными
+//                // Например, обновите collectionView или другие элементы пользовательского интерфейса
+//                // collectionView.reloadData()
+//            } else {
+//                // Если не выбраны дни недели, можете сбросить фильтр и отобразить все трекеры
+//                // collectionView.reloadData()
+//            }
+//        }
 }
 
 extension TrackerViewController: NewHabitCreateDelegate {
@@ -280,7 +280,7 @@ extension TrackerViewController: NewHabitCreateDelegate {
         labelCategory.text = selectedCategoryLabel
         
         if let scheduleDays = selectedScheduleDays {
-            applyScheduleFilter(scheduleDays)
+           //applyScheduleFilter(scheduleDays)
         }
     }
 }
