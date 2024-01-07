@@ -14,9 +14,9 @@ final class Tracker: Codable {
     let emodji: String
     let timetable: String
 
-    init(id: Int, name: String, color: String, emodji: String, timetable: String) {
+    init(id: Int, selectedTrackerName: String, color: String, emodji: String, timetable: String) {
         self.id = id
-        self.name = name
+        self.name = selectedTrackerName
         self.color = color
         self.emodji = emodji
         self.timetable = timetable

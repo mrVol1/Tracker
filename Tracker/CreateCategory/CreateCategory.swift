@@ -120,11 +120,7 @@ final class CreateCategory: UIViewController, UITextFieldDelegate, NewHabbitCate
             return
         }
         
-        let tracker = Tracker(id: 1, name: "", color: "", emodji: "", timetable: "")
-        let category = TrackerCategory(label: enteredText, trackerMassiv: [tracker])
-        
-        // Возможно, вам нужно что-то сделать с category здесь, например, добавить его в массив категорий
-        //trackerMassiv.self.append(category)
+        let category = TrackerCategory(label: enteredText, trackerMassiv: [])
         
         let newHabbitCategoryScreen = NewHabbitCategory()
         newHabbitCategoryScreen.selectedCategory = category

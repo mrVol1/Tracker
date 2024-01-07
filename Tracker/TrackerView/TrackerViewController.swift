@@ -182,7 +182,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             ])
             
             categories = [TrackerCategory(label: selectedLabel, trackerMassiv: [])]
-            newCategories = [Tracker(id: 1, name: selectedLabel, color: "", emodji: "", timetable: "")]
+            newCategories = [Tracker(id: 1, selectedTrackerName: selectedTrackerName ?? "", color: "", emodji: "", timetable: "")]
             
         } else {
             //добавление картинки
@@ -217,14 +217,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         textField.resignFirstResponder()
         return true
     }
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//           // Здесь укажите желаемые размеры ячейки
-//        let cellWidth: CGFloat = 167 // ширина минус отступы слева и справа
-//           let cellHeight: CGFloat = 148 // высота ячейки
-//           
-//           return CGSize(width: cellWidth, height: cellHeight)
-//       }
     
     // MARK: - table settings
     

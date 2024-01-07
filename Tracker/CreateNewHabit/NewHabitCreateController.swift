@@ -141,18 +141,31 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
     }
     
     @objc private func buttonActionForHabitSave() {
+        print("Debug: buttonActionForHabitSave - Initial selectedTrackerName: \(selectedTrackerName ?? "nil")")
+
         let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
         trackerViewController.selectedCategoryLabel = selectedCategoryLabel
         trackerViewController.loadCategories()
+
+        // Проверяем, что selectedTrackerName корректно передается
+        guard let selectedTrackerName = selectedTrackerName else {
+            print("Error: selectedTrackerName is nil")
+            return
+        }
+
+        let newTracker = Tracker(id: 1, selectedTrackerName: selectedTrackerName, color: "", emodji: "", timetable: "")
+
         let newHabitCreatedButton = UINavigationController(rootViewController: trackerViewController)
         present(newHabitCreatedButton, animated: true, completion: nil)
-        
+
         habitCreateDelegate?.didCreateHabit(
-                withCategoryLabel: selectedCategoryLabel,
-                selectedTrackerName: selectedTrackerName,
-                selectedScheduleDays: selectedScheduleDays
-            )
+            withCategoryLabel: selectedCategoryLabel,
+            selectedTrackerName: selectedTrackerName,
+            selectedScheduleDays: selectedScheduleDays
+        )
+        print("Debug: buttonActionForHabitSave - Final selectedTrackerName: \(selectedTrackerName )")
     }
+
     
     @objc private func buttonActionForHabitCancel() {
         dismiss(animated: true, completion: nil)
@@ -266,15 +279,17 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
     private func updateCreateButtonState() {
         guard selectedCategoryLabel != nil,
               !selectedScheduleDays.isEmpty,
-              let trackerNameText = trackerName.text, 
-              !trackerNameText.isEmpty 
+              let selectedTrackerName = trackerName.text,
+              !selectedTrackerName.isEmpty
         else {
+            print("Debug: updateCreateButtonState - selectedTrackerName is nil")
             saveButton.isEnabled = false
             saveButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
             return
         }
         saveButton.isEnabled = true
         saveButton.backgroundColor = .black
+        print("Debug: updateCreateButtonState - selectedTrackerName: \(selectedTrackerName)")
     }
 }
 
