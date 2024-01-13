@@ -84,7 +84,6 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
             
             if let selectedCategoryLabel = selectedCategoryLabel {
                 cell.categoryLabel.text = selectedCategoryLabel
-                saveButton.backgroundColor = .black
                 saveButton.addTarget(self, action: #selector(buttonActionForHabitSave), for: .touchUpInside)
             } else {
                 cell.categoryLabel.removeFromSuperview()
@@ -139,33 +138,6 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
         separator.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
         cell.contentView.addSubview(separator)
     }
-    
-    @objc private func buttonActionForHabitSave() {
-        print("Debug: buttonActionForHabitSave - Initial selectedTrackerName: \(selectedTrackerName ?? "nil")")
-
-        let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
-        trackerViewController.selectedCategoryLabel = selectedCategoryLabel
-        trackerViewController.loadCategories()
-
-        // Проверяем, что selectedTrackerName корректно передается
-        guard let selectedTrackerName = selectedTrackerName else {
-            print("Error: selectedTrackerName is nil")
-            return
-        }
-
-        let newTracker = Tracker(id: 1, selectedTrackerName: selectedTrackerName, color: "", emodji: "", timetable: "")
-
-        let newHabitCreatedButton = UINavigationController(rootViewController: trackerViewController)
-        present(newHabitCreatedButton, animated: true, completion: nil)
-
-        habitCreateDelegate?.didCreateHabit(
-            withCategoryLabel: selectedCategoryLabel,
-            selectedTrackerName: selectedTrackerName,
-            selectedScheduleDays: selectedScheduleDays
-        )
-        print("Debug: buttonActionForHabitSave - Final selectedTrackerName: \(selectedTrackerName )")
-    }
-
     
     @objc private func buttonActionForHabitCancel() {
         dismiss(animated: true, completion: nil)
@@ -277,19 +249,47 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
     }
     
     private func updateCreateButtonState() {
-        guard selectedCategoryLabel != nil,
+        guard let selectedCategoryLabel = selectedCategoryLabel,
               !selectedScheduleDays.isEmpty,
-              let selectedTrackerName = trackerName.text,
+              let selectedTrackerName = trackerName.text, 
               !selectedTrackerName.isEmpty
         else {
-            print("Debug: updateCreateButtonState - selectedTrackerName is nil")
+            print("Debug: updateCreateButtonState - Some required values are nil or empty")
             saveButton.isEnabled = false
             saveButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
             return
         }
+        
         saveButton.isEnabled = true
         saveButton.backgroundColor = .black
         print("Debug: updateCreateButtonState - selectedTrackerName: \(selectedTrackerName)")
+    }
+    
+    @objc private func buttonActionForHabitSave() {
+        print("Debug: buttonActionForHabitSave - Initial selectedTrackerName: \(selectedTrackerName ?? "nil")")
+
+        let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
+        trackerViewController.selectedTrackerName = selectedTrackerName
+        trackerViewController.selectedCategoryLabel = selectedCategoryLabel
+        trackerViewController.loadCategories()
+
+        // Проверяем, что selectedTrackerName корректно передается
+        guard let selectedTrackerName = selectedTrackerName else {
+            print("Error: selectedTrackerName is nil")
+            return
+        }
+        
+        let newTracker = Tracker(id: 1, name: selectedTrackerName, color: "", emodji: "", timetable: "")
+
+        let newHabitCreatedButton = UINavigationController(rootViewController: trackerViewController)
+        present(newHabitCreatedButton, animated: true, completion: nil)
+
+        habitCreateDelegate?.didCreateHabit(
+            withCategoryLabel: selectedCategoryLabel,
+            selectedTrackerName: selectedTrackerName,
+            selectedScheduleDays: selectedScheduleDays
+        )
+        print("Debug: buttonActionForHabitSave - Final selectedTrackerName: \(selectedTrackerName )")
     }
 }
 

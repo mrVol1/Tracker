@@ -182,7 +182,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             ])
             
             categories = [TrackerCategory(label: selectedLabel, trackerMassiv: [])]
-            newCategories = [Tracker(id: 1, selectedTrackerName: selectedTrackerName ?? "", color: "", emodji: "", timetable: "")]
+            newCategories = [Tracker(id: 1, name: selectedTrackerName ?? "", color: "", emodji: "", timetable: "")]
             
         } else {
             //добавление картинки
