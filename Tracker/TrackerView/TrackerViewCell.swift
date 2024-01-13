@@ -85,10 +85,9 @@ class CombinedTrackerViewCell: UICollectionViewCell {
         addButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             addButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 8),
-            addButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             addButton.widthAnchor.constraint(equalToConstant: 34),
             addButton.heightAnchor.constraint(equalToConstant: 34),
-            addButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
+            addButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 128)
         ])
         
         labelCount.translatesAutoresizingMaskIntoConstraints = false
