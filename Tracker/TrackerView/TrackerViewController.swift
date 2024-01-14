@@ -137,6 +137,13 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             search.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             search.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
+        
+        search.addTarget(self, action: #selector(searchValueChanged), for: .editingChanged)
+    }
+    
+    @objc func searchValueChanged() {
+        let searchText = search.text ?? ""
+        applySearchFilter(searchText)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -164,15 +171,15 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             view.addSubview(labelCategory)
             
             labelCategory.translatesAutoresizingMaskIntoConstraints = false
-               NSLayoutConstraint.activate([
-                   labelCategory.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 148),
-                   labelCategory.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16)
-               ])
+            NSLayoutConstraint.activate([
+                labelCategory.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 148),
+                labelCategory.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16)
+            ])
             
             //добавление списка трекеров
             collectionViewTrackers.register(CombinedTrackerViewCell.self, forCellWithReuseIdentifier: "trackerCell")
             view.addSubview(collectionViewTrackers)
-
+            
             collectionViewTrackers.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 collectionViewTrackers.topAnchor.constraint(equalTo: labelCategory.topAnchor, constant: 24),
@@ -182,7 +189,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             ])
             
             categories = [TrackerCategory(label: selectedLabel, trackerMassiv: [])]
-            newCategories = [Tracker(id: 1, name: selectedLabel, color: "", emodji: "", timetable: "")]
+            newCategories = [Tracker(id: 1, name: selectedTrackerName ?? selectedLabel, color: "", emodji: "", timetable: "")]
             
         } else {
             //добавление картинки
@@ -213,18 +220,31 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         collectionViewTrackers.reloadData()
     }
     
+    func applySearchFilter(_ searchText: String) {
+        guard !categories.isEmpty else {
+            newCategories = []
+            collectionViewTrackers.reloadData()
+            return
+        }
+
+        if searchText.isEmpty {
+            newCategories = categories.flatMap { $0.trackerMassiv ?? [] }
+        } else {
+            newCategories = categories.flatMap { category -> [Tracker] in
+                let filteredTrackers = (category.trackerMassiv ?? []).filter { tracker in
+                    return tracker.name.lowercased().contains(searchText.lowercased())
+                }
+                return filteredTrackers
+            }
+        }
+
+        collectionViewTrackers.reloadData()
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//           // Здесь укажите желаемые размеры ячейки
-//        let cellWidth: CGFloat = 167 // ширина минус отступы слева и справа
-//           let cellHeight: CGFloat = 148 // высота ячейки
-//           
-//           return CGSize(width: cellWidth, height: cellHeight)
-//       }
     
     // MARK: - table settings
     
@@ -240,29 +260,17 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         let selectedDate = sender.date
-        
-        // Фильтрация массива данных по выбранной дате
-        _ = completedTrackers.filter { trackerRecord in
+        let filteredTrackers = completedTrackers.filter { trackerRecord in
             return Calendar.current.isDate(trackerRecord.date, inSameDayAs: selectedDate)
         }
+        newCategories = filteredTrackers.compactMap { trackerRecord in
+            guard let index = newCategories.firstIndex(where: { $0.id == trackerRecord.trackerId }) else {
+                return nil
+            }
+            return newCategories[index]
+        }
+        collectionViewTrackers.reloadData()
     }
-    
-//    func applyScheduleFilter(_ scheduleDays: [WeekDay]) {
-//        if !scheduleDays.isEmpty {
-////                let filteredData = completedTrackers.filter { trackerRecord in
-////                    return scheduleDays.contains(trackerRecord.weekDay)
-////                }
-//                
-//                // Теперь у вас есть отфильтрованный массив `filteredData`, который содержит только трекеры для выбранных дней недели
-//                
-//                // Обновите интерфейс или выполняйте другие действия с отфильтрованными данными
-//                // Например, обновите collectionView или другие элементы пользовательского интерфейса
-//                // collectionView.reloadData()
-//            } else {
-//                // Если не выбраны дни недели, можете сбросить фильтр и отобразить все трекеры
-//                // collectionView.reloadData()
-//            }
-//        }
 }
 
 extension TrackerViewController: NewHabitCreateDelegate {
@@ -278,9 +286,5 @@ extension TrackerViewController: NewHabitCreateDelegate {
         
         // Обновление интерфейса
         labelCategory.text = selectedCategoryLabel
-        
-        if let scheduleDays = selectedScheduleDays {
-           //applyScheduleFilter(scheduleDays)
-        }
     }
 }

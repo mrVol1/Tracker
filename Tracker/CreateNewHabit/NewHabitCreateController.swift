@@ -21,6 +21,7 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
     var selectedCategoryLabel: String?
     var selectedScheduleDays: [WeekDay] = []
     var selectedTrackerName: String?
+    var trackerId: Int = 0
     weak var scheduleDelegate: ScheduleViewControllerDelegate?
     weak var habitCreateDelegate: NewHabitCreateDelegate?
 
@@ -84,11 +85,9 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
             
             if let selectedCategoryLabel = selectedCategoryLabel {
                 cell.categoryLabel.text = selectedCategoryLabel
-                saveButton.backgroundColor = .black
                 saveButton.addTarget(self, action: #selector(buttonActionForHabitSave), for: .touchUpInside)
             } else {
                 cell.categoryLabel.removeFromSuperview()
-                saveButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
             }
             
             cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
@@ -281,7 +280,7 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
 extension NewHabitCreateController: ScheduleViewControllerDelegate {
     
     func didSelectScheduleDays(_ selectedDays: [WeekDay]) {
-        let newTrackerRecord = TrackerRecord(id: UUID(), date: Date(), selectedDays: selectedDays)
+        let newTrackerRecord = TrackerRecord(id: UUID(), date: Date(), selectedDays: selectedDays, trackerId: trackerId)
         self.trackerRecord = newTrackerRecord
         self.selectedScheduleDays = selectedDays
         tableView.reloadData()
