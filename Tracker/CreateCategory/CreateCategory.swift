@@ -9,7 +9,6 @@ import UIKit
 
 final class CreateCategory: UIViewController, UITextFieldDelegate, NewHabbitCategoryDelegate {
     func didCreateTrackerRecord(_ trackerRecord: TrackerRecord) {
-        
     }
     
     private var category: TrackerCategory?
@@ -48,6 +47,11 @@ final class CreateCategory: UIViewController, UITextFieldDelegate, NewHabbitCate
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGesture)
         
         view.backgroundColor = .white
         
@@ -123,22 +127,17 @@ final class CreateCategory: UIViewController, UITextFieldDelegate, NewHabbitCate
         let tracker = Tracker(id: 1, name: "", color: "", emodji: "", timetable: "")
         let category = TrackerCategory(label: enteredText, trackerMassiv: [tracker])
         
-        // Возможно, вам нужно что-то сделать с category здесь, например, добавить его в массив категорий
-        //trackerMassiv.self.append(category)
-        
         let newHabbitCategoryScreen = NewHabbitCategory()
         newHabbitCategoryScreen.selectedCategory = category
         newHabbitCategoryScreen.delegate = self
         
-        // Передача делегата
         delegate?.didSelectCategory(category)
         present(newHabbitCategoryScreen, animated: true) {
         }
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // Скрываем клавиатуру
-        textField.resignFirstResponder()
-        return true
+    @objc
+    private func hideKeyboard() {
+        self.view.endEditing(true)
     }
 }

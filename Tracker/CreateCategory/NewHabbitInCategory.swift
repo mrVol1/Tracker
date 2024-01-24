@@ -37,8 +37,7 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let newHabitCategoryController = NewHabbitCategory()
-        newHabitCategoryController.delegate = self
+        self.delegate = self
                 
         view.backgroundColor = .white
         

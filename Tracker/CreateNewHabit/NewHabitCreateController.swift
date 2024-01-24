@@ -56,6 +56,11 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
         configureButtonsContainer()
         
         updateCreateButtonState()
+        
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGesture)
 
     }
     
@@ -296,5 +301,10 @@ extension NewHabitCreateController: ScheduleViewControllerDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    @objc
+    private func hideKeyboard() {
+        self.view.endEditing(true)
     }
 }
