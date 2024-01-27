@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol NewHabbitCategoryDelegate: AnyObject {
+protocol AddCategoryViewControllerDelegate: AnyObject {
     func didSelectCategory(_ selectedCategory: TrackerCategory)
     func didCreateTrackerRecord(_ trackerRecord: TrackerRecord)
 }
 
-final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableViewDataSource, NewHabbitCategoryDelegate, CustomCategoryCellDelegate {
+final class AddCategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddCategoryViewControllerDelegate, CategoryCellTableViewCellDelegate {
     
-    weak var delegate: NewHabbitCategoryDelegate? {
+    weak var delegate: AddCategoryViewControllerDelegate? {
         didSet {
         }
     }
@@ -59,7 +59,7 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
         // создание таблицы
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(CustomCategoryTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(CategoryCellTableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.separatorStyle = .none
         view.addSubview(tableView)
         
@@ -135,7 +135,7 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCategoryTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CategoryCellTableViewCell
         cell.delegate = self
         cell.categoryLabel.text = selectedCategory?.label
         cell.updateCheckmarkAppearance(isSelected: isCellSelected)
@@ -169,19 +169,19 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
     func didSelectCategory(_ selectedCategory: TrackerCategory) {
         
         if let presentedController = presentedViewController,
-            !(presentedController is NewHabitCreateController || presentedController is UINavigationController) {
+            !(presentedController is NewHabitCreateViewController || presentedController is UINavigationController) {
             navigateToNewHabitCreateController(selectedCategory: selectedCategory)
         }
     }
     
     private func navigateToNewHabitCreateController(selectedCategory: TrackerCategory) {
         
-        if let presentedController = presentedViewController as? NewHabitCreateController {
+        if let presentedController = presentedViewController as? NewHabitCreateViewController {
             presentedController.selectedCategoryLabel = selectedCategory.label
             delegate?.didSelectCategory(selectedCategory)
         } else {
             
-            let newHabitCreateController = NewHabitCreateController()
+            let newHabitCreateController = NewHabitCreateViewController()
             newHabitCreateController.selectedCategoryLabel = selectedCategory.label
             
             if let navigationController = self.navigationController {
@@ -216,7 +216,7 @@ final class NewHabbitCategory: UIViewController, UITableViewDelegate, UITableVie
             delegate?.didSelectCategory(selectedCategory!)
             navigateToNewHabitCreateController(selectedCategory: selectedCategory!)
         } else {
-            let createCategoryButton = CreateCategory(delegate: self)
+            let createCategoryButton = CreateCategoryViewController(delegate: self)
             let createCategoryNavigationController = UINavigationController(rootViewController: createCategoryButton)
             createCategoryButton.delegate = self
             present(createCategoryNavigationController, animated: true, completion: nil)

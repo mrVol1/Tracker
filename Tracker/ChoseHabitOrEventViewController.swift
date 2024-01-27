@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NewHabitController: UIViewController {    
+final class ChoseHabitOrViewController: UIViewController {    
     
     override func viewDidLoad() {
         
@@ -77,7 +77,7 @@ final class NewHabitController: UIViewController {
     }
     
     @objc private func buttonActionForCreateHabbit() {
-        let createHabbitbutton = NewHabitCreateController()
+        let createHabbitbutton = NewHabitCreateViewController()
         let createNewHabbitButtonNavigationController = UINavigationController(rootViewController: createHabbitbutton)
         present(createNewHabbitButtonNavigationController, animated: true, completion: nil)    }
 }
