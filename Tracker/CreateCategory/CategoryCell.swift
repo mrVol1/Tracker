@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol CustomCategoryCellDelegate: AnyObject {
+protocol CategoryCellTableViewCellDelegate: AnyObject {
     func cellSelectionChanged(isSelected: Bool)
     func cellUpdateCheckmarkAppearance(isSelected: Bool)
 }
 
-class CustomCategoryTableViewCell: UITableViewCell {
+class CategoryCellTableViewCell: UITableViewCell {
     
-    weak var delegate: CustomCategoryCellDelegate?
+    weak var delegate: CategoryCellTableViewCellDelegate?
 
     let categoryLabel: UILabel = {
         let label = UILabel()

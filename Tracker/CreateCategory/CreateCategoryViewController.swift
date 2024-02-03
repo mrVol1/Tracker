@@ -7,40 +7,23 @@
 
 import UIKit
 
-final class CreateCategory: UIViewController, UITextFieldDelegate, NewHabbitCategoryDelegate {
-    func didCreateTrackerRecord(_ trackerRecord: TrackerRecord) {
-    }
+protocol CreateCategoryViewControllerDelegate: NSObject {
+    func didCreatedCategory(_ createdCategory: TrackerCategory)
+}
+
+final class CreateCategoryViewController: UIViewController, UITextFieldDelegate {
     
     private var category: TrackerCategory?
     private var enteredText: String = ""
     
-    weak var delegate: NewHabbitCategoryDelegate?
+    let labelNewCategory = UILabel()
+    let customFontBold = UIFont(name: "SFProDisplay-Medium", size: UIFont.labelFontSize)
+    let doneButton = UIButton()
+    let categoryName = UITextField()
     
-    private let doneButton: UIButton = {
-        let button = UIButton()
-        button.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 16)
-        button.setTitle("Готово", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 16
-        button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        button.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
-        button.isEnabled = false
-        return button
-    }()
+    weak var delegate: CreateCategoryViewControllerDelegate?
     
-    private let categoryName: UITextField = {
-        let textField = UITextField()
-        textField.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
-        textField.placeholder = "Введите название категории"
-        textField.font = UIFont(name: "SFProDisplay-Medium", size: 17)
-        textField.textColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1.0)
-        textField.layer.cornerRadius = 16
-        textField.clipsToBounds = true
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
-    
-    convenience init(delegate: NewHabbitCategoryDelegate) {
+    convenience init(delegate: CreateCategoryViewControllerDelegate) {
         self.init()
         self.delegate = delegate
     }
@@ -56,16 +39,30 @@ final class CreateCategory: UIViewController, UITextFieldDelegate, NewHabbitCate
         view.backgroundColor = .white
         
         categoryName.delegate = self
+                
+        labelForCreateNewCategory()
         
-        //создание лейбла
-        let labelNewCategory = UILabel()
+        constraitsForLabel()
         
-        let customFontBold = UIFont(name: "SFProDisplay-Medium", size: UIFont.labelFontSize)
+        categoryTextField()
+        
+        constraitsForCategoryTextField()
+        
+        doneButtonForScreen()
+        
+        constraitsForDoneButton()
+    }
+    
+    // MARK: - Screen Config
+    
+    fileprivate func labelForCreateNewCategory() {
         labelNewCategory.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.semibold)).withSize(16)
         labelNewCategory.textColor = .black
         labelNewCategory.text = "Новая категория"
         view.addSubview(labelNewCategory)
-        
+    }
+    
+    fileprivate func constraitsForLabel() {
         //создание констрейтов для лейбла
         labelNewCategory.translatesAutoresizingMaskIntoConstraints = false
         
@@ -73,15 +70,27 @@ final class CreateCategory: UIViewController, UITextFieldDelegate, NewHabbitCate
             labelNewCategory.topAnchor.constraint(equalTo: view.topAnchor, constant: 73),
             labelNewCategory.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
-        
+    }
+    
+    fileprivate func categoryTextField() {
         //создание текстового поля
-        view.addSubview(categoryName)
+        categoryName.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
+        categoryName.placeholder = "Введите название категории"
+        categoryName.font = UIFont(name: "SFProDisplay-Medium", size: 17)
+        categoryName.textColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1.0)
+        categoryName.layer.cornerRadius = 16
+        categoryName.clipsToBounds = true
+        categoryName.translatesAutoresizingMaskIntoConstraints = false
         
         let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: categoryName.frame.height))
         categoryName.leftView = leftPaddingView
         categoryName.leftViewMode = .always
         categoryName.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        
+
+        view.addSubview(categoryName)
+    }
+    
+    fileprivate func constraitsForCategoryTextField() {
         // Установка констрейтов для размеров текстового поля
         NSLayoutConstraint.activate([
             categoryName.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
@@ -90,11 +99,22 @@ final class CreateCategory: UIViewController, UITextFieldDelegate, NewHabbitCate
             categoryName.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             categoryName.topAnchor.constraint(equalTo: labelNewCategory.topAnchor, constant: 38)
         ])
+    }
+    
+    fileprivate func doneButtonForScreen() {
+        doneButton.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 16)
+        doneButton.setTitle("Готово", for: .normal)
+        doneButton.setTitleColor(.white, for: .normal)
+        doneButton.layer.cornerRadius = 16
+        doneButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        doneButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+        doneButton.isEnabled = false
         
-        //кнопка "Готово"
         doneButton.addTarget(self, action: #selector(сreatedCategory), for: .touchUpInside)
         view.addSubview(doneButton)
-        
+    }
+    
+    fileprivate func constraitsForDoneButton() {
         //констрейты кнопки
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -107,10 +127,8 @@ final class CreateCategory: UIViewController, UITextFieldDelegate, NewHabbitCate
             doneButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20)
         ])
     }
-    
-    func didSelectCategory(_ selectedCategory: TrackerCategory) {
-        
-    }
+
+    // MARK: - Screen Func
     
     @objc func textFieldDidChange(_ textField: UITextField) {
         enteredText = textField.text ?? ""
@@ -124,20 +142,15 @@ final class CreateCategory: UIViewController, UITextFieldDelegate, NewHabbitCate
             return
         }
         
-        let tracker = Tracker(id: 1, name: "", color: "", emodji: "", timetable: "")
-        let category = TrackerCategory(label: enteredText, trackerMassiv: [tracker])
+        let category = TrackerCategory(label: enteredText, trackerMassiv: nil)
         
-        let newHabbitCategoryScreen = NewHabbitCategory()
-        newHabbitCategoryScreen.selectedCategory = category
-        newHabbitCategoryScreen.delegate = self
-        
-        delegate?.didSelectCategory(category)
-        present(newHabbitCategoryScreen, animated: true) {
-        }
+        delegate?.didCreatedCategory(category)
+        dismiss(animated: true)
     }
     
     @objc
     private func hideKeyboard() {
         self.view.endEditing(true)
     }
+    
 }

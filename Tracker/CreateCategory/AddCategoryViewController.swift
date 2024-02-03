@@ -12,103 +12,85 @@ protocol AddCategoryViewControllerDelegate: AnyObject {
     func didCreateTrackerRecord(_ trackerRecord: TrackerRecord)
 }
 
-final class AddCategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddCategoryViewControllerDelegate, CategoryCellTableViewCellDelegate {
+final class AddCategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CategoryCellTableViewCellDelegate, CreateCategoryViewControllerDelegate {
     
     weak var delegate: AddCategoryViewControllerDelegate? {
         didSet {
         }
     }
-    var selectedCategory: TrackerCategory?
+    
+    let customFontBold = UIFont(name: "SFProDisplay-Medium", size: UIFont.labelFontSize)
+    let defaultImageView = UIImageView(image: UIImage(named: "1"))
+    let textImage = UILabel()
+    
+    var createdCategory: TrackerCategory?
     var textImageBottomAnchor: NSLayoutYAxisAnchor?
     var buttonTopAnchor: NSLayoutConstraint?
     var tableViewHeightAnchor: NSLayoutConstraint?
+    var categoriesList: [TrackerCategory] = []
+    
     private var isCheckmarkSelected: Bool = false
-
-    private var selectedCategoryLabel: String?
-    
-    private var isCellSelected: Bool = false {
-        didSet {
-            tableView.reloadData()
-        }
-    }
-    
+    private var createdCategoryName: String?
+    private var isCellSelected: Bool = false
+    private let label = UILabel()
     private let tableView = UITableView()
+    private let categoryButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.delegate = self
-                
         view.backgroundColor = .white
         
-        // создание лейбла
-        let label = UILabel()
-        let customFontBold = UIFont(name: "SFProDisplay-Medium", size: UIFont.labelFontSize)
-        label.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.semibold)).withSize(16)
-        label.textColor = .black
-        label.text = "Создание категории"
-        view.addSubview(label)
-        
-        // создание констрейтов для лейбла
+        creatLabel()
+        constraitsForLabel(label)
+        createdTableForCategoriesList()
+        constraitsForTableForCategoriesList(label)
+        defaultImage()
+        defaultText()
+        constraitsForDefaultText()
+        setupButtonCreated()
+        constraitsForSetupButton()
+    }
+    
+    fileprivate func constraitsForLabel(_ label: UILabel) {
         label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: view.topAnchor, constant: 73),
             label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
-        
-        // создание таблицы
+    }
+    
+    fileprivate func createdTableForCategoriesList() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(CategoryCellTableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.separatorStyle = .none
         view.addSubview(tableView)
-        
-        // создание констрейтов для таблицы
+    }
+    
+    fileprivate func constraitsForTableForCategoriesList(_ label: UILabel) {
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableViewHeightAnchor = tableView.heightAnchor.constraint(equalToConstant: selectedCategory != nil ? 75 : 0)
-        tableViewHeightAnchor?.isActive = true
-        
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 16),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 16),
         ])
-        
-        if selectedCategory == nil {
-            // дефолтное состояние
-            let defaultImageView = UIImageView(image: UIImage(named: "1"))
-            view.addSubview(defaultImageView)
-            
-            defaultImageView.translatesAutoresizingMaskIntoConstraints = false
-            
-            NSLayoutConstraint.activate([
-                defaultImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                defaultImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-            ])
-            
-            // добавление текста под картинку
-            let textImage = UILabel()
-            
-            textImage.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.medium)).withSize(12)
-            textImage.textColor = .black
-            textImage.text = "Привычки и события можно \n объединить по смыслу"
-            textImage.numberOfLines = 0
-            textImage.textAlignment = .center
-            view.addSubview(textImage)
-            
-            // создание констрейтов для лейбла
-            textImage.translatesAutoresizingMaskIntoConstraints = false
-            
-            NSLayoutConstraint.activate([
-                textImage.topAnchor.constraint(equalTo: defaultImageView.bottomAnchor, constant: 32),
-                textImage.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-            ])
-        }
-        
-        // создание кнопки
-        let categoryButton = UIButton()
-        categoryButton.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 16)
+    }
+    
+    // MARK: - Screen Config
+    
+    fileprivate func creatLabel() {
+        // создание лейбла
+        label.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.semibold)).withSize(16)
+        label.textColor = .black
+        label.text = "Создание категории"
+        view.addSubview(label)
+    }
+    
+    fileprivate func setupButtonCreated() {
+        categoryButton.titleLabel?.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.semibold)).withSize(16)
         categoryButton.setTitle("Добавить категорию", for: .normal)
         categoryButton.setTitleColor(.white, for: .normal)
         categoryButton.layer.cornerRadius = 16
@@ -116,7 +98,9 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
         categoryButton.backgroundColor = .black
         categoryButton.addTarget(self, action: #selector(screenForCreatedCategory), for: .touchUpInside)
         view.addSubview(categoryButton)
-        
+    }
+    
+    fileprivate func constraitsForSetupButton() {
         // констрейты кнопки
         categoryButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -128,22 +112,48 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
         ])
     }
     
+    fileprivate func defaultImage() {
+        view.addSubview(defaultImageView)
+        defaultImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            defaultImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            defaultImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+    
+    fileprivate func defaultText() {
+        textImage.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.medium)).withSize(12)
+        textImage.textColor = .black
+        textImage.text = "Привычки и события можно \n объединить по смыслу"
+        textImage.numberOfLines = 0
+        textImage.textAlignment = .center
+        view.addSubview(textImage)
+    }
+    
+    fileprivate func constraitsForDefaultText() {
+        textImage.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            textImage.topAnchor.constraint(equalTo: defaultImageView.bottomAnchor, constant: 32),
+            textImage.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+    }
+
+    
     // MARK: - UITableView Data Source and Delegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        categoriesList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CategoryCellTableViewCell
         cell.delegate = self
-        cell.categoryLabel.text = selectedCategory?.label
+        cell.categoryLabel.text = categoriesList[indexPath.row].label
         cell.updateCheckmarkAppearance(isSelected: isCellSelected)
         return cell
     }
-
+    
     func cellSelectionChanged(isSelected: Bool) {
-        // Обрабатываем изменение состояния ячейки
         isCellSelected = isSelected
         updateCategoryButtonTitle()
     }
@@ -151,38 +161,44 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        isCellSelected = !isCellSelected
-        
         if isCellSelected {
-            selectedCategoryLabel = selectedCategory?.label
-            selectedCategory = TrackerCategory(label: selectedCategoryLabel ?? "", trackerMassiv: [])
+            createdCategoryName = createdCategory?.label
+            createdCategory = categoriesList[indexPath.row]
         }
         
         updateCategoryButtonTitle()
         
-        if let delegate = delegate, let selectedCategory = selectedCategory {
+        if let delegate = delegate,
+            let selectedCategory = createdCategory {
             delegate.didSelectCategory(selectedCategory)
         }
     }
     
-    
-    func didSelectCategory(_ selectedCategory: TrackerCategory) {
-        
-        if let presentedController = presentedViewController,
-            !(presentedController is NewHabitCreateViewController || presentedController is UINavigationController) {
-            navigateToNewHabitCreateController(selectedCategory: selectedCategory)
+    func cellUpdateCheckmarkAppearance(isSelected: Bool) {
+        if isSelected == true {
+            isCheckmarkSelected = true
+        } else {
+            isCheckmarkSelected = false
         }
+        updateCategoryButtonTitle()
+    }
+    
+    // MARK: - Screen Func
+
+    func didCreatedCategory(_ createdCategory: TrackerCategory) {
+        categoriesList.append(createdCategory)
+        tableView.reloadData()
     }
     
     private func navigateToNewHabitCreateController(selectedCategory: TrackerCategory) {
         
         if let presentedController = presentedViewController as? NewHabitCreateViewController {
-            presentedController.selectedCategoryLabel = selectedCategory.label
+            presentedController.selectedCategoryString = selectedCategory.label
             delegate?.didSelectCategory(selectedCategory)
         } else {
             
             let newHabitCreateController = NewHabitCreateViewController()
-            newHabitCreateController.selectedCategoryLabel = selectedCategory.label
+            newHabitCreateController.selectedCategoryString = selectedCategory.label
             
             if let navigationController = self.navigationController {
                 navigationController.present(newHabitCreateController, animated: true, completion: nil)
@@ -197,15 +213,6 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
         }
     }
     
-    func cellUpdateCheckmarkAppearance(isSelected: Bool) {
-        if isSelected == true {
-            isCheckmarkSelected = true
-        } else {
-            isCheckmarkSelected = false
-        }
-        updateCategoryButtonTitle()
-    }
-    
     private func updateCategoryButtonTitle() {
         let categoryButton = view.subviews.compactMap { $0 as? UIButton }.first
         categoryButton?.setTitle(isCheckmarkSelected ? "Готово" : "Добавить категорию", for: .normal)
@@ -213,8 +220,8 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     
     @objc private func screenForCreatedCategory() {
         if isCheckmarkSelected == true {
-            delegate?.didSelectCategory(selectedCategory!)
-            navigateToNewHabitCreateController(selectedCategory: selectedCategory!)
+            delegate?.didSelectCategory(createdCategory!)
+            navigateToNewHabitCreateController(selectedCategory: createdCategory!)
         } else {
             let createCategoryButton = CreateCategoryViewController(delegate: self)
             let createCategoryNavigationController = UINavigationController(rootViewController: createCategoryButton)
@@ -222,9 +229,5 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
             present(createCategoryNavigationController, animated: true, completion: nil)
         }
         updateCategoryButtonTitle()
-    }
-    
-    func didCreateTrackerRecord(_ trackerRecord: TrackerRecord) {
-        print("Created Tracker Record: \(trackerRecord)")
     }
 }

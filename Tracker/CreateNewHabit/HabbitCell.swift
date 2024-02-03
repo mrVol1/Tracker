@@ -50,7 +50,6 @@ final class CategoryTableViewCell: UITableViewCell {
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
         ])
 
-        // Добавляем categoryLabel только если он не nil
         if categoryLabel.superview == nil {
             contentView.addSubview(categoryLabel)
 

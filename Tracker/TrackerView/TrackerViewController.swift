@@ -11,18 +11,20 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     
     let grayColor = UIColorsForProject()
-    var categories: [TrackerCategory] = []
-    var completedTrackers: [TrackerRecord]
-    var newCategories: [Tracker]
-    var selectedCategoryLabel: String?
     let search = UISearchTextField()
     let nameForLabelCategory = UILabel()
     let label = UILabel()
     let customFontBoldMidle = UIFont(name: "SFProDisplay-Medium", size: 19)
-    let newHabitCreateController = NewHabitCreateController()
+    let newHabitCreateController = NewHabitCreateViewController()
+    
     var selectedTrackerName: String?
     var selectedScheduleDays: [WeekDay] = []
-    
+    var categories: [TrackerCategory] = []
+    var completedTrackers: [TrackerRecord]
+    var newCategories: [Tracker]
+    var createdCategoryName: String?
+    var labelCategory: UILabel!
+
     let labelCount: UILabel = {
         let labelCount = UILabel()
         labelCount.textColor = .black
@@ -42,8 +44,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         return button
     }()
     
-    var labelCategory: UILabel!
-    
     init(categories: [TrackerCategory], completedTrackers: [TrackerRecord], newCategories: [Tracker]) {
         self.categories = categories
         self.completedTrackers = completedTrackers
@@ -62,7 +62,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(CombinedTrackerViewCell.self, forCellWithReuseIdentifier: "trackerCell")
+        collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "trackerCell")
         collectionView.backgroundColor = .white
         return collectionView
     }()
@@ -151,7 +151,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! CombinedTrackerViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! TrackerCollectionViewCell
         
         let tracker = newCategories[indexPath.item]
         cell.configure(with: tracker)
@@ -160,13 +160,13 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     func loadCategories() {
-        if let selectedLabel = selectedCategoryLabel {
+        if createdCategoryName != nil {
             
             //настройка лейбла категории
             
             labelCategory = UILabel()
             labelCategory.textColor = .black
-            labelCategory.text = selectedCategoryLabel
+            labelCategory.text = createdCategoryName
             labelCategory.font = UIFontMetrics.default.scaledFont(for: customFontBoldMidle ?? UIFont.systemFont(ofSize: 19, weight: UIFont.Weight.bold) ).withSize(19)
             view.addSubview(labelCategory)
             
@@ -177,7 +177,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             ])
             
             //добавление списка трекеров
-            collectionViewTrackers.register(CombinedTrackerViewCell.self, forCellWithReuseIdentifier: "trackerCell")
+            collectionViewTrackers.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "trackerCell")
             view.addSubview(collectionViewTrackers)
             
             collectionViewTrackers.translatesAutoresizingMaskIntoConstraints = false
@@ -188,8 +188,8 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                 collectionViewTrackers.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
             
-            categories = [TrackerCategory(label: selectedLabel, trackerMassiv: [])]
-            newCategories = [Tracker(id: 1, name: selectedTrackerName ?? selectedLabel, color: "", emodji: "", timetable: "")]
+            categories = [TrackerCategory(label: createdCategoryName!, trackerMassiv: [])]
+            newCategories = [Tracker(id: 1, name: selectedTrackerName ?? createdCategoryName!, color: "", emodji: "", timetable: "")]
             
         } else {
             //добавление картинки
@@ -253,7 +253,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     @objc func buttonAction() {
-        let createHabbit = NewHabitController()
+        let createHabbit = ChoseHabitOrEventViewController()
         let createHabbitNavigationController = UINavigationController(rootViewController: createHabbit)
         present(createHabbitNavigationController, animated: true, completion: nil)
     }
@@ -273,14 +273,14 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
 }
 
-extension TrackerViewController: NewHabitCreateDelegate {
+extension TrackerViewController: NewHabitCreateViewControllerDelegate {
     func didCreateHabit(
         withCategoryLabel selectedCategoryLabel: String?,
         selectedTrackerName: String?,
         selectedScheduleDays: [WeekDay]?
     ) {
         // Обновление данных в TrackerViewController
-        self.selectedCategoryLabel = selectedCategoryLabel
+        self.createdCategoryName = selectedCategoryLabel
         self.selectedTrackerName = selectedTrackerName
         self.selectedScheduleDays = selectedScheduleDays ?? []
         

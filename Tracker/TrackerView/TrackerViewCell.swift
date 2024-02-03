@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CombinedTrackerViewCell: UICollectionViewCell {
+class TrackerCollectionViewCell: UICollectionViewCell {
     
     private var isChecked = false
     
