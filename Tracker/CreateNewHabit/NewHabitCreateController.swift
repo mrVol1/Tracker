@@ -299,7 +299,6 @@ extension NewHabitCreateViewController: ScheduleViewControllerDelegate {
         self.selectedCategoryString = selectedCategory.label
         tableView.reloadData()
         updateCreateButtonState()
-        dismiss(animated: true)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

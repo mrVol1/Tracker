@@ -186,6 +186,7 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     // MARK: - Screen Func
 
     func didCreatedCategory(_ createdCategory: TrackerCategory) {
+        print("didCreatedCategory called with category: \(createdCategory)")
         categoriesList.append(createdCategory)
         delegate?.didSelectCategory(createdCategory)
         tableView.reloadData()

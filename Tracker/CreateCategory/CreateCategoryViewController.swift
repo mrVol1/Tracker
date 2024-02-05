@@ -145,12 +145,11 @@ final class CreateCategoryViewController: UIViewController, UITextFieldDelegate 
         let category = TrackerCategory(label: enteredText, trackerMassiv: nil)
         
         delegate?.didCreatedCategory(category)
-        dismiss(animated: true)
+        dismiss(animated: true, completion: nil)
     }
     
     @objc
     private func hideKeyboard() {
         self.view.endEditing(true)
     }
-    
 }
