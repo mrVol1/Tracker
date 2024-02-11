@@ -9,7 +9,6 @@ import UIKit
 
 class CategoryCellTableViewCell: UITableViewCell {
     
-
     let categoryLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -55,21 +54,5 @@ class CategoryCellTableViewCell: UITableViewCell {
             checkmarkImageView.widthAnchor.constraint(equalToConstant: 20),
             checkmarkImageView.heightAnchor.constraint(equalToConstant: 20),
         ])
-    }
-    
-    func updateCheckmarkAppearance(isSelected: Bool) {
-        checkmarkImageView.isHidden = !isSelected
-        //delegate?.cellUpdateCheckmarkAppearance(isSelected: isSelected)
-    }
-    
-    func updateCellAppearance(isSelected: Bool) {
-        updateCheckmarkAppearance(isSelected: isSelected)
-        backgroundColor = isSelected ? UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3) : UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3).withAlphaComponent(0.3)
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        categoryLabel.text = nil
-        checkmarkImageView.isHidden = true
     }
 }

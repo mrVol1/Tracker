@@ -12,7 +12,7 @@ protocol AddCategoryViewControllerDelegate: AnyObject {
     func didCreateTrackerRecord(_ trackerRecord: TrackerRecord)
 }
 
-final class AddCategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CategoryCellTableViewCellDelegate, CreateCategoryViewControllerDelegate {
+final class AddCategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CreateCategoryViewControllerDelegate {
     
     weak var delegate: AddCategoryViewControllerDelegate? {
         didSet {
@@ -23,14 +23,14 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     let defaultImageView = UIImageView(image: UIImage(named: "1"))
     let textImage = UILabel()
     
-    var createdCategory: TrackerCategory?
     var textImageBottomAnchor: NSLayoutYAxisAnchor?
     var buttonTopAnchor: NSLayoutConstraint?
     var tableViewHeightAnchor: NSLayoutConstraint?
     var categoriesList: [TrackerCategory] = []
+    var selectedIndexPath: IndexPath?
     
     private var isCheckmarkSelected: Bool = false
-    private var createdCategoryName: String?
+    private var createdCategoryName: TrackerCategory?
     private var isCellSelected: Bool = false
     private let label = UILabel()
     private let tableView = UITableView()
@@ -46,7 +46,7 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
         } else {
             tableScreen()
         }
-                
+        
         creatLabel()
         constraitsForLabel(label)
         setupButtonCreated()
@@ -141,7 +141,7 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
             textImage.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
-
+    
     
     // MARK: - UITableView Data Source and Delegate
     
@@ -149,39 +149,40 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
         categoriesList.count
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CategoryCellTableViewCell
-        cell.delegate = self
         cell.categoryLabel.text = categoriesList[indexPath.row].label
-        cell.updateCheckmarkAppearance(isSelected: isCellSelected)
+        cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
+        
+        if indexPath == selectedIndexPath {
+            cell.checkmarkImageView.isHidden = false
+        } else {
+            cell.checkmarkImageView.isHidden = true
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if isCellSelected {
-            createdCategoryName = createdCategory?.label
-            createdCategory = categoriesList[indexPath.row]
-        }
-        updateCategoryButtonTitle()
-    }
-    
-    func cellUpdateCheckmarkAppearance(isSelected: Bool) {
-        if isSelected == true {
-            isCheckmarkSelected = true
+        if selectedIndexPath == indexPath {
+            if let cell = tableView.cellForRow(at: indexPath) as? CategoryCellTableViewCell {
+                cell.checkmarkImageView.isHidden.toggle()
+                isCheckmarkSelected = !cell.checkmarkImageView.isHidden
+                updateCategoryButtonTitle()
+            }
         } else {
-            isCheckmarkSelected = false
+            if let cell = tableView.cellForRow(at: indexPath) as? CategoryCellTableViewCell {
+                selectedIndexPath = indexPath
+                isCheckmarkSelected = cell.checkmarkImageView.isHidden
+                updateCategoryButtonTitle()
+                tableView.reloadData()
+            }
         }
-        updateCategoryButtonTitle()
     }
     
     // MARK: - Screen Func
-
+    
     func didCreatedCategory(_ createdCategory: TrackerCategory) {
         categoriesList.append(createdCategory)
         delegate?.didSelectCategory(createdCategory)
@@ -198,7 +199,7 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
         self.createdTableForCategoriesList()
         self.constraitsForTableForCategoriesList(label)
     }
-
+    
     private func navigateToNewHabitCreateController(selectedCategory: TrackerCategory) {
         
         if let presentedController = presentedViewController as? NewHabitCreateViewController {
@@ -229,13 +230,13 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     
     @objc private func screenForCreatedCategory() {
         if isCheckmarkSelected == true {
-            delegate?.didSelectCategory(createdCategory!)
-            navigateToNewHabitCreateController(selectedCategory: createdCategory!)
+            delegate?.didSelectCategory(createdCategoryName!)
+            navigateToNewHabitCreateController(selectedCategory: createdCategoryName!)
         } else {
             let createCategoryButton = CreateCategoryViewController(delegate: self)
             createCategoryButton.onDismiss = { [weak self] in
-                    self?.viewDidLoad()
-                }
+                self?.viewDidLoad()
+            }
             let createCategoryNavigationController = UINavigationController(rootViewController: createCategoryButton)
             createCategoryButton.delegate = self
             present(createCategoryNavigationController, animated: true, completion: nil)

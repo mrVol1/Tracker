@@ -13,7 +13,6 @@
 		D774245A2B24575E00C8E065 /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77424592B24575E00C8E065 /* AddCategoryViewController.swift */; };
 		D774245D2B2476E600C8E065 /* CreateCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D774245C2B2476E600C8E065 /* CreateCategoryViewController.swift */; };
 		D77424602B2490DF00C8E065 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D774245F2B2490DF00C8E065 /* ScheduleViewController.swift */; };
-		D795ED4F2B2D9762002F41F2 /* CategoryCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D795ED4E2B2D9762002F41F2 /* CategoryCellTableViewCell.swift */; };
 		D7A6AC952AF7685C00851329 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A6AC942AF7685C00851329 /* Tracker.swift */; };
 		D7A6AC972AF7698E00851329 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A6AC962AF7698E00851329 /* TrackerCategory.swift */; };
 		D7A6AC992AF769D400851329 /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A6AC982AF769D400851329 /* TrackerRecord.swift */; };
@@ -24,6 +23,7 @@
 		D7B12CA82AED9E830006205D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7B12CA72AED9E830006205D /* Assets.xcassets */; };
 		D7B12CAB2AED9E830006205D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7B12CA92AED9E830006205D /* LaunchScreen.storyboard */; };
 		D7B12CBA2AEE16DC0006205D /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B12CB92AEE16DC0006205D /* Colors.swift */; };
+		D7B395422B78F546005FC916 /* CategoryCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B395412B78F546005FC916 /* CategoryCellTableViewCell.swift */; };
 		D7C650F52B130EE800A9F116 /* ChoseHabitOrEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C650F42B130EE800A9F116 /* ChoseHabitOrEventViewController.swift */; };
 		D7C650F72B133FCE00A9F116 /* NewHabitCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C650F62B133FCE00A9F116 /* NewHabitCreateController.swift */; };
 		D7F67EF62B375B2B00F81F06 /* TrackerViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F67EF52B375B2B00F81F06 /* TrackerViewCell.swift */; };
@@ -36,7 +36,6 @@
 		D77424592B24575E00C8E065 /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		D774245C2B2476E600C8E065 /* CreateCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCategoryViewController.swift; sourceTree = "<group>"; };
 		D774245F2B2490DF00C8E065 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
-		D795ED4E2B2D9762002F41F2 /* CategoryCellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCellTableViewCell.swift; sourceTree = "<group>"; };
 		D7A6AC942AF7685C00851329 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		D7A6AC962AF7698E00851329 /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		D7A6AC982AF769D400851329 /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
@@ -49,6 +48,7 @@
 		D7B12CAA2AED9E830006205D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D7B12CAC2AED9E830006205D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7B12CB92AEE16DC0006205D /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		D7B395412B78F546005FC916 /* CategoryCellTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCellTableViewCell.swift; sourceTree = "<group>"; };
 		D7C650F42B130EE800A9F116 /* ChoseHabitOrEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoseHabitOrEventViewController.swift; sourceTree = "<group>"; };
 		D7C650F62B133FCE00A9F116 /* NewHabitCreateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitCreateController.swift; sourceTree = "<group>"; };
 		D7F67EF52B375B2B00F81F06 /* TrackerViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewCell.swift; sourceTree = "<group>"; };
@@ -76,7 +76,7 @@
 		D774245B2B2476C700C8E065 /* CreateCategory */ = {
 			isa = PBXGroup;
 			children = (
-				D795ED4E2B2D9762002F41F2 /* CategoryCellTableViewCell.swift */,
+				D7B395412B78F546005FC916 /* CategoryCellTableViewCell.swift */,
 				D77424592B24575E00C8E065 /* AddCategoryViewController.swift */,
 				D774245C2B2476E600C8E065 /* CreateCategoryViewController.swift */,
 			);
@@ -236,7 +236,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D795ED4F2B2D9762002F41F2 /* CategoryCellTableViewCell.swift in Sources */,
 				D7B12CA32AED9E800006205D /* TrackerViewController.swift in Sources */,
 				D7B12CBA2AEE16DC0006205D /* Colors.swift in Sources */,
 				D7A6AC972AF7698E00851329 /* TrackerCategory.swift in Sources */,
@@ -252,6 +251,7 @@
 				D7B12CA12AED9E800006205D /* SceneDelegate.swift in Sources */,
 				D7C650F52B130EE800A9F116 /* ChoseHabitOrEventViewController.swift in Sources */,
 				D7A6AC952AF7685C00851329 /* Tracker.swift in Sources */,
+				D7B395422B78F546005FC916 /* CategoryCellTableViewCell.swift in Sources */,
 				D7F67EF62B375B2B00F81F06 /* TrackerViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
