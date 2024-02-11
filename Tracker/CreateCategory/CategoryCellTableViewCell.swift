@@ -8,7 +8,6 @@
 import UIKit
 
 protocol CategoryCellTableViewCellDelegate: AnyObject {
-    func cellSelectionChanged(isSelected: Bool)
     func cellUpdateCheckmarkAppearance(isSelected: Bool)
 }
 
@@ -43,7 +42,6 @@ class CategoryCellTableViewCell: UITableViewCell {
 
     private func setupUI() {
         backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
-        layer.cornerRadius = 16
 
         addSubview(categoryLabel)
         addSubview(checkmarkImageView)

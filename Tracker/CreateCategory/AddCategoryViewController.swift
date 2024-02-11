@@ -41,16 +41,19 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
         
         view.backgroundColor = .white
         
+        if categoriesList.isEmpty {
+            defaultScreen()
+        } else {
+            tableScreen()
+        }
+                
         creatLabel()
         constraitsForLabel(label)
-        createdTableForCategoriesList()
-        constraitsForTableForCategoriesList(label)
-        defaultImage()
-        defaultText()
-        constraitsForDefaultText()
         setupButtonCreated()
         constraitsForSetupButton()
     }
+    
+    // MARK: - Screen Config
     
     fileprivate func constraitsForLabel(_ label: UILabel) {
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -64,7 +67,11 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(CategoryCellTableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.separatorStyle = .none
+        tableView.layer.cornerRadius = 16
+        tableView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        tableView.clipsToBounds = true
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         view.addSubview(tableView)
     }
     
@@ -79,13 +86,10 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
         ])
     }
     
-    // MARK: - Screen Config
-    
     fileprivate func creatLabel() {
-        // создание лейбла
         label.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.semibold)).withSize(16)
         label.textColor = .black
-        label.text = "Создание категории"
+        label.text = "Категория"
         view.addSubview(label)
     }
     
@@ -145,17 +149,16 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
         categoriesList.count
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CategoryCellTableViewCell
         cell.delegate = self
         cell.categoryLabel.text = categoriesList[indexPath.row].label
         cell.updateCheckmarkAppearance(isSelected: isCellSelected)
         return cell
-    }
-    
-    func cellSelectionChanged(isSelected: Bool) {
-        isCellSelected = isSelected
-        updateCategoryButtonTitle()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -165,13 +168,7 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
             createdCategoryName = createdCategory?.label
             createdCategory = categoriesList[indexPath.row]
         }
-        
         updateCategoryButtonTitle()
-        
-        if let delegate = delegate,
-            let selectedCategory = createdCategory {
-            delegate.didSelectCategory(selectedCategory)
-        }
     }
     
     func cellUpdateCheckmarkAppearance(isSelected: Bool) {
@@ -186,12 +183,22 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     // MARK: - Screen Func
 
     func didCreatedCategory(_ createdCategory: TrackerCategory) {
-        print("didCreatedCategory called with category: \(createdCategory)")
         categoriesList.append(createdCategory)
         delegate?.didSelectCategory(createdCategory)
         tableView.reloadData()
     }
     
+    func defaultScreen() {
+        self.defaultImage()
+        self.defaultText()
+        self.constraitsForDefaultText()
+    }
+    
+    func tableScreen() {
+        self.createdTableForCategoriesList()
+        self.constraitsForTableForCategoriesList(label)
+    }
+
     private func navigateToNewHabitCreateController(selectedCategory: TrackerCategory) {
         
         if let presentedController = presentedViewController as? NewHabitCreateViewController {
@@ -226,6 +233,9 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
             navigateToNewHabitCreateController(selectedCategory: createdCategory!)
         } else {
             let createCategoryButton = CreateCategoryViewController(delegate: self)
+            createCategoryButton.onDismiss = { [weak self] in
+                    self?.viewDidLoad()
+                }
             let createCategoryNavigationController = UINavigationController(rootViewController: createCategoryButton)
             createCategoryButton.delegate = self
             present(createCategoryNavigationController, animated: true, completion: nil)

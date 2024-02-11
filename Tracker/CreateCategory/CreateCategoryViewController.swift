@@ -23,6 +23,8 @@ final class CreateCategoryViewController: UIViewController, UITextFieldDelegate 
     
     weak var delegate: CreateCategoryViewControllerDelegate?
     
+    var onDismiss: (() -> Void)?
+    
     convenience init(delegate: CreateCategoryViewControllerDelegate) {
         self.init()
         self.delegate = delegate
@@ -145,7 +147,9 @@ final class CreateCategoryViewController: UIViewController, UITextFieldDelegate 
         let category = TrackerCategory(label: enteredText, trackerMassiv: nil)
         
         delegate?.didCreatedCategory(category)
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true) {
+            self.onDismiss?()
+        }
     }
     
     @objc
