@@ -7,13 +7,8 @@
 
 import UIKit
 
-protocol CategoryCellTableViewCellDelegate: AnyObject {
-    func cellUpdateCheckmarkAppearance(isSelected: Bool)
-}
-
 class CategoryCellTableViewCell: UITableViewCell {
     
-    weak var delegate: CategoryCellTableViewCellDelegate?
 
     let categoryLabel: UILabel = {
         let label = UILabel()
@@ -64,7 +59,7 @@ class CategoryCellTableViewCell: UITableViewCell {
     
     func updateCheckmarkAppearance(isSelected: Bool) {
         checkmarkImageView.isHidden = !isSelected
-        delegate?.cellUpdateCheckmarkAppearance(isSelected: isSelected)
+        //delegate?.cellUpdateCheckmarkAppearance(isSelected: isSelected)
     }
     
     func updateCellAppearance(isSelected: Bool) {
