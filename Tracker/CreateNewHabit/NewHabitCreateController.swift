@@ -13,7 +13,7 @@ enum TableSection: Int, CaseIterable {
 }
 
 protocol NewHabitCreateViewControllerDelegate: AnyObject {
-    func didCreateHabit(withCategoryLabel selectedCategoryString: String?, selectedTrackerName: String?, selectedScheduleDays: [WeekDay]?)
+    func didCreateHabit(withCategoryLabel selectedCategoryString: String?, selectedScheduleDays: [WeekDay]?, categories: String?)
 }
 
 final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, AddCategoryViewControllerDelegate {
@@ -22,8 +22,11 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     var selectedScheduleDays: [WeekDay] = []
     var selectedTrackerName: String?
     var trackerId: Int = 0
+    var cellWithCategoryLabel: CategoryTableViewCell?
+    
     weak var scheduleDelegate: ScheduleViewControllerDelegate?
     weak var habitCreateDelegate: NewHabitCreateViewControllerDelegate?
+    weak var delegate: AddCategoryViewControllerDelegate?
 
     let label = UILabel()
     let trackerName = UITextField()
@@ -191,6 +194,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             }
             
             cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
+            cellWithCategoryLabel = cell
             return cell
             
         case .schedule:
@@ -250,8 +254,8 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         
         habitCreateDelegate?.didCreateHabit(
                 withCategoryLabel: selectedCategoryString,
-                selectedTrackerName: selectedTrackerName,
-                selectedScheduleDays: selectedScheduleDays
+                selectedScheduleDays: selectedScheduleDays,
+                categories: selectedCategoryString
             )
     }
     
@@ -313,11 +317,20 @@ extension NewHabitCreateViewController: ScheduleViewControllerDelegate {
 }
 
 extension NewHabitCreateViewController: CreateCategoryViewControllerDelegate {
-    func didCreatedCategory(_ createdCategory: TrackerCategory) {
+    func didCreatedCategory(_ createdCategory: TrackerCategory, categories: String) {
         print(createdCategory)
     }
     
     func didCreateTrackerRecord(_ trackerRecord: TrackerRecord) {
         
+    }
+    
+    func didSelectCategory(_ categories: String) {
+        print("Выбрана категория: \(categories)")
+        selectedCategoryString = categories
+        updateCreateButtonState()
+        if let indexPath = tableView.indexPath(for: cellWithCategoryLabel!) {
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
     }
 }

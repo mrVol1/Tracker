@@ -8,13 +8,14 @@
 import UIKit
 
 protocol CreateCategoryViewControllerDelegate: NSObject {
-    func didCreatedCategory(_ createdCategory: TrackerCategory)
+    func didCreatedCategory(_ createdCategory: TrackerCategory, categories: String)
 }
 
 final class CreateCategoryViewController: UIViewController, UITextFieldDelegate {
     
     private var category: TrackerCategory?
     private var enteredText: String = ""
+    private var createdCategory: String = ""
     
     let labelNewCategory = UILabel()
     let customFontBold = UIFont(name: "SFProDisplay-Medium", size: UIFont.labelFontSize)
@@ -146,7 +147,7 @@ final class CreateCategoryViewController: UIViewController, UITextFieldDelegate 
         
         let category = TrackerCategory(label: enteredText, trackerMassiv: nil)
         
-        delegate?.didCreatedCategory(category)
+        delegate?.didCreatedCategory(category, categories: createdCategory)
         dismiss(animated: true) {
             self.onDismiss?()
         }

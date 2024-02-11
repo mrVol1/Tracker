@@ -8,11 +8,12 @@
 import UIKit
 
 protocol AddCategoryViewControllerDelegate: AnyObject {
-    func didSelectCategory(_ selectedCategory: TrackerCategory)
+    func didSelectCategory(_ categories: String)
     func didCreateTrackerRecord(_ trackerRecord: TrackerRecord)
 }
 
 final class AddCategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CreateCategoryViewControllerDelegate {
+    
     
     weak var delegate: AddCategoryViewControllerDelegate? {
         didSet {
@@ -30,7 +31,8 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     var selectedIndexPath: IndexPath?
     
     private var isCheckmarkSelected: Bool = false
-    private var createdCategoryName: TrackerCategory?
+    private var createdCategoryName: String?
+    private var categories: String?
     private var isCellSelected: Bool = false
     private let label = UILabel()
     private let tableView = UITableView()
@@ -175,6 +177,9 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
             if let cell = tableView.cellForRow(at: indexPath) as? CategoryCellTableViewCell {
                 selectedIndexPath = indexPath
                 isCheckmarkSelected = cell.checkmarkImageView.isHidden
+                if let firstCategory = categoriesList.first {
+                    categories = firstCategory.label
+                }
                 updateCategoryButtonTitle()
                 tableView.reloadData()
             }
@@ -183,9 +188,9 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     
     // MARK: - Screen Func
     
-    func didCreatedCategory(_ createdCategory: TrackerCategory) {
+    func didCreatedCategory(_ createdCategory: TrackerCategory, categories: String) {
         categoriesList.append(createdCategory)
-        delegate?.didSelectCategory(createdCategory)
+        delegate?.didSelectCategory(categories)
         tableView.reloadData()
     }
     
@@ -200,26 +205,14 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
         self.constraitsForTableForCategoriesList(label)
     }
     
-    private func navigateToNewHabitCreateController(selectedCategory: TrackerCategory) {
+    private func navigateToNewHabitCreateController(selectedCategory: String) {
         
-        if let presentedController = presentedViewController as? NewHabitCreateViewController {
-            presentedController.selectedCategoryString = selectedCategory.label
-            delegate?.didSelectCategory(selectedCategory)
+        if let navigationController = self.navigationController {
+            navigationController.popViewController(animated: true)
         } else {
-            
-            let newHabitCreateController = NewHabitCreateViewController()
-            newHabitCreateController.selectedCategoryString = selectedCategory.label
-            
-            if let navigationController = self.navigationController {
-                navigationController.present(newHabitCreateController, animated: true, completion: nil)
-            } else {
-                present(newHabitCreateController, animated: true, completion: nil)
+            dismiss(animated: true) { [self] in
+                delegate?.didSelectCategory(categories!)
             }
-            
-            delegate?.didSelectCategory(selectedCategory)
-        }
-        if let indexPath = tableView.indexPathForSelectedRow {
-            tableView.deselectRow(at: indexPath, animated: true)
         }
     }
     
@@ -230,8 +223,10 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     
     @objc private func screenForCreatedCategory() {
         if isCheckmarkSelected == true {
-            delegate?.didSelectCategory(createdCategoryName!)
-            navigateToNewHabitCreateController(selectedCategory: createdCategoryName!)
+            if let delegate = delegate {
+                delegate.didSelectCategory(categories!)
+                navigateToNewHabitCreateController(selectedCategory: categories!)
+            }
         } else {
             let createCategoryButton = CreateCategoryViewController(delegate: self)
             createCategoryButton.onDismiss = { [weak self] in

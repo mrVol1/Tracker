@@ -9,7 +9,6 @@ import UIKit
 
 class TrackerViewController: UIViewController, UITextFieldDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    
     let grayColor = UIColorsForProject()
     let search = UISearchTextField()
     let nameForLabelCategory = UILabel()
@@ -274,6 +273,11 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
 }
 
 extension TrackerViewController: NewHabitCreateViewControllerDelegate {
+    func didCreateHabit(withCategoryLabel selectedCategoryString: String?, selectedScheduleDays: [WeekDay]?, categories: String?) {
+        
+    }
+    
+    
     func didCreateHabit(
         withCategoryLabel selectedCategoryLabel: String?,
         selectedTrackerName: String?,
