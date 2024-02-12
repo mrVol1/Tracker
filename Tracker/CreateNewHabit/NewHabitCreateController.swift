@@ -13,11 +13,16 @@ enum TableSection: Int, CaseIterable {
 }
 
 protocol NewHabitCreateViewControllerDelegate: AnyObject {
-    func didCreateHabit(withCategoryLabel selectedCategoryString: String?, selectedScheduleDays: [WeekDay]?, categories: String?)
+    func didCreateHabit(
+        withCategoryLabel selectedCategoryString: String?,
+        selectedScheduleDays: [WeekDay]?,
+        trackerName: String?
+    )
 }
 
 final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, AddCategoryViewControllerDelegate {
     
+    var selectedHabitString: String?
     var selectedCategoryString: String?
     var selectedScheduleDays: [WeekDay] = []
     var selectedTrackerName: String?
@@ -27,7 +32,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     weak var scheduleDelegate: ScheduleViewControllerDelegate?
     weak var habitCreateDelegate: NewHabitCreateViewControllerDelegate?
     weak var delegate: AddCategoryViewControllerDelegate?
-
+    
     let label = UILabel()
     let trackerName = UITextField()
     let saveButton = UIButton()
@@ -58,7 +63,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     }
     
     // MARK: - Screen Config
-
+    
     private func configureLabel() {
         let customFontBold = UIFont(name: "SFProDisplay-Medium", size: UIFont.labelFontSize)
         label.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.semibold)).withSize(16)
@@ -187,9 +192,11 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             cell.titleLabel.textAlignment = .center
             cell.accessoryType = .disclosureIndicator
             
-            if let selectedCategoryString = selectedCategoryString {
+            if let selectedCategoryString = selectedCategoryString
+            {
                 cell.categoryLabel.text = selectedCategoryString
-            } else {
+            }
+            else {
                 cell.categoryLabel.removeFromSuperview()
             }
             
@@ -205,7 +212,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
             
             if !selectedScheduleDays.isEmpty {
-                let scheduleText = selectedScheduleDays.map { $0.rawValue.prefix(2) }.joined(separator: ", ")
+                let scheduleText = selectedScheduleDays.map { $0.rawValue.prefix(3) }.joined(separator: ", ")
                 cell.daysLabel.text = scheduleText
             } else {
                 cell.daysLabel.text = nil
@@ -244,19 +251,24 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     }
     
     // MARK: - Screen Func
-
+    
     @objc private func buttonActionForHabitSave() {
-        let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
-        trackerViewController.createdCategoryName = selectedCategoryString
-        trackerViewController.loadCategories()
-        let newHabitCreatedButton = UINavigationController(rootViewController: trackerViewController)
-        present(newHabitCreatedButton, animated: true, completion: nil)
+        selectedHabitString = trackerName.text
         
         habitCreateDelegate?.didCreateHabit(
-                withCategoryLabel: selectedCategoryString,
-                selectedScheduleDays: selectedScheduleDays,
-                categories: selectedCategoryString
-            )
+            withCategoryLabel: selectedCategoryString,
+            selectedScheduleDays: selectedScheduleDays,
+            trackerName: selectedHabitString
+        )
+        
+        dismiss(animated: true) {
+            let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
+            trackerViewController.createdCategoryName = self.selectedCategoryString
+            trackerViewController.selectedTrackerName = self.selectedHabitString
+            trackerViewController.loadCategories()
+            
+            self.navigationController?.pushViewController(trackerViewController, animated: true)
+        }
     }
     
     @objc private func buttonActionForHabitCancel() {
@@ -318,7 +330,7 @@ extension NewHabitCreateViewController: ScheduleViewControllerDelegate {
 
 extension NewHabitCreateViewController: CreateCategoryViewControllerDelegate {
     func didCreatedCategory(_ createdCategory: TrackerCategory, categories: String) {
-        print(createdCategory)
+        
     }
     
     func didCreateTrackerRecord(_ trackerRecord: TrackerRecord) {
@@ -326,11 +338,10 @@ extension NewHabitCreateViewController: CreateCategoryViewControllerDelegate {
     }
     
     func didSelectCategory(_ categories: String) {
-        print("Выбрана категория: \(categories)")
         selectedCategoryString = categories
         updateCreateButtonState()
         if let indexPath = tableView.indexPath(for: cellWithCategoryLabel!) {
-                tableView.reloadRows(at: [indexPath], with: .automatic)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
         }
     }
 }

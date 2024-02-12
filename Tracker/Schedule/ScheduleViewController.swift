@@ -32,7 +32,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
+        tableView.backgroundColor = .clear
         return tableView
     }()
     
@@ -73,7 +73,7 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 56),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -250),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -200),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
@@ -139,7 +139,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     @objc private func buttonActionForCreateSchedule() {
-           // Сохранение выбранных дней в UserDefaults
            if let savedDaysData = try? JSONEncoder().encode(selectedDays) {
                UserDefaults.standard.set(savedDaysData, forKey: selectedDaysKey)
            }

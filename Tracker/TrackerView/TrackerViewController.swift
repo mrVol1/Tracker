@@ -20,7 +20,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     var selectedScheduleDays: [WeekDay] = []
     var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord]
-    var newCategories: [Tracker]
+    var newHabit: [Tracker]
     var createdCategoryName: String?
     var labelCategory: UILabel!
 
@@ -46,14 +46,14 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     init(categories: [TrackerCategory], completedTrackers: [TrackerRecord], newCategories: [Tracker]) {
         self.categories = categories
         self.completedTrackers = completedTrackers
-        self.newCategories = newCategories
+        self.newHabit = newCategories
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
         self.categories = []
         self.completedTrackers = []
-        self.newCategories = []
+        self.newHabit = []
         super.init(coder: coder)
     }
     
@@ -146,13 +146,13 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return newCategories.count
+        return newHabit.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! TrackerCollectionViewCell
         
-        let tracker = newCategories[indexPath.item]
+        let tracker = newHabit[indexPath.item]
         cell.configure(with: tracker)
         
         return cell
@@ -188,7 +188,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             ])
             
             categories = [TrackerCategory(label: createdCategoryName!, trackerMassiv: [])]
-            newCategories = [Tracker(id: 1, name: selectedTrackerName ?? createdCategoryName!, color: "", emodji: "", timetable: "")]
+            newHabit = [Tracker(id: 1, name: selectedTrackerName!, color: "", emodji: "", timetable: "")]
             
         } else {
             //добавление картинки
@@ -221,15 +221,15 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     func applySearchFilter(_ searchText: String) {
         guard !categories.isEmpty else {
-            newCategories = []
+            newHabit = []
             collectionViewTrackers.reloadData()
             return
         }
 
         if searchText.isEmpty {
-            newCategories = categories.flatMap { $0.trackerMassiv ?? [] }
+            newHabit = categories.flatMap { $0.trackerMassiv ?? [] }
         } else {
-            newCategories = categories.flatMap { category -> [Tracker] in
+            newHabit = categories.flatMap { category -> [Tracker] in
                 let filteredTrackers = (category.trackerMassiv ?? []).filter { tracker in
                     return tracker.name.lowercased().contains(searchText.lowercased())
                 }
@@ -262,33 +262,27 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         let filteredTrackers = completedTrackers.filter { trackerRecord in
             return Calendar.current.isDate(trackerRecord.date, inSameDayAs: selectedDate)
         }
-        newCategories = filteredTrackers.compactMap { trackerRecord in
-            guard let index = newCategories.firstIndex(where: { $0.id == trackerRecord.trackerId }) else {
+        newHabit = filteredTrackers.compactMap { trackerRecord in
+            guard let index = newHabit.firstIndex(where: { $0.id == trackerRecord.trackerId }) else {
                 return nil
             }
-            return newCategories[index]
+            return newHabit[index]
         }
         collectionViewTrackers.reloadData()
     }
 }
 
 extension TrackerViewController: NewHabitCreateViewControllerDelegate {
-    func didCreateHabit(withCategoryLabel selectedCategoryString: String?, selectedScheduleDays: [WeekDay]?, categories: String?) {
-        
-    }
-    
-    
+
     func didCreateHabit(
-        withCategoryLabel selectedCategoryLabel: String?,
-        selectedTrackerName: String?,
-        selectedScheduleDays: [WeekDay]?
+        withCategoryLabel selectedCategoryString: String?,
+        selectedScheduleDays: [WeekDay]?,
+        trackerName selectedHabitString: String?
     ) {
-        // Обновление данных в TrackerViewController
-        self.createdCategoryName = selectedCategoryLabel
-        self.selectedTrackerName = selectedTrackerName
+        self.createdCategoryName = selectedCategoryString
+        self.selectedTrackerName = selectedHabitString
         self.selectedScheduleDays = selectedScheduleDays ?? []
         
-        // Обновление интерфейса
-        labelCategory.text = selectedCategoryLabel
+        labelCategory.text = selectedCategoryString
     }
 }

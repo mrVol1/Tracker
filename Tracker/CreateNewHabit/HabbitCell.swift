@@ -16,6 +16,14 @@ final class CategoryTableViewCell: UITableViewCell {
         return label
     }()
     
+    let nameLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "SFProDisplay-Medium", size: 17)
+        label.textColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1.0)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     let categoryLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "SFProDisplay-Medium", size: 17)
@@ -58,8 +66,16 @@ final class CategoryTableViewCell: UITableViewCell {
                 categoryLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             ])
         }
+        
+        if nameLabel.superview == nil {
+            contentView.addSubview(nameLabel)
 
-        // Добавляем daysLabel
+            NSLayoutConstraint.activate([
+                nameLabel.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor, constant: 2),
+                nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            ])
+        }
+
         contentView.addSubview(daysLabel)
 
         NSLayoutConstraint.activate([
