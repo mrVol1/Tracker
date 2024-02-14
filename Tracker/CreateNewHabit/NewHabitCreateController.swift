@@ -280,7 +280,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     }
     
     func finishCreatingHabitAndDismiss() {
-        dismiss(animated: true) {
+        dismiss(animated: false) {
             self.habitCreateDelegate?.didFinishCreatingHabitAndDismiss()
         }
     }
