@@ -7,12 +7,17 @@
 
 import UIKit
 
-final class ChoseHabitOrEventViewController: UIViewController {
+protocol ChoseHabitOrEventViewControllerDelegate: AnyObject {
+    func didFinishCreatingHabitAndDismiss()
+}
+
+final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateViewControllerDelegate {
+    
     let label = UILabel()
     let customFontBold = UIFont(name: "SFProDisplay-Medium", size: UIFont.labelFontSize)
     let habbitButton = UIButton()
     let eventButton = UIButton()
-    
+        
     override func viewDidLoad() {
         
         view.backgroundColor = .white
@@ -89,10 +94,21 @@ final class ChoseHabitOrEventViewController: UIViewController {
         ])
     }
     
+    func didFinishCreatingHabitAndDismiss() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func didCreateHabit(withCategoryLabel selectedCategoryString: String?, 
+                        selectedScheduleDays: [WeekDay]?,
+                        trackerName: String?) {
+    }
+    
     // MARK: - Screen Func
     
     @objc private func buttonActionForCreateHabbit() {
         let createHabbitbutton = NewHabitCreateViewController()
+        createHabbitbutton.habitCreateDelegate = self
         let createNewHabbitButtonNavigationController = UINavigationController(rootViewController: createHabbitbutton)
-        present(createNewHabbitButtonNavigationController, animated: true, completion: nil)    }
+        present(createNewHabbitButtonNavigationController, animated: true, completion: nil)
+    }
 }

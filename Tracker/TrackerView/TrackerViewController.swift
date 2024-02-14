@@ -273,6 +273,10 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
 }
 
 extension TrackerViewController: NewHabitCreateViewControllerDelegate {
+    func didFinishCreatingHabitAndDismiss() {
+        
+    }
+    
 
     func didCreateHabit(
         withCategoryLabel selectedCategoryString: String?,

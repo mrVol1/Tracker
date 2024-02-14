@@ -18,6 +18,7 @@ protocol NewHabitCreateViewControllerDelegate: AnyObject {
         selectedScheduleDays: [WeekDay]?,
         trackerName: String?
     )
+    func didFinishCreatingHabitAndDismiss()
 }
 
 final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, AddCategoryViewControllerDelegate {
@@ -31,7 +32,9 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     
     weak var scheduleDelegate: ScheduleViewControllerDelegate?
     weak var habitCreateDelegate: NewHabitCreateViewControllerDelegate?
-    weak var delegate: AddCategoryViewControllerDelegate?
+    weak var addCategoryDelegate: AddCategoryViewControllerDelegate?    
+//    weak var backDelegate: NewHabitCreateViewControllerDelegate?
+
     
     let label = UILabel()
     let trackerName = UITextField()
@@ -261,13 +264,24 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             trackerName: selectedHabitString
         )
         
+        finishCreatingHabitAndDismiss()
+        
+    //    habitCreateDelegate?.didFinishCreatingHabitAndDismiss()
+        
+//        presentingViewController?.dismiss(animated: true, completion: nil)
+
+        
+//        let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
+//        trackerViewController.createdCategoryName = selectedCategoryString.self
+//        trackerViewController.selectedTrackerName = selectedHabitString.self
+//        trackerViewController.selectedScheduleDays = selectedScheduleDays.self
+//        //navigationController?.popToViewController(trackerViewController, animated: true)
+//        dismiss(animated: true, completion: nil)
+    }
+    
+    func finishCreatingHabitAndDismiss() {
         dismiss(animated: true) {
-            let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
-            trackerViewController.createdCategoryName = self.selectedCategoryString
-            trackerViewController.selectedTrackerName = self.selectedHabitString
-            trackerViewController.loadCategories()
-            
-            self.navigationController?.pushViewController(trackerViewController, animated: true)
+            self.habitCreateDelegate?.didFinishCreatingHabitAndDismiss()
         }
     }
     
