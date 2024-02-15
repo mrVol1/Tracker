@@ -163,7 +163,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     }
     
     private func updateCreateButtonState() {
-        guard selectedCategoryString != nil,
+        guard let selectedCategoryString = selectedCategoryString,
               !selectedScheduleDays.isEmpty,
               let trackerNameText = trackerName.text,
               !trackerNameText.isEmpty
@@ -264,19 +264,12 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             trackerName: selectedHabitString
         )
         
+        let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
+        trackerViewController.createdCategoryName = selectedCategoryString
+        trackerViewController.selectedTrackerName = selectedHabitString
+        trackerViewController.selectedScheduleDays = selectedScheduleDays
+        
         finishCreatingHabitAndDismiss()
-        
-    //    habitCreateDelegate?.didFinishCreatingHabitAndDismiss()
-        
-//        presentingViewController?.dismiss(animated: true, completion: nil)
-
-        
-//        let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
-//        trackerViewController.createdCategoryName = selectedCategoryString.self
-//        trackerViewController.selectedTrackerName = selectedHabitString.self
-//        trackerViewController.selectedScheduleDays = selectedScheduleDays.self
-//        //navigationController?.popToViewController(trackerViewController, animated: true)
-//        dismiss(animated: true, completion: nil)
     }
     
     func finishCreatingHabitAndDismiss() {
