@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TrackerCollectionViewCell: UICollectionViewCell {
+class TrackerViewCell: UICollectionViewCell {
     
     private var isChecked = false
     
@@ -19,7 +19,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
-    private let label: UILabel = {
+    let label: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.textAlignment = .center

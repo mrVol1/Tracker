@@ -163,7 +163,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     }
     
     private func updateCreateButtonState() {
-        guard let selectedCategoryString = selectedCategoryString,
+        guard selectedCategoryString != nil,
               !selectedScheduleDays.isEmpty,
               let trackerNameText = trackerName.text,
               !trackerNameText.isEmpty
@@ -263,7 +263,6 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             selectedScheduleDays: selectedScheduleDays,
             trackerName: selectedHabitString
         )
-        
         let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
         trackerViewController.createdCategoryName = selectedCategoryString
         trackerViewController.selectedTrackerName = selectedHabitString

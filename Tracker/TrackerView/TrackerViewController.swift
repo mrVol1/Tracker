@@ -15,6 +15,8 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     let label = UILabel()
     let customFontBoldMidle = UIFont(name: "SFProDisplay-Medium", size: 19)
     let newHabitCreateController = NewHabitCreateViewController()
+    let container = UIDatePicker()
+    let customFontBold = UIFont(name: "SFProDisplay-Bold", size: UIFont.labelFontSize)
     
     var selectedTrackerName: String?
     var selectedScheduleDays: [WeekDay] = []
@@ -43,6 +45,15 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         return button
     }()
     
+    private let collectionViewTrackers: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(TrackerViewCell.self, forCellWithReuseIdentifier: "trackerCell")
+        collectionView.backgroundColor = .white
+        return collectionView
+    }()
+    
     init(categories: [TrackerCategory], completedTrackers: [TrackerRecord], newCategories: [Tracker]) {
         self.categories = categories
         self.completedTrackers = completedTrackers
@@ -56,15 +67,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         self.newHabit = []
         super.init(coder: coder)
     }
-    
-    private let collectionViewTrackers: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "trackerCell")
-        collectionView.backgroundColor = .white
-        return collectionView
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,6 +82,24 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
         newHabitCreateController.habitCreateDelegate = self
         
+        createButton()
+        
+        timeContainer()
+        
+        labelTracker()
+        
+        searchTextField()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadCategories()
+    }
+    
+    
+    // MARK: - Screen settings
+    
+    fileprivate func createButton() {
         //Создание кнопки "+"
         plusButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         plusButton.setImage(UIImage(named: "Add tracker"), for: .normal)
@@ -92,9 +112,10 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             plusButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
             plusButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 6)
         ])
-        
+    }
+    
+    fileprivate func timeContainer() {
         //Создание контейнера для даты
-        let container = UIDatePicker()
         container.datePickerMode = .date
         view.addSubview(container)
         
@@ -108,10 +129,10 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
         container.minimumDate = Date()
         container.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
-        
+    }
+    
+    fileprivate func labelTracker() {
         //создание лейбла "Трекеры"
-        let customFontBold = UIFont(name: "SFProDisplay-Bold", size: UIFont.labelFontSize)
-        
         label.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 34, weight: UIFont.Weight.bold)).withSize(34)
         label.textColor = .black
         label.text = "Трекеры"
@@ -123,7 +144,9 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             label.bottomAnchor.constraint(equalTo: plusButton.bottomAnchor, constant: 48),
             label.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
         ])
-        
+    }
+    
+    fileprivate func searchTextField() {
         //добавление поиска
         search.placeholder = "Поиск"
         view.addSubview(search)
@@ -140,17 +163,14 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         search.addTarget(self, action: #selector(searchValueChanged), for: .editingChanged)
     }
     
-    @objc func searchValueChanged() {
-        let searchText = search.text ?? ""
-        applySearchFilter(searchText)
-    }
+    // MARK: - CollectionView setting
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return newHabit.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! TrackerCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! TrackerViewCell
         
         let tracker = newHabit[indexPath.item]
         cell.configure(with: tracker)
@@ -158,11 +178,17 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         return cell
     }
     
+    // MARK: - Screen Func
+    
+    @objc func searchValueChanged() {
+        let searchText = search.text ?? ""
+        applySearchFilter(searchText)
+    }
+    
     func loadCategories() {
         if createdCategoryName != nil {
             
             //настройка лейбла категории
-            
             labelCategory = UILabel()
             labelCategory.textColor = .black
             labelCategory.text = createdCategoryName
@@ -176,7 +202,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             ])
             
             //добавление списка трекеров
-            collectionViewTrackers.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "trackerCell")
+            collectionViewTrackers.register(TrackerViewCell.self, forCellWithReuseIdentifier: "trackerCell")
             view.addSubview(collectionViewTrackers)
             
             collectionViewTrackers.translatesAutoresizingMaskIntoConstraints = false
@@ -245,8 +271,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         return true
     }
     
-    // MARK: - table settings
-    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return true
     }
@@ -271,7 +295,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         collectionViewTrackers.reloadData()
     }
 }
-
+    
 extension TrackerViewController: NewHabitCreateViewControllerDelegate {
     func didFinishCreatingHabitAndDismiss() {
         

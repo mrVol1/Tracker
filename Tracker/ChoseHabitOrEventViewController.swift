@@ -95,7 +95,9 @@ final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateVie
     }
     
     func didFinishCreatingHabitAndDismiss() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true) {
+            self.viewWillAppear(true)
+        }
     }
     
     func didCreateHabit(withCategoryLabel selectedCategoryString: String?, 
