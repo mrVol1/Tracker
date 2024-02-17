@@ -98,11 +98,13 @@ final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateVie
     
     func didFinishCreatingHabitAndDismiss() {
         dismiss(animated: true, completion: nil)
+        self.habitCreateDelegate?.didFinishCreatingHabitAndDismiss()
     }
     
     func didCreateHabit(withCategoryLabel selectedCategoryString: String?, 
                         selectedScheduleDays: [WeekDay]?,
                         trackerName: String?) {
+        self.habitCreateDelegate?.didCreateHabit(withCategoryLabel: selectedCategoryString, selectedScheduleDays: selectedScheduleDays, trackerName: trackerName)
     }
     
     // MARK: - Screen Func

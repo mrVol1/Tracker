@@ -312,6 +312,5 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
         self.selectedTrackerName = selectedHabitString
         self.selectedScheduleDays = selectedScheduleDays ?? []
         
-        labelCategory.text = selectedCategoryString
     }
 }

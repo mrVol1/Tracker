@@ -42,7 +42,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     
     private var trackerRecord: TrackerRecord?
     
-    fileprivate func closeKyeboard() {
+    fileprivate func configereKeyboard() {
         let tapGesture = UITapGestureRecognizer(target: self,
                                                 action: #selector(hideKeyboard))
         tapGesture.cancelsTouchesInView = false
@@ -64,7 +64,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         
         updateCreateButtonState()
         
-        closeKyeboard()
+        configereKeyboard()
     }
     
     // MARK: - Screen Config
