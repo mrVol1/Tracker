@@ -32,9 +32,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     
     weak var scheduleDelegate: ScheduleViewControllerDelegate?
     weak var habitCreateDelegate: NewHabitCreateViewControllerDelegate?
-    weak var addCategoryDelegate: AddCategoryViewControllerDelegate?    
-//    weak var backDelegate: NewHabitCreateViewControllerDelegate?
-
+    weak var addCategoryDelegate: AddCategoryViewControllerDelegate?
     
     let label = UILabel()
     let trackerName = UITextField()
@@ -43,6 +41,14 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     let tableView = UITableView()
     
     private var trackerRecord: TrackerRecord?
+    
+    fileprivate func closeKyeboard() {
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGesture)
+        saveButton.addTarget(self, action: #selector(buttonActionForHabitSave), for: .touchUpInside)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,11 +64,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         
         updateCreateButtonState()
         
-        let tapGesture = UITapGestureRecognizer(target: self,
-                                                action: #selector(hideKeyboard))
-        tapGesture.cancelsTouchesInView = false
-        self.view.addGestureRecognizer(tapGesture)
-        saveButton.addTarget(self, action: #selector(buttonActionForHabitSave), for: .touchUpInside)
+        closeKyeboard()
     }
     
     // MARK: - Screen Config

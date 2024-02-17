@@ -17,6 +17,8 @@ final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateVie
     let customFontBold = UIFont(name: "SFProDisplay-Medium", size: UIFont.labelFontSize)
     let habbitButton = UIButton()
     let eventButton = UIButton()
+    
+    weak var habitCreateDelegate: NewHabitCreateViewControllerDelegate?
         
     override func viewDidLoad() {
         
@@ -95,9 +97,7 @@ final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateVie
     }
     
     func didFinishCreatingHabitAndDismiss() {
-        dismiss(animated: true) {
-            self.viewWillAppear(true)
-        }
+        dismiss(animated: true, completion: nil)
     }
     
     func didCreateHabit(withCategoryLabel selectedCategoryString: String?, 

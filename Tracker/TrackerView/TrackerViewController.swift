@@ -277,6 +277,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     @objc func buttonAction() {
         let createHabbit = ChoseHabitOrEventViewController()
+        createHabbit.habitCreateDelegate = self
         let createHabbitNavigationController = UINavigationController(rootViewController: createHabbit)
         present(createHabbitNavigationController, animated: true, completion: nil)
     }
@@ -298,7 +299,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
 extension TrackerViewController: NewHabitCreateViewControllerDelegate {
     func didFinishCreatingHabitAndDismiss() {
-        
+        loadCategories()
     }
     
 
