@@ -8,9 +8,9 @@
 import UIKit
 
 class TrackerViewCell: UICollectionViewCell {
-    
-    private var isChecked = false
-    
+        
+    var isChecked = false
+        
     private let containerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: 0x33 / 255.0, green: 0xCF / 255.0, blue: 0x69 / 255.0, alpha: 1.0)
@@ -33,12 +33,13 @@ class TrackerViewCell: UICollectionViewCell {
         return labelCount
     }()
     
-    private let addButton: UIButton = {
+    lazy var addButton: UIButton = {
         let button = UIButton()
         button.setTitle("+", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor(red: 0x33 / 255.0, green: 0xCF / 255.0, blue: 0x69 / 255.0, alpha: 1.0)
         button.layer.cornerRadius = 17
+        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -54,18 +55,18 @@ class TrackerViewCell: UICollectionViewCell {
         isUserInteractionEnabled = true
         setupUI()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private func setupUI() {
         addSubview(containerView)
-        containerView.addSubview(label)
         addSubview(labelCount)
         addSubview(addButton)
         addSubview(checkmarkImageView)
-
+        containerView.addSubview(label)
+        
         // Настройка констретов элементов интерфейса
         containerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -78,16 +79,16 @@ class TrackerViewCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
-            label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12),
-            label.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -24) 
+            label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10),
+            label.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -30)
         ])
-
+        
         addButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             addButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 8),
             addButton.widthAnchor.constraint(equalToConstant: 34),
             addButton.heightAnchor.constraint(equalToConstant: 34),
-            addButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 128)
+            addButton.leftAnchor.constraint(equalTo: labelCount.leftAnchor, constant: 130)
         ])
         
         labelCount.translatesAutoresizingMaskIntoConstraints = false
@@ -103,16 +104,14 @@ class TrackerViewCell: UICollectionViewCell {
             checkmarkImageView.widthAnchor.constraint(equalToConstant: 20),
             checkmarkImageView.heightAnchor.constraint(equalToConstant: 20)
         ])
-        
-        addButton.isUserInteractionEnabled = true
-        addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
     }
     
     func configure(with tracker: Tracker) {
         label.text = tracker.name
     }
     
-    @objc private func addButtonTapped() {
+    @objc func addButtonTapped() {
+        print("Button tapped in cell")
         isChecked.toggle()
         
         if isChecked {

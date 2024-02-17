@@ -25,7 +25,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     var newHabit: [Tracker]
     var createdCategoryName: String?
     var labelCategory: UILabel!
-
+    
     let labelCount: UILabel = {
         let labelCount = UILabel()
         labelCount.textColor = .black
@@ -178,6 +178,16 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Cell at indexPath \(indexPath) selected")
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerViewCell else {
+            print("Failed to get cell for indexPath \(indexPath)")
+            return
+        }
+        
+        cell.addButtonTapped()
+    }
+    
     // MARK: - Screen Func
     
     @objc func searchValueChanged() {
@@ -215,6 +225,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             
             categories = [TrackerCategory(label: createdCategoryName!, trackerMassiv: [])]
             newHabit = [Tracker(id: 1, name: selectedTrackerName!, color: "", emodji: "", timetable: "")]
+            completedTrackers = [TrackerRecord(id: UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!, date: Date(), selectedDays: selectedScheduleDays, trackerId: 1)]
             
         } else {
             //добавление картинки
@@ -246,23 +257,15 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     func applySearchFilter(_ searchText: String) {
-        guard !categories.isEmpty else {
-            newHabit = []
-            collectionViewTrackers.reloadData()
-            return
-        }
-
         if searchText.isEmpty {
             newHabit = categories.flatMap { $0.trackerMassiv ?? [] }
         } else {
-            newHabit = categories.flatMap { category -> [Tracker] in
-                let filteredTrackers = (category.trackerMassiv ?? []).filter { tracker in
+            newHabit = categories.flatMap { category in
+                category.trackerMassiv?.filter { tracker in
                     return tracker.name.lowercased().contains(searchText.lowercased())
-                }
-                return filteredTrackers
+                } ?? []
             }
         }
-
         collectionViewTrackers.reloadData()
     }
     
@@ -296,13 +299,13 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         collectionViewTrackers.reloadData()
     }
 }
-    
+
 extension TrackerViewController: NewHabitCreateViewControllerDelegate {
     func didFinishCreatingHabitAndDismiss() {
         loadCategories()
     }
     
-
+    
     func didCreateHabit(
         withCategoryLabel selectedCategoryString: String?,
         selectedScheduleDays: [WeekDay]?,
