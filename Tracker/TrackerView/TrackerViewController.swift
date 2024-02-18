@@ -30,6 +30,12 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     var createdCategoryName: String?
     var labelCategory: UILabel!
     
+    var currentDate: Date = Date() {
+        didSet {
+            filterTrackersByDate(currentDate)
+        }
+    }
+    
     let labelCount: UILabel = {
         let labelCount = UILabel()
         labelCount.textColor = .black
@@ -227,8 +233,8 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             ])
             
             categories = [TrackerCategory(label: createdCategoryName!, trackerMassiv: [])]
-            newHabit = [Tracker(id: 1, name: selectedTrackerName!, color: "", emodji: "", timetable: "")]
-            completedTrackers = [TrackerRecord(id: UUID(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!, date: Date(), selectedDays: selectedScheduleDays, trackerId: 1)]
+            newHabit = [Tracker(id: 1, name: selectedTrackerName!, color: "", emodji: "", timetable: selectedScheduleDays)]
+            print(selectedScheduleDays)
             
         } else {
             //добавление картинки
@@ -289,16 +295,21 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
-        let selectedDate = sender.date
-        let filteredTrackers = completedTrackers.filter { trackerRecord in
-            return Calendar.current.isDate(trackerRecord.date, inSameDayAs: selectedDate)
+        print("Selected Date: \(currentDate)")
+        print("Completed Trackers: \(completedTrackers)")
+        currentDate = sender.date
+        print("Filtered Trackers: \(newHabit)")
+    }
+    
+    private func filterTrackersByDate(_ date: Date) {
+        let dayOfWeek = Calendar.current.component(.weekday, from: date)
+        let selectedWeekDay = WeekDay(rawValue: "\(dayOfWeek)")
+
+        newHabit = newHabit.filter { tracker in
+            // Проверяем, содержит ли расписание хотя бы один из выбранных дней недели
+            return selectedScheduleDays.contains(where: { tracker.timetable.contains($0) })
         }
-        newHabit = filteredTrackers.compactMap { trackerRecord in
-            guard let index = newHabit.firstIndex(where: { $0.id == trackerRecord.trackerId }) else {
-                return nil
-            }
-            return newHabit[index]
-        }
+
         collectionViewTrackers.reloadData()
     }
 }
@@ -323,8 +334,14 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
 
 extension TrackerViewController: TrackerCompletionDelegate {
     func didCompleteTracker(_ tracker: Tracker) {
-        let trackerRecord = TrackerRecord(id: UUID(), date: Date(), selectedDays: selectedScheduleDays, trackerId: tracker.id)
+        let trackerRecord = TrackerRecord(id: UUID(), date: currentDate, selectedDays: selectedScheduleDays, trackerId: tracker.id)
         completedTrackers.append(trackerRecord)
         collectionViewTrackers.reloadData()
+    }
+}
+
+extension TrackerViewController: ScheduleViewControllerDelegate {
+    func didSelectScheduleDays(_ selectedDays: [WeekDay]) {
+        self.selectedScheduleDays = selectedDays
     }
 }

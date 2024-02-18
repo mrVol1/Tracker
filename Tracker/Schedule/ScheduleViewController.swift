@@ -6,16 +6,7 @@
 //
 
 import UIKit
-
-enum WeekDay: String, CaseIterable, Codable {
-    case monday = "Понедельник"
-    case tuesday = "Вторник"
-    case wednesday = "Среда"
-    case thursday = "Четверг"
-    case friday = "Пятница"
-    case saturday = "Суббота"
-    case sunday = "Воскресенье"
-}
+import Foundation
 
 protocol ScheduleViewControllerDelegate: AnyObject {
     func didSelectScheduleDays(_ selectedDays: [WeekDay])
