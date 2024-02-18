@@ -8,9 +8,13 @@
 import UIKit
 
 class TrackerViewCell: UICollectionViewCell {
-        
+    
+    weak var completionDelegate: TrackerCompletionDelegate?
+    
     var isChecked = false
-        
+    var tracker: Tracker?
+    var completedDaysCount = 0
+    
     private let containerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: 0x33 / 255.0, green: 0xCF / 255.0, blue: 0x69 / 255.0, alpha: 1.0)
@@ -111,19 +115,24 @@ class TrackerViewCell: UICollectionViewCell {
     }
     
     @objc func addButtonTapped() {
-        print("Button tapped in cell")
         isChecked.toggle()
         
         if isChecked {
             addButton.setTitle("", for: .normal)
             checkmarkImageView.isHidden = false
             addButton.alpha = 0.3
-            labelCount.text = "1 дней"
+            completedDaysCount += 1
+            labelCount.text = "\(completedDaysCount) дней"
+            
+            if let tracker = tracker {
+                completionDelegate?.didCompleteTracker(tracker)
+            }
         } else {
             addButton.setTitle("+", for: .normal)
             checkmarkImageView.isHidden = true
             addButton.alpha = 1.0
-            labelCount.text = "0 дней"
+            completedDaysCount += 1
+            labelCount.text = "\(completedDaysCount) дней"
         }
     }
 }

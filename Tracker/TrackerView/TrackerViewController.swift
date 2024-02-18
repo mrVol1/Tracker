@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol TrackerCompletionDelegate: AnyObject {
+    func didCompleteTracker(_ tracker: Tracker)
+}
+
 class TrackerViewController: UIViewController, UITextFieldDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
     
     let grayColor = UIColorsForProject()
@@ -179,12 +183,11 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Cell at indexPath \(indexPath) selected")
         guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerViewCell else {
-            print("Failed to get cell for indexPath \(indexPath)")
             return
         }
-        
+        let tracker = newHabit[indexPath.item]
+        cell.tracker = tracker
         cell.addButtonTapped()
     }
     
@@ -315,5 +318,13 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
         self.selectedTrackerName = selectedHabitString
         self.selectedScheduleDays = selectedScheduleDays ?? []
         
+    }
+}
+
+extension TrackerViewController: TrackerCompletionDelegate {
+    func didCompleteTracker(_ tracker: Tracker) {
+        let trackerRecord = TrackerRecord(id: UUID(), date: Date(), selectedDays: selectedScheduleDays, trackerId: tracker.id)
+        completedTrackers.append(trackerRecord)
+        collectionViewTrackers.reloadData()
     }
 }
