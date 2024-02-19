@@ -184,6 +184,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
         let tracker = newHabit[indexPath.item]
         cell.configure(with: tracker)
+        cell.addButton.addTarget(self, action: #selector(addButtonTapped(_:)), for: .touchUpInside)
         
         return cell
     }
@@ -196,8 +197,22 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         cell.tracker = tracker
         cell.addButtonTapped()
     }
+
     
     // MARK: - Screen Func
+    
+    @objc func addButtonTapped(_ sender: UIButton) {
+        guard let cell = sender.superview?.superview as? TrackerViewCell else {
+            return
+        }
+        let indexPath = collectionViewTrackers.indexPath(for: cell)
+        guard let index = indexPath?.item else {
+            return
+        }
+        let tracker = newHabit[index]
+        cell.tracker = tracker
+        cell.addButtonTapped()
+    }
     
     @objc func searchValueChanged() {
         let searchText = search.text ?? ""
@@ -295,21 +310,21 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
-        print("Selected Date: \(currentDate)")
-        print("Completed Trackers: \(completedTrackers)")
-        currentDate = sender.date
-        print("Filtered Trackers: \(newHabit)")
+        filterTrackersByDate(sender.date)
     }
     
     private func filterTrackersByDate(_ date: Date) {
         let dayOfWeek = Calendar.current.component(.weekday, from: date)
         let selectedWeekDay = WeekDay(rawValue: "\(dayOfWeek)")
 
-        newHabit = newHabit.filter { tracker in
-            // Проверяем, содержит ли расписание хотя бы один из выбранных дней недели
-            return selectedScheduleDays.contains(where: { tracker.timetable.contains($0) })
+        if let selectedWeekDay = selectedWeekDay {
+            newHabit = newHabit.filter { tracker in
+                let trackerWeekDays = tracker.timetable.compactMap { WeekDay(rawValue: $0.rawValue) }
+                return trackerWeekDays.contains(selectedWeekDay)
+            }
+        } else {
+            newHabit = []
         }
-
         collectionViewTrackers.reloadData()
     }
 }

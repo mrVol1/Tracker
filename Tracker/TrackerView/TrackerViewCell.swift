@@ -65,12 +65,12 @@ class TrackerViewCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        addSubview(containerView)
-        addSubview(labelCount)
-        addSubview(addButton)
-        addSubview(checkmarkImageView)
+        contentView.addSubview(containerView)
+        contentView.addSubview(labelCount)
+        contentView.addSubview(addButton)
+        contentView.addSubview(checkmarkImageView)
         containerView.addSubview(label)
-        
+
         // Настройка констретов элементов интерфейса
         containerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -98,7 +98,7 @@ class TrackerViewCell: UICollectionViewCell {
         labelCount.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             labelCount.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 16),
-            labelCount.leftAnchor.constraint(equalTo: leftAnchor, constant: 0)
+            labelCount.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 0)
         ])
         
         checkmarkImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -122,17 +122,17 @@ class TrackerViewCell: UICollectionViewCell {
             checkmarkImageView.isHidden = false
             addButton.alpha = 0.3
             completedDaysCount += 1
-            labelCount.text = "\(completedDaysCount) дней"
-            
-            if let tracker = tracker {
-                completionDelegate?.didCompleteTracker(tracker)
-            }
         } else {
             addButton.setTitle("+", for: .normal)
             checkmarkImageView.isHidden = true
             addButton.alpha = 1.0
-            completedDaysCount += 1
-            labelCount.text = "\(completedDaysCount) дней"
+            completedDaysCount -= 1
+        }
+        
+        labelCount.text = "\(completedDaysCount) дней"
+        
+        if let tracker = tracker {
+            completionDelegate?.didCompleteTracker(tracker)
         }
     }
 }
