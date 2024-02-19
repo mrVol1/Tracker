@@ -66,13 +66,14 @@ class TrackerViewCell: UICollectionViewCell {
     
     private func setupUI() {
         contentView.addSubview(containerView)
+        contentView.addSubview(label)
         contentView.addSubview(labelCount)
         contentView.addSubview(addButton)
         contentView.addSubview(checkmarkImageView)
-        containerView.addSubview(label)
 
         // Настройка констретов элементов интерфейса
         containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.isUserInteractionEnabled = true
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: topAnchor),
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -81,6 +82,7 @@ class TrackerViewCell: UICollectionViewCell {
         ])
         
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.isUserInteractionEnabled = false
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
             label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10),
@@ -88,6 +90,7 @@ class TrackerViewCell: UICollectionViewCell {
         ])
         
         addButton.translatesAutoresizingMaskIntoConstraints = false
+        addButton.isUserInteractionEnabled = true
         NSLayoutConstraint.activate([
             addButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 8),
             addButton.widthAnchor.constraint(equalToConstant: 34),

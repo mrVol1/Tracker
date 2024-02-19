@@ -184,7 +184,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
         let tracker = newHabit[indexPath.item]
         cell.configure(with: tracker)
-        cell.addButton.addTarget(self, action: #selector(addButtonTapped(_:)), for: .touchUpInside)
         
         return cell
     }
@@ -200,19 +199,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
 
     
     // MARK: - Screen Func
-    
-    @objc func addButtonTapped(_ sender: UIButton) {
-        guard let cell = sender.superview?.superview as? TrackerViewCell else {
-            return
-        }
-        let indexPath = collectionViewTrackers.indexPath(for: cell)
-        guard let index = indexPath?.item else {
-            return
-        }
-        let tracker = newHabit[index]
-        cell.tracker = tracker
-        cell.addButtonTapped()
-    }
     
     @objc func searchValueChanged() {
         let searchText = search.text ?? ""
