@@ -56,7 +56,6 @@ class TrackerViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        isUserInteractionEnabled = true
         setupUI()
     }
     
@@ -71,39 +70,37 @@ class TrackerViewCell: UICollectionViewCell {
         contentView.addSubview(addButton)
         contentView.addSubview(checkmarkImageView)
 
-        // Настройка констретов элементов интерфейса
+        // Настройка констрейнтов элементов интерфейса
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.isUserInteractionEnabled = true
+        containerView.isUserInteractionEnabled = false
+
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: topAnchor),
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
             containerView.widthAnchor.constraint(equalToConstant: 167),
             containerView.heightAnchor.constraint(equalToConstant: 90)
         ])
-        
+
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isUserInteractionEnabled = false
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
-            label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10),
-            label.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -30)
+            label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12),
         ])
-        
+
+        labelCount.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            labelCount.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 34),
+        ])
+
         addButton.translatesAutoresizingMaskIntoConstraints = false
         addButton.isUserInteractionEnabled = true
         NSLayoutConstraint.activate([
             addButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 8),
+            addButton.leadingAnchor.constraint(equalTo: labelCount.trailingAnchor, constant: 74),
             addButton.widthAnchor.constraint(equalToConstant: 34),
             addButton.heightAnchor.constraint(equalToConstant: 34),
-            addButton.leftAnchor.constraint(equalTo: labelCount.leftAnchor, constant: 130)
         ])
-        
-        labelCount.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            labelCount.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 16),
-            labelCount.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 0)
-        ])
-        
+
         checkmarkImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             checkmarkImageView.centerXAnchor.constraint(equalTo: addButton.centerXAnchor),
@@ -121,7 +118,7 @@ class TrackerViewCell: UICollectionViewCell {
         isChecked.toggle()
         
         if isChecked {
-            addButton.setTitle("", for: .normal)
+            addButton.setTitle("✓", for: .normal)
             checkmarkImageView.isHidden = false
             addButton.alpha = 0.3
             completedDaysCount += 1

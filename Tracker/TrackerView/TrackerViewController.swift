@@ -196,6 +196,10 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         cell.tracker = tracker
         cell.addButtonTapped()
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 167, height: 148)
+    }
 
     
     // MARK: - Screen Func
@@ -222,7 +226,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             ])
             
             //добавление списка трекеров
-            collectionViewTrackers.register(TrackerViewCell.self, forCellWithReuseIdentifier: "trackerCell")
             view.addSubview(collectionViewTrackers)
             
             collectionViewTrackers.translatesAutoresizingMaskIntoConstraints = false
