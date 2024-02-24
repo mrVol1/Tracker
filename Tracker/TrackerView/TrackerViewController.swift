@@ -25,6 +25,8 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     var newHabit: [Tracker]
     var createdCategoryName: String?
     var labelCategory: UILabel!
+    var completedDaysCount: Int = 0
+    var selectedTrackers: [Int: Bool] = [:]
     
     var currentDate: Date = Date() {
         didSet {
@@ -179,26 +181,31 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! TrackerViewCell
         
         let tracker = newHabit[indexPath.item]
+        let isChecked = selectedTrackers[tracker.id] ?? false
+        
         cell.configure(
             with: tracker,
-            isChecked: false, //completedTrackers.contains(where: tracker),
-            completedDaysCount: 0
+            isChecked: isChecked,
+            completedDaysCount: isChecked ? 1 : 0
         )
 
         cell.completion = { [weak self] in
-            guard let self else { return }
-            let trackerRecord = TrackerRecord(
-                id: UUID(),
-                date: self.currentDate,
-                selectedDays: self.selectedScheduleDays,
-                trackerId: tracker.id
+            guard let self = self else { return }
+            
+            // Инвертируем состояние выбранного трекера
+            self.selectedTrackers[tracker.id] = !(self.selectedTrackers[tracker.id] ?? false)
+            
+            // Обновляем ячейку с учетом нового состояния
+            cell.configure(
+                with: tracker,
+                isChecked: self.selectedTrackers[tracker.id] ?? false,
+                completedDaysCount: (self.selectedTrackers[tracker.id] ?? false) ? 1 : 0
             )
-            self.completedTrackers.append(trackerRecord)
-            self.collectionViewTrackers.reloadData()
         }
 
         return cell
     }
+
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerViewCell else {
