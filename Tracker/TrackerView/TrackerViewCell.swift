@@ -78,27 +78,28 @@ class TrackerViewCell: UICollectionViewCell {
 
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             containerView.widthAnchor.constraint(equalToConstant: 167),
             containerView.heightAnchor.constraint(equalToConstant: 90)
         ])
 
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
-            label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12),
+            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 44),
         ])
 
 
         NSLayoutConstraint.activate([
-            labelCount.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 34),
+            labelCount.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            labelCount.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 82),
         ])
 
         NSLayoutConstraint.activate([
-            addButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 8),
-            addButton.leadingAnchor.constraint(equalTo: labelCount.trailingAnchor, constant: 74),
+            addButton.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 56),
+            addButton.leadingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 88),
             addButton.widthAnchor.constraint(equalToConstant: Const.plusButotnSize),
             addButton.heightAnchor.constraint(equalToConstant: Const.plusButotnSize),
         ])
-
     }
     
     // MARK: - configs

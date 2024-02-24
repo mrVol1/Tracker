@@ -204,11 +204,11 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerViewCell else {
             return
         }
-        cell.addButtonTapped()
+        cell.completion?()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 167, height: 148)
+        return CGSize(width: collectionView.bounds.width, height: UIView.layoutFittingCompressedSize.height)
     }
 
     
@@ -237,18 +237,17 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             
             //добавление списка трекеров
             view.addSubview(collectionViewTrackers)
-            
+
             collectionViewTrackers.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 collectionViewTrackers.topAnchor.constraint(equalTo: labelCategory.topAnchor, constant: 24),
                 collectionViewTrackers.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
                 collectionViewTrackers.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-                collectionViewTrackers.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+                collectionViewTrackers.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 12)
             ])
             
             categories = [TrackerCategory(label: createdCategoryName!, trackerMassiv: [])]
             newHabit = [Tracker(id: 1, name: selectedTrackerName!, color: "", emodji: "", timetable: selectedScheduleDays)]
-            print(selectedScheduleDays)
             
         } else {
             //добавление картинки
