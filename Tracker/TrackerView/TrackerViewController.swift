@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol TrackerCompletionDelegate: AnyObject {
-    func didCompleteTracker(_ tracker: Tracker)
-}
-
 class TrackerViewController: UIViewController, UITextFieldDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
     
     let grayColor = UIColorsForProject()
@@ -183,8 +179,24 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! TrackerViewCell
         
         let tracker = newHabit[indexPath.item]
-        cell.configure(with: tracker)
-        
+        cell.configure(
+            with: tracker,
+            isChecked: false, //completedTrackers.contains(where: tracker),
+            completedDaysCount: 0
+        )
+
+        cell.completion = { [weak self] in
+            guard let self else { return }
+            let trackerRecord = TrackerRecord(
+                id: UUID(),
+                date: self.currentDate,
+                selectedDays: self.selectedScheduleDays,
+                trackerId: tracker.id
+            )
+            self.completedTrackers.append(trackerRecord)
+            self.collectionViewTrackers.reloadData()
+        }
+
         return cell
     }
     
@@ -192,8 +204,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerViewCell else {
             return
         }
-        let tracker = newHabit[indexPath.item]
-        cell.tracker = tracker
         cell.addButtonTapped()
     }
     
@@ -287,8 +297,12 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         return true
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        return true
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        true
     }
     
     @objc func buttonAction() {
@@ -333,14 +347,6 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
         self.selectedTrackerName = selectedHabitString
         self.selectedScheduleDays = selectedScheduleDays ?? []
         
-    }
-}
-
-extension TrackerViewController: TrackerCompletionDelegate {
-    func didCompleteTracker(_ tracker: Tracker) {
-        let trackerRecord = TrackerRecord(id: UUID(), date: currentDate, selectedDays: selectedScheduleDays, trackerId: tracker.id)
-        completedTrackers.append(trackerRecord)
-        collectionViewTrackers.reloadData()
     }
 }
 

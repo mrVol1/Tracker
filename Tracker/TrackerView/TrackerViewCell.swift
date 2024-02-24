@@ -8,18 +8,25 @@
 import UIKit
 
 class TrackerViewCell: UICollectionViewCell {
+
+    // MARK: - closures
+
+    var completion: (() -> Void)?
+
+    // MARK: - consts
+
+    enum Const {
+        static let plusButotnSize: CGFloat = 34.0
+    }
     
-    weak var completionDelegate: TrackerCompletionDelegate?
-    
-    var isChecked = false
-    var tracker: Tracker?
-    var completedDaysCount = 0
-    
+    // MARK: - subview
+
     private let containerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: 0x33 / 255.0, green: 0xCF / 255.0, blue: 0x69 / 255.0, alpha: 1.0)
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -27,6 +34,7 @@ class TrackerViewCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .white
         label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -34,6 +42,7 @@ class TrackerViewCell: UICollectionViewCell {
         let labelCount = UILabel()
         labelCount.textColor = .black
         labelCount.text = "0 дней"
+        labelCount.translatesAutoresizingMaskIntoConstraints = false
         return labelCount
     }()
     
@@ -42,18 +51,14 @@ class TrackerViewCell: UICollectionViewCell {
         button.setTitle("+", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor(red: 0x33 / 255.0, green: 0xCF / 255.0, blue: 0x69 / 255.0, alpha: 1.0)
-        button.layer.cornerRadius = 17
+        button.layer.cornerRadius = Const.plusButotnSize / 2.0
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    private let checkmarkImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "checkmark"))
-        imageView.contentMode = .scaleAspectFit
-        imageView.isHidden = true
-        return imageView
-    }()
-    
+    // MARK: - life cycle
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -63,16 +68,13 @@ class TrackerViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - setup
+
     private func setupUI() {
         contentView.addSubview(containerView)
         contentView.addSubview(label)
         contentView.addSubview(labelCount)
         contentView.addSubview(addButton)
-        contentView.addSubview(checkmarkImageView)
-
-        // Настройка констрейнтов элементов интерфейса
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.isUserInteractionEnabled = false
 
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
@@ -80,59 +82,43 @@ class TrackerViewCell: UICollectionViewCell {
             containerView.heightAnchor.constraint(equalToConstant: 90)
         ])
 
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.isUserInteractionEnabled = false
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
             label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12),
         ])
 
-        labelCount.translatesAutoresizingMaskIntoConstraints = false
+
         NSLayoutConstraint.activate([
             labelCount.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 34),
         ])
 
-        addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.isUserInteractionEnabled = true
         NSLayoutConstraint.activate([
             addButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 8),
             addButton.leadingAnchor.constraint(equalTo: labelCount.trailingAnchor, constant: 74),
-            addButton.widthAnchor.constraint(equalToConstant: 34),
-            addButton.heightAnchor.constraint(equalToConstant: 34),
+            addButton.widthAnchor.constraint(equalToConstant: Const.plusButotnSize),
+            addButton.heightAnchor.constraint(equalToConstant: Const.plusButotnSize),
         ])
 
-        checkmarkImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            checkmarkImageView.centerXAnchor.constraint(equalTo: addButton.centerXAnchor),
-            checkmarkImageView.centerYAnchor.constraint(equalTo: addButton.centerYAnchor),
-            checkmarkImageView.widthAnchor.constraint(equalToConstant: 20),
-            checkmarkImageView.heightAnchor.constraint(equalToConstant: 20)
-        ])
     }
     
-    func configure(with tracker: Tracker) {
+    // MARK: - configs
+
+    func configure(with tracker: Tracker, isChecked: Bool, completedDaysCount: Int) {
         label.text = tracker.name
-    }
-    
-    @objc func addButtonTapped() {
-        isChecked.toggle()
-        
+
         if isChecked {
             addButton.setTitle("✓", for: .normal)
-            checkmarkImageView.isHidden = false
             addButton.alpha = 0.3
-            completedDaysCount += 1
         } else {
             addButton.setTitle("+", for: .normal)
-            checkmarkImageView.isHidden = true
             addButton.alpha = 1.0
-            completedDaysCount -= 1
         }
-        
         labelCount.text = "\(completedDaysCount) дней"
-        
-        if let tracker = tracker {
-            completionDelegate?.didCompleteTracker(tracker)
-        }
+    }
+
+    // MARK: - actions
+
+    @objc func addButtonTapped() {
+        completion?()
     }
 }
