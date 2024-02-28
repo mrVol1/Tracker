@@ -182,6 +182,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
         let tracker = newHabit[indexPath.item]
         let isChecked = selectedTrackers[tracker.id] ?? false
+        cell.frame = CGRect(x: 0, y: 0, width: 167, height: 148)
         
         cell.configure(
             with: tracker,
@@ -192,10 +193,8 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         cell.completion = { [weak self] in
             guard let self = self else { return }
             
-            // Инвертируем состояние выбранного трекера
             self.selectedTrackers[tracker.id] = !(self.selectedTrackers[tracker.id] ?? false)
             
-            // Обновляем ячейку с учетом нового состояния
             cell.configure(
                 with: tracker,
                 isChecked: self.selectedTrackers[tracker.id] ?? false,
@@ -301,6 +300,12 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        if let searchText = textField.text, searchText.isEmpty {
+            loadCategories()
+        }
     }
     
     func textField(

@@ -16,7 +16,7 @@ class TrackerViewCell: UICollectionViewCell {
     // MARK: - consts
 
     enum Const {
-        static let plusButotnSize: CGFloat = 34.0
+        static let plusButtonSize: CGFloat = 34.0
     }
     
     // MARK: - subview
@@ -51,7 +51,7 @@ class TrackerViewCell: UICollectionViewCell {
         button.setTitle("+", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor(red: 0x33 / 255.0, green: 0xCF / 255.0, blue: 0x69 / 255.0, alpha: 1.0)
-        button.layer.cornerRadius = Const.plusButotnSize / 2.0
+        button.layer.cornerRadius = Const.plusButtonSize / 2.0
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -77,28 +77,28 @@ class TrackerViewCell: UICollectionViewCell {
         contentView.addSubview(addButton)
 
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-            containerView.widthAnchor.constraint(equalToConstant: 167),
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             containerView.heightAnchor.constraint(equalToConstant: 90)
         ])
 
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 44),
+            label.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
+            label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12),
         ])
 
 
         NSLayoutConstraint.activate([
-            labelCount.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            labelCount.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 82),
+            labelCount.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
+            labelCount.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 36),
         ])
 
         NSLayoutConstraint.activate([
-            addButton.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 56),
-            addButton.leadingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 88),
-            addButton.widthAnchor.constraint(equalToConstant: Const.plusButotnSize),
-            addButton.heightAnchor.constraint(equalToConstant: Const.plusButotnSize),
+            addButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 8),
+            addButton.leadingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -38),
+            addButton.widthAnchor.constraint(equalToConstant: Const.plusButtonSize),
+            addButton.heightAnchor.constraint(equalToConstant: Const.plusButtonSize),
         ])
     }
     
