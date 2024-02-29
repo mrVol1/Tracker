@@ -17,6 +17,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     let newHabitCreateController = NewHabitCreateViewController()
     let container = UIDatePicker()
     let customFontBold = UIFont(name: "SFProDisplay-Bold", size: UIFont.labelFontSize)
+    let categoryNameView = CategoryNameClass()
     
     var selectedTrackerName: String?
     var selectedScheduleDays: [WeekDay] = []
@@ -58,6 +59,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(TrackerViewCell.self, forCellWithReuseIdentifier: "trackerCell")
+        collectionView.register(CategoryNameClass.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CategoryNameClass.reuseIdentifier)
         collectionView.backgroundColor = .white
         return collectionView
     }()
@@ -97,6 +99,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         labelTracker()
         
         searchTextField()
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -204,6 +207,17 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
 
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CategoryNameClass.reuseIdentifier, for: indexPath) as! CategoryNameClass
+            headerView.titleLabel.text = createdCategoryName
+            return headerView
+        default:
+            fatalError("Unexpected element kind")
+        }
+    }
 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -225,37 +239,17 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         applySearchFilter(searchText)
     }
     
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return categories.count
+    }
+    
     func loadCategories() {
         if createdCategoryName != nil {
-            
-            //настройка лейбла категории
-            labelCategory = UILabel()
-            labelCategory.textColor = .black
-            labelCategory.text = createdCategoryName
-            labelCategory.font = UIFontMetrics.default.scaledFont(for: customFontBoldMidle ?? UIFont.systemFont(ofSize: 19, weight: UIFont.Weight.bold) ).withSize(19)
-            view.addSubview(labelCategory)
-            
-            labelCategory.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                labelCategory.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 148),
-                labelCategory.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16)
-            ])
-            
-            //добавление списка трекеров
-            view.addSubview(collectionViewTrackers)
-
-            collectionViewTrackers.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                collectionViewTrackers.topAnchor.constraint(equalTo: labelCategory.topAnchor, constant: 24),
-                collectionViewTrackers.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-                collectionViewTrackers.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-                collectionViewTrackers.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 12)
-            ])
-            
             categories = [TrackerCategory(label: createdCategoryName!, trackerMassiv: [])]
             newHabit = [Tracker(id: 1, name: selectedTrackerName!, color: "", emodji: "", timetable: selectedScheduleDays)]
-            
-        } else {
+            updateUI()
+        }
+        else {
             //добавление картинки
             guard let defaultImage = UIImage(named: "1") else { return }
             let imageView = UIImageView(image: defaultImage)
@@ -281,7 +275,34 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                 defultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         }
-        collectionViewTrackers.reloadData()
+    }
+    
+    func updateUI() {
+        setupLabelCategory()
+        setupCollectionViewTrackers()
+    }
+
+    func setupLabelCategory() {
+        categoryNameView.titleLabel.text = createdCategoryName
+        view.addSubview(categoryNameView)
+        
+        categoryNameView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            categoryNameView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 148),
+            categoryNameView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16)
+        ])
+    }
+
+    func setupCollectionViewTrackers() {
+        view.addSubview(collectionViewTrackers)
+
+        collectionViewTrackers.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            collectionViewTrackers.topAnchor.constraint(equalTo: categoryNameView.topAnchor, constant: 24),
+            collectionViewTrackers.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            collectionViewTrackers.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            collectionViewTrackers.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 12)
+        ])
     }
     
     func applySearchFilter(_ searchText: String) {
