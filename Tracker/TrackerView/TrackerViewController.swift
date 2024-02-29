@@ -240,6 +240,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
+        print(categories.count)
         return categories.count
     }
     
@@ -378,7 +379,15 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
         self.createdCategoryName = selectedCategoryString
         self.selectedTrackerName = selectedHabitString
         self.selectedScheduleDays = selectedScheduleDays ?? []
-        
+
+        // Создание новой категории
+        let newCategory = TrackerCategory(label: selectedCategoryString ?? "", trackerMassiv: [])
+
+        // Добавление новой категории в массив категорий
+        categories.append(newCategory)
+
+        // Перезагрузка коллекции для отображения новой категории
+        collectionViewTrackers.reloadData()
     }
 }
 
