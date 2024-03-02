@@ -232,8 +232,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             fatalError("Unexpected element kind")
         }
     }
-
-    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerViewCell else {

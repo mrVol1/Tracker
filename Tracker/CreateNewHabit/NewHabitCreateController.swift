@@ -26,7 +26,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     var selectedHabitString: String?
     var selectedCategoryString: String?
     var selectedScheduleDays: [WeekDay] = []
-    var selectedTrackerName: String?
+    var selectedTrackerName: [String] = []
     var trackerId: Int = 0
     var cellWithCategoryLabel: CategoryTableViewCell?
     
@@ -258,17 +258,28 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     // MARK: - Screen Func
     
     @objc private func buttonActionForHabitSave() {
-        selectedHabitString = trackerName.text
+        guard let selectedHabitString = trackerName.text else {
+            return
+        }
         
+        guard let selectedCategoryString = selectedCategoryString else {
+            return
+        }
+        
+        let selectedDays = selectedScheduleDays
+
         habitCreateDelegate?.didCreateHabit(
             withCategoryLabel: selectedCategoryString,
-            selectedScheduleDays: selectedScheduleDays,
+            selectedScheduleDays: selectedDays,
             trackerName: selectedHabitString
         )
+        
+        selectedTrackerName.append(selectedHabitString)
+        
         let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
         trackerViewController.createdCategoryName = selectedCategoryString
         trackerViewController.selectedTrackerName = selectedHabitString
-        trackerViewController.selectedScheduleDays = selectedScheduleDays
+        trackerViewController.selectedScheduleDays = selectedDays
         
         finishCreatingHabitAndDismiss()
     }
