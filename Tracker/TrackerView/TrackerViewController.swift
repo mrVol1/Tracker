@@ -290,7 +290,9 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         categoryNameView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             categoryNameView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 148),
-            categoryNameView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16)
+            categoryNameView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
+            categoryNameView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 16),
+            categoryNameView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 16)
         ])
     }
 
@@ -299,7 +301,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
 
         collectionViewTrackers.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            collectionViewTrackers.topAnchor.constraint(equalTo: categoryNameView.topAnchor, constant: 24),
+            collectionViewTrackers.topAnchor.constraint(equalTo: search.topAnchor, constant: 24),
             collectionViewTrackers.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             collectionViewTrackers.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             collectionViewTrackers.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 12)
@@ -380,13 +382,10 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
         self.selectedTrackerName = selectedHabitString
         self.selectedScheduleDays = selectedScheduleDays ?? []
 
-        // Создание новой категории
         let newCategory = TrackerCategory(label: selectedCategoryString ?? "", trackerMassiv: [])
 
-        // Добавление новой категории в массив категорий
         categories.append(newCategory)
 
-        // Перезагрузка коллекции для отображения новой категории
         collectionViewTrackers.reloadData()
     }
 }
