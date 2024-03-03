@@ -9,6 +9,8 @@ import UIKit
 
 class TrackerViewController: UIViewController, UITextFieldDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
     
+    private var categoriesLoaded = false
+    
     let grayColor = UIColorsForProject()
     let search = UISearchTextField()
     let nameForLabelCategory = UILabel()
@@ -84,7 +86,10 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
         search.delegate = self
         
-        loadCategories()
+        if !categoriesLoaded {
+            loadCategories()
+            categoriesLoaded = true
+        }
         
         view.backgroundColor = .white
         
@@ -105,7 +110,10 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadCategories()
+        if !categoriesLoaded {
+            loadCategories()
+            categoriesLoaded = true
+        }
     }
     
     
@@ -254,8 +262,10 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     func loadCategories() {
         if createdCategoryName != nil {
+            
             categories = [TrackerCategory(label: createdCategoryName!, trackerMassiv: [])]
             newHabit = [Tracker(id: 1, name: selectedTrackerName!, color: "", emodji: "", timetable: selectedScheduleDays)]
+            
             updateUI()
         }
         else {
@@ -336,7 +346,10 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
         if let searchText = textField.text, searchText.isEmpty {
-            loadCategories()
+            if !categoriesLoaded {
+                loadCategories()
+                categoriesLoaded = true
+            }
         }
     }
     
@@ -377,7 +390,10 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
 
 extension TrackerViewController: NewHabitCreateViewControllerDelegate {
     func didFinishCreatingHabitAndDismiss() {
-        loadCategories()
+        if !categoriesLoaded {
+            loadCategories()
+            categoriesLoaded = true
+        }
     }
     
     
@@ -386,18 +402,18 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
         selectedScheduleDays: [WeekDay]?,
         trackerName selectedHabitString: String?
     ) {
-        self.createdCategoryName = selectedCategoryString
-        self.selectedTrackerName = selectedHabitString
-        self.selectedScheduleDays = selectedScheduleDays ?? []
+//        self.createdCategoryName = selectedCategoryString
+//        self.selectedTrackerName = selectedHabitString
+//        self.selectedScheduleDays = selectedScheduleDays ?? []
         
         let newCategory = TrackerCategory(label: selectedCategoryString ?? "", trackerMassiv: newHabit)
         
         categories.append(newCategory)
         
-        if categories.count > 1 {
-            previousHeaderView = categoryNameView
-            print(categoryNameView)
-        }
+//        if categories.count > 1 {
+//            previousHeaderView = categoryNameView
+//            print(categoryNameView)
+//        }
         
         collectionViewTrackers.reloadData()
     }
