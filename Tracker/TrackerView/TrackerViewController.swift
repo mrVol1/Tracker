@@ -390,30 +390,18 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
 
 extension TrackerViewController: NewHabitCreateViewControllerDelegate {
     func didFinishCreatingHabitAndDismiss() {
-        if !categoriesLoaded {
-            loadCategories()
-            categoriesLoaded = true
-        }
+        loadCategories()
     }
-    
-    
+
     func didCreateHabit(
         withCategoryLabel selectedCategoryString: String?,
         selectedScheduleDays: [WeekDay]?,
-        trackerName selectedHabitString: String?
+        tracker: Tracker
     ) {
-//        self.createdCategoryName = selectedCategoryString
-//        self.selectedTrackerName = selectedHabitString
-//        self.selectedScheduleDays = selectedScheduleDays ?? []
         
-        let newCategory = TrackerCategory(label: selectedCategoryString ?? "", trackerMassiv: newHabit)
+        let newCategory = TrackerCategory(label: selectedCategoryString ?? "", trackerMassiv: [tracker])
         
         categories.append(newCategory)
-        
-//        if categories.count > 1 {
-//            previousHeaderView = categoryNameView
-//            print(categoryNameView)
-//        }
         
         collectionViewTrackers.reloadData()
     }

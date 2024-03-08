@@ -8,14 +8,14 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "D459453A-D490-47C6-B601-48EB60670EBD"
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tracker/CreateNewHabit/NewHabitCreateController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "289"
-            endingLineNumber = "289"
+            startingLineNumber = "293"
+            endingLineNumber = "293"
             landmarkName = "finishCreatingHabitAndDismiss()"
             landmarkType = "7">
          </BreakpointContent>
@@ -24,7 +24,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "B9B9E71D-06B4-4495-8096-C0B630CFCC75"
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tracker/ChoseHabitOrEventViewController.swift"
@@ -34,22 +34,38 @@
             endingLineNumber = "99"
             landmarkName = "didFinishCreatingHabitAndDismiss()"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "603B4413-D5DA-4324-BED1-4726EE8D8AAE"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tracker/ChoseHabitOrEventViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
-            landmarkName = "didCreateHabit(withCategoryLabel:selectedScheduleDays:trackerName:)"
-            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B9B9E71D-06B4-4495-8096-C0B630CFCC75 - b2d61a51cc560176"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.ChoseHabitOrEventViewController.didFinishCreatingHabitAndDismiss() -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/eduardkarimov/Documents/Tracker/Tracker/ChoseHabitOrEventViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "100"
+                  endingLineNumber = "100"
+                  offsetFromSymbolStart = "28">
+               </Location>
+               <Location
+                  uuid = "B9B9E71D-06B4-4495-8096-C0B630CFCC75 - b2d61a51cc560176"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.ChoseHabitOrEventViewController.didFinishCreatingHabitAndDismiss() -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/eduardkarimov/Documents/Tracker/Tracker/ChoseHabitOrEventViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "100"
+                  endingLineNumber = "100"
+                  offsetFromSymbolStart = "44">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -83,16 +99,112 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F3E5D634-BA87-4578-A128-BC839A460E42"
+            uuid = "93A0C56A-E1D1-49B3-90E6-835D19DB8B34"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tracker/TrackerView/TrackerViewController.swift"
+            filePath = "Tracker/CreateNewHabit/NewHabitCreateController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "264"
-            endingLineNumber = "264"
-            landmarkName = "loadCategories()"
+            startingLineNumber = "260"
+            endingLineNumber = "260"
+            landmarkName = "buttonActionForHabitSave()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "93A0C56A-E1D1-49B3-90E6-835D19DB8B34 - 23bcf35f1bdee7aa"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.NewHabitCreateViewController.buttonActionForHabitSave() -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/eduardkarimov/Documents/Tracker/Tracker/CreateNewHabit/NewHabitCreateController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "261"
+                  endingLineNumber = "261"
+                  offsetFromSymbolStart = "76">
+               </Location>
+               <Location
+                  uuid = "93A0C56A-E1D1-49B3-90E6-835D19DB8B34 - 23bcf35f1bdee7aa"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.NewHabitCreateViewController.buttonActionForHabitSave() -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/eduardkarimov/Documents/Tracker/Tracker/CreateNewHabit/NewHabitCreateController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "261"
+                  endingLineNumber = "261"
+                  offsetFromSymbolStart = "92">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "13E27158-4549-4B18-9CC6-72375AE7BFE2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tracker/ChoseHabitOrEventViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "didCreateHabit(withCategoryLabel:selectedScheduleDays:tracker:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "13E27158-4549-4B18-9CC6-72375AE7BFE2 - 50020bb7ef7da17b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.ChoseHabitOrEventViewController.didCreateHabit(withCategoryLabel: Swift.Optional&lt;Swift.String&gt;, selectedScheduleDays: Swift.Optional&lt;Swift.Array&lt;Tracker.WeekDay&gt;&gt;, tracker: Tracker.Tracker) -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/eduardkarimov/Documents/Tracker/Tracker/ChoseHabitOrEventViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "107"
+                  endingLineNumber = "107"
+                  offsetFromSymbolStart = "76">
+               </Location>
+               <Location
+                  uuid = "13E27158-4549-4B18-9CC6-72375AE7BFE2 - 50020bb7ef7da198"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.ChoseHabitOrEventViewController.didCreateHabit(withCategoryLabel: Swift.Optional&lt;Swift.String&gt;, selectedScheduleDays: Swift.Optional&lt;Swift.Array&lt;Tracker.WeekDay&gt;&gt;, tracker: Tracker.Tracker) -&gt; ()"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/eduardkarimov/Documents/Tracker/Tracker/ChoseHabitOrEventViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "108"
+                  endingLineNumber = "108"
+                  offsetFromSymbolStart = "132">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A2ED9370-75DB-4D6F-B2FF-2571756168EE"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tracker/ChoseHabitOrEventViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
+            landmarkName = "buttonActionForCreateHabbit()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

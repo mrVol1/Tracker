@@ -16,7 +16,7 @@ protocol NewHabitCreateViewControllerDelegate: AnyObject {
     func didCreateHabit(
         withCategoryLabel selectedCategoryString: String?,
         selectedScheduleDays: [WeekDay]?,
-        trackerName: String?
+        tracker: Tracker
     )
     func didFinishCreatingHabitAndDismiss()
 }
@@ -267,11 +267,14 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         }
         
         let selectedDays = selectedScheduleDays
+        let tracker = Tracker(id: 1, name: selectedHabitString, color: "", emodji: "", timetable: selectedScheduleDays)
+        
+        print("Before calling didCreateHabit")
 
         habitCreateDelegate?.didCreateHabit(
             withCategoryLabel: selectedCategoryString,
             selectedScheduleDays: selectedDays,
-            trackerName: selectedHabitString
+            tracker: tracker
         )
         
         selectedTrackerName.append(selectedHabitString)
@@ -286,6 +289,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     
     func finishCreatingHabitAndDismiss() {
         dismiss(animated: false) {
+            print("Before calling didFinishCreatingHabitAndDismiss")
             self.habitCreateDelegate?.didFinishCreatingHabitAndDismiss()
         }
     }
