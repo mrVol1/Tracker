@@ -92,22 +92,33 @@ final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateVie
         ])
     }
     
+    var didFinishCreatingHabitAndDismissCalled = false
+
     func didFinishCreatingHabitAndDismiss() {
-        dismiss(animated: true, completion: nil)
-        print("Inside didfinishCreatingHabitAndDismiss")
-        self.habitCreateDelegate?.didFinishCreatingHabitAndDismiss()
+        guard !didFinishCreatingHabitAndDismissCalled else {
+            return
+        }
+        didFinishCreatingHabitAndDismissCalled = true
+        
+        dismiss(animated: true) {
+            print("Inside completion block of dismiss")
+            self.habitCreateDelegate?.didFinishCreatingHabitAndDismiss()
+        }
     }
     
     func didCreateHabit(withCategoryLabel selectedCategoryString: String?, 
                         selectedScheduleDays: [WeekDay]?,
                         tracker: Tracker) {
         print("Inside didCreateHabit")
+        print("selectedCategoryString: \(String(describing: selectedCategoryString))")
+        print("selectedScheduleDays: \(String(describing: selectedScheduleDays))")
         self.habitCreateDelegate?.didCreateHabit(withCategoryLabel: selectedCategoryString, selectedScheduleDays: selectedScheduleDays, tracker: tracker)
     }
     
     // MARK: - Screen Func
     
     @objc private func buttonActionForCreateHabbit() {
+        print("Before setting habitCreateDelegate in ChoseHabitOrEventViewController: \(String(describing: self.habitCreateDelegate))")
         let createHabbitbutton = NewHabitCreateViewController()
         createHabbitbutton.habitCreateDelegate = self
         let createNewHabbitButtonNavigationController = UINavigationController(rootViewController: createHabbitbutton)

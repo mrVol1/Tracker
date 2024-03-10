@@ -88,6 +88,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         search.delegate = self
         
         if !categoriesLoaded {
+            print("Before calling loadCategories() in viewDidLoad()")
             loadCategories()
             categoriesLoaded = true
         }
@@ -262,7 +263,11 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     func loadCategories() {
-        if selectedCategoryString != nil {
+        print("createdCategoryName: \(String(describing: createdCategoryName))")
+        print("selectedCategoryString: \(String(describing: selectedCategoryString))")
+        print("selectedScheduleDays: \(String(describing: selectedScheduleDays))")
+        if createdCategoryName != nil {
+            print("Inside if createdCategoryName != nil in loadCategories()")
             
             categories = [TrackerCategory(label: createdCategoryName!, trackerMassiv: [])]
             newHabit = [Tracker(id: 1, name: selectedCategoryString!, color: "", emodji: "", timetable: selectedScheduleDays)]
@@ -363,6 +368,9 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     @objc func buttonAction() {
+        print("Before setting selectedCategoryString: \(String(describing: selectedCategoryString))")
+        print("Before setting selectedScheduleDays: \(String(describing: selectedScheduleDays))")
+        
         let createHabbit = ChoseHabitOrEventViewController()
         createHabbit.habitCreateDelegate = self
         let createHabbitNavigationController = UINavigationController(rootViewController: createHabbit)
@@ -391,6 +399,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
 
 extension TrackerViewController: NewHabitCreateViewControllerDelegate {
     func didFinishCreatingHabitAndDismiss() {
+        print("Inside didFinishCreatingHabitAndDismiss()")
         loadCategories()
     }
 
@@ -399,6 +408,11 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
         selectedScheduleDays: [WeekDay]?,
         tracker: Tracker
     ) {
+        print("Inside didCreateHabit()")
+        
+        self.createdCategoryName = tracker.name
+        self.selectedCategoryString = selectedCategoryString
+        self.selectedScheduleDays = selectedScheduleDays ?? []
         
         let newCategory = TrackerCategory(label: selectedCategoryString ?? "", trackerMassiv: [tracker])
         
