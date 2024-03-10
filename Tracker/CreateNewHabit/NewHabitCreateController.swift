@@ -281,7 +281,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         
         let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
         trackerViewController.createdCategoryName = selectedCategoryString
-        trackerViewController.selectedTrackerName = selectedHabitString
+        trackerViewController.newHabit = [tracker]
         trackerViewController.selectedScheduleDays = selectedDays
         
         finishCreatingHabitAndDismiss()

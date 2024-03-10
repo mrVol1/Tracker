@@ -21,7 +21,8 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     let customFontBold = UIFont(name: "SFProDisplay-Bold", size: UIFont.labelFontSize)
     let categoryNameView = CategoryNameClass()
     
-    var selectedTrackerName: String?
+    var selectedCategoryString: String?
+    var selectedHabitString: String?
     var selectedScheduleDays: [WeekDay] = []
     var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord]
@@ -261,10 +262,10 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     func loadCategories() {
-        if createdCategoryName != nil {
+        if selectedCategoryString != nil {
             
             categories = [TrackerCategory(label: createdCategoryName!, trackerMassiv: [])]
-            newHabit = [Tracker(id: 1, name: selectedTrackerName!, color: "", emodji: "", timetable: selectedScheduleDays)]
+            newHabit = [Tracker(id: 1, name: selectedCategoryString!, color: "", emodji: "", timetable: selectedScheduleDays)]
             
             updateUI()
         }
@@ -404,6 +405,7 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
         categories.append(newCategory)
         
         collectionViewTrackers.reloadData()
+        didFinishCreatingHabitAndDismiss()
     }
 }
 

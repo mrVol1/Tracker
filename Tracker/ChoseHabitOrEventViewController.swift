@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol ChoseHabitOrEventViewControllerDelegate: AnyObject {
-    func didFinishCreatingHabitAndDismiss()
-}
-
 final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateViewControllerDelegate {
     
     let label = UILabel()
