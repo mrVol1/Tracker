@@ -9,7 +9,7 @@ import Foundation
 
 final class TrackerCategory: Codable {
     let label: String
-    let trackerMassiv: [Tracker]?
+    var trackerMassiv: [Tracker]?
 
     init(label: String, trackerMassiv: [Tracker]?) {
         self.label = label

@@ -32,6 +32,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     var completedDaysCount: Int = 0
     var selectedTrackers: [Int: Bool] = [:]
     var previousHeaderView: CategoryNameClass?
+    var didCreateHabitCalled = false
     
     var currentDate: Date = Date() {
         didSet {
@@ -93,6 +94,11 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             categoriesLoaded = true
         }
         
+        print("categoriesLoaded: \(categoriesLoaded)")
+        print("createdCategoryName: \(String(describing: createdCategoryName))")
+        print("selectedCategoryString: \(String(describing: selectedCategoryString))")
+        print("selectedScheduleDays: \(String(describing: selectedScheduleDays))")
+        
         view.backgroundColor = .white
         
         collectionViewTrackers.delegate = self
@@ -111,6 +117,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        print("Inside viewWillAppear")
         super.viewWillAppear(animated)
         if !categoriesLoaded {
             loadCategories()
@@ -188,6 +195,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     // MARK: - CollectionView setting
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("Number of categories: \(categories.count)")
         return categories.count
     }
     
@@ -233,7 +241,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                 headerView.frame.origin.y = convertedOrigin.y - headerView.bounds.height
             }
             
-            headerView.titleLabel.text = createdCategoryName
+            headerView.titleLabel.text = categories[indexPath.section].label
             
             previousHeaderView = headerView
             
@@ -263,14 +271,20 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     func loadCategories() {
+        print("Inside loadCategories()")
+        print("categoriesLoaded: \(categoriesLoaded)")
         print("createdCategoryName: \(String(describing: createdCategoryName))")
         print("selectedCategoryString: \(String(describing: selectedCategoryString))")
         print("selectedScheduleDays: \(String(describing: selectedScheduleDays))")
+                
         if createdCategoryName != nil {
             print("Inside if createdCategoryName != nil in loadCategories()")
             
             categories = [TrackerCategory(label: createdCategoryName!, trackerMassiv: [])]
             newHabit = [Tracker(id: 1, name: selectedCategoryString!, color: "", emodji: "", timetable: selectedScheduleDays)]
+            
+            print("Categories after updating: \(categories)")
+            print("New habits after updating: \(newHabit)")
             
             updateUI()
         }
@@ -299,8 +313,17 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                 defultLabel.bottomAnchor.constraint(equalTo: imageView.safeAreaLayoutGuide.bottomAnchor, constant: 28),
                 defultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
+            
+            categories = []
+            
+            if !newHabit.isEmpty {
+                let category = TrackerCategory(label: "New Category", trackerMassiv: newHabit)
+                categories.append(category)
+            }
         }
+        categoriesLoaded = true
     }
+
     
     func updateUI() {
         setupLabelCategory()
@@ -409,17 +432,30 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
         tracker: Tracker
     ) {
         print("Inside didCreateHabit()")
-        
         self.createdCategoryName = tracker.name
         self.selectedCategoryString = selectedCategoryString
         self.selectedScheduleDays = selectedScheduleDays ?? []
+        print("createdCategoryName: \(String(describing: createdCategoryName))")
+        print("selectedCategoryString: \(String(describing: selectedCategoryString))")
+        print("selectedScheduleDays: \(String(describing: selectedScheduleDays))")
+        print("Categories after adding new habit: \(categories)")
         
-        let newCategory = TrackerCategory(label: selectedCategoryString ?? "", trackerMassiv: [tracker])
+        let newHabit = Tracker(id: categories.count + 1, name: selectedCategoryString ?? "", color: "", emodji: "", timetable: selectedScheduleDays ?? [])
         
-        categories.append(newCategory)
+        if let existingCategoryIndex = categories.firstIndex(where: { $0.label == selectedCategoryString }) {
+            let updatedCategory = categories[existingCategoryIndex]
+            updatedCategory.trackerMassiv?.append(newHabit)
+            categories[existingCategoryIndex] = updatedCategory
+        } else {
+            let newCategory = TrackerCategory(label: selectedCategoryString ?? "", trackerMassiv: [newHabit])
+            categories.append(newCategory)
+        }
+        
+        print("Categories after adding new habit: \(categories)")
+        print("New habits after creating: \(newHabit)")
         
         collectionViewTrackers.reloadData()
-        didFinishCreatingHabitAndDismiss()
+        didCreateHabitCalled = true
     }
 }
 
