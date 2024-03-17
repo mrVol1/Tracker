@@ -13,11 +13,7 @@ enum TableSection: Int, CaseIterable {
 }
 
 protocol NewHabitCreateViewControllerDelegate: AnyObject {
-    func didCreateHabit(
-        withCategoryLabel selectedCategoryString: String?,
-        selectedScheduleDays: [WeekDay]?,
-        tracker: Tracker
-    )
+    func didCreateHabit(with trackerCategoryInMain: TrackerCategory)
     func didFinishCreatingHabitAndDismiss()
 }
 
@@ -259,12 +255,10 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     
     @objc private func buttonActionForHabitSave() {
         guard let selectedHabitString = trackerName.text else {
-            print("Error: selectedHabitString is nil")
             return
         }
         
         guard let selectedCategoryString = selectedCategoryString else {
-            print("Error: selectedCategoryString is nil")
             return
         }
         
@@ -272,13 +266,9 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         
         let tracker = Tracker(id: 1, name: selectedHabitString, color: "", emodji: "", timetable: selectedScheduleDays)
         
-        print("Before calling didCreateHabit")
-
-        habitCreateDelegate?.didCreateHabit(
-            withCategoryLabel: selectedCategoryString,
-            selectedScheduleDays: selectedDays,
-            tracker: tracker
-        )
+        let trackerCategoryInMain = TrackerCategory(label: selectedCategoryString, trackerArray: [tracker])
+        
+        habitCreateDelegate?.didCreateHabit(with: trackerCategoryInMain)
         
         selectedTrackerName.append(selectedHabitString)
         
@@ -291,12 +281,8 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     }
     
     func finishCreatingHabitAndDismiss() {
-        print("Before dismissing habit creation view controller")
         dismiss(animated: false) {
-            print("Inside completion block of dismiss")
-            print("Before calling didFinishCreatingHabitAndDismiss")
             self.habitCreateDelegate?.didFinishCreatingHabitAndDismiss()
-            print("After calling didFinishCreatingHabitAndDismiss")
         }
     }
     

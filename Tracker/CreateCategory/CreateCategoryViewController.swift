@@ -145,7 +145,7 @@ final class CreateCategoryViewController: UIViewController, UITextFieldDelegate 
             return
         }
         
-        let category = TrackerCategory(label: enteredText, trackerMassiv: nil)
+        let category = TrackerCategory(label: enteredText, trackerArray: nil)
         
         delegate?.didCreatedCategory(category, categories: createdCategory)
         dismiss(animated: true) {

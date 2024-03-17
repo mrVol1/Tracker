@@ -9,10 +9,10 @@ import Foundation
 
 final class TrackerCategory: Codable {
     let label: String
-    var trackerMassiv: [Tracker]?
+    var trackerArray: [Tracker]?
 
-    init(label: String, trackerMassiv: [Tracker]?) {
+    init(label: String, trackerArray: [Tracker]?) {
         self.label = label
-        self.trackerMassiv = trackerMassiv
+        self.trackerArray = trackerArray
     }
 }
