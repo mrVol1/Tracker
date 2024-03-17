@@ -13,14 +13,12 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     let grayColor = UIColorsForProject()
     let search = UISearchTextField()
-    let nameForLabelCategory = UILabel()
     let label = UILabel()
     let customFontBoldMidle = UIFont(name: "SFProDisplay-Medium", size: 19)
     let newHabitCreateController = NewHabitCreateViewController()
     let container = UIDatePicker()
     let customFontBold = UIFont(name: "SFProDisplay-Bold", size: UIFont.labelFontSize)
     let categoryNameView = CategoryNameClass()
-    let sizeCategoryLayout = UICollectionViewFlowLayout()
     
     var selectedCategoryString: String?
     var selectedHabitString: String?
@@ -110,9 +108,10 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
         searchTextField()
         
-        sizeCategoryLayout.headerReferenceSize = CGSize(width: 200, height: 20)
-        
-        collectionViewTrackers.collectionViewLayout = sizeCategoryLayout
+        if let layout = collectionViewTrackers.collectionViewLayout as? UICollectionViewFlowLayout {
+                layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+                layout.headerReferenceSize = CGSize(width: collectionViewTrackers.frame.width, height: 50)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -260,6 +259,10 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         return CGSize(width: collectionView.bounds.width, height: UIView.layoutFittingCompressedSize.height)
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.bounds.width, height: 60)
+    }
+    
     
     // MARK: - Screen Func
     
@@ -314,32 +317,20 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
 
     
     func updateUI() {
-        setupLabelCategory()
         setupCollectionViewTrackers()
-    }
-    
-    func setupLabelCategory() {
-        categoryNameView.titleLabel.text = createdCategoryName
-        view.addSubview(categoryNameView)
-        
-        categoryNameView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            categoryNameView.topAnchor.constraint(equalTo: search.safeAreaLayoutGuide.topAnchor, constant: 54),
-            categoryNameView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
-            categoryNameView.rightAnchor.constraint(equalTo: view.rightAnchor),
-        ])
     }
     
     func setupCollectionViewTrackers() {
         view.addSubview(collectionViewTrackers)
-        
+
         collectionViewTrackers.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            collectionViewTrackers.topAnchor.constraint(equalTo: categoryNameView.topAnchor, constant: 34),
-            collectionViewTrackers.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            collectionViewTrackers.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            collectionViewTrackers.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 12)
-        ])
+               NSLayoutConstraint.activate([
+                   collectionViewTrackers.topAnchor.constraint(equalTo: search.topAnchor, constant: 54),
+                   collectionViewTrackers.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+                   collectionViewTrackers.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+                   collectionViewTrackers.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 12)
+               ])
+
     }
     
     func applySearchFilter(_ searchText: String) {
