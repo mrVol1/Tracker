@@ -20,6 +20,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     let container = UIDatePicker()
     let customFontBold = UIFont(name: "SFProDisplay-Bold", size: UIFont.labelFontSize)
     let categoryNameView = CategoryNameClass()
+    let sizeCategoryLayout = UICollectionViewFlowLayout()
     
     var selectedCategoryString: String?
     var selectedHabitString: String?
@@ -109,6 +110,9 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
         searchTextField()
         
+        sizeCategoryLayout.headerReferenceSize = CGSize(width: 200, height: 20)
+        
+        collectionViewTrackers.collectionViewLayout = sizeCategoryLayout
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -301,7 +305,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             categories = []
             
             if !newHabit.isEmpty {
-                let category = TrackerCategory(label: "New Category", trackerArray: newHabit)
+                let category = TrackerCategory(label: createdCategoryName!, trackerArray: newHabit)
                 categories.append(category)
             }
         }
@@ -323,7 +327,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             categoryNameView.topAnchor.constraint(equalTo: search.safeAreaLayoutGuide.topAnchor, constant: 54),
             categoryNameView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
             categoryNameView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            categoryNameView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     

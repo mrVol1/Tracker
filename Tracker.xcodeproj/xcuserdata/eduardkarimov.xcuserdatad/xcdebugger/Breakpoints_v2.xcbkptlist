@@ -16,8 +16,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "95"
             endingLineNumber = "95"
-            landmarkName = "ChoseHabitOrEventViewController"
-            landmarkType = "3">
+            landmarkName = "constraitsForEventButton()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -36,14 +36,14 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "11C2D336-3A3E-446F-97D5-D0F25539AC14"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tracker/TrackerView/TrackerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "228"
-            endingLineNumber = "228"
+            startingLineNumber = "232"
+            endingLineNumber = "232"
             landmarkName = "collectionView(_:viewForSupplementaryElementOfKind:at:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,8 +74,8 @@
             filePath = "Tracker/TrackerView/TrackerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "267"
-            endingLineNumber = "267"
+            startingLineNumber = "273"
+            endingLineNumber = "273"
             landmarkName = "loadCategories()"
             landmarkType = "7">
          </BreakpointContent>
@@ -106,8 +106,8 @@
             filePath = "Tracker/TrackerView/TrackerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "409"
-            endingLineNumber = "409"
+            startingLineNumber = "414"
+            endingLineNumber = "414"
             landmarkName = "didCreateHabit(with:)"
             landmarkType = "7">
          </BreakpointContent>
