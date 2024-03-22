@@ -75,7 +75,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         self.newHabit = newCategories
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         self.categories = []
         self.completedTrackers = []
@@ -112,6 +112,8 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                 layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
                 layout.headerReferenceSize = CGSize(width: collectionViewTrackers.frame.width, height: 50)
         }
+        
+        collectionViewTrackers.register(CategoryNameClass.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CategoryNameClass.reuseIdentifier)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -192,9 +194,18 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     // MARK: - CollectionView setting
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("Number of categories: \(categories.count)")
         return categories.count
     }
+    
+//    func numberOfSections(in collectionView: UICollectionView) -> Int {
+//        return categories.count
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        // Возвращаем количество трекеров в данной категории (секции)
+//        print("Number of categories: \(categories.count)")
+//        return categories[section].trackerArray?.count ?? 0
+//    }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! TrackerViewCell
@@ -205,7 +216,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
         let tracker = newHabit[indexPath.item]
         let isChecked = selectedTrackers[tracker.id] ?? false
-        cell.frame = CGRect(x: 0, y: 0, width: 167, height: 148)
         
         cell.configure(
             with: tracker,
@@ -232,16 +242,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CategoryNameClass.reuseIdentifier, for: indexPath) as! CategoryNameClass
-            
-            if previousHeaderView == nil {
-                let convertedOrigin = collectionView.convert(CGPoint.zero, to: self.view)
-                headerView.frame.origin.y = convertedOrigin.y - headerView.bounds.height
-            }
-            
             headerView.titleLabel.text = categories[indexPath.section].label
-            
-            previousHeaderView = headerView
-            
             return headerView
         default:
             fatalError("Unexpected element kind")
@@ -256,7 +257,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: UIView.layoutFittingCompressedSize.height)
+        return CGSize(width: collectionView.bounds.width / 3, height: 148)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -330,6 +331,12 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                    collectionViewTrackers.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
                    collectionViewTrackers.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 12)
                ])
+        
+        if let layout = collectionViewTrackers.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.itemSize = CGSize(width: 167, height: 148)
+            layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            layout.headerReferenceSize = CGSize(width: collectionViewTrackers.frame.width, height: 50)
+        }
 
     }
     
@@ -401,24 +408,25 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
     }
 
     func didCreateHabit(with trackerCategoryInMain: TrackerCategory) {
-        
         self.createdCategoryName = trackerCategoryInMain.trackerArray?.first?.name
         self.selectedCategoryString = trackerCategoryInMain.label
         self.selectedScheduleDays = trackerCategoryInMain.trackerArray?.first?.timetable ?? []
-        
-        let newHabit = Tracker(id: categories.count + 1, name: selectedCategoryString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
-        
+
+        // Проверяем, существует ли уже категория с таким же названием
         if let existingCategoryIndex = categories.firstIndex(where: { $0.label == selectedCategoryString }) {
+            // Если категория существует, добавляем новый трекер к существующей категории
             let updatedCategory = categories[existingCategoryIndex]
+            let newHabit = Tracker(id: updatedCategory.trackerArray?.count ?? 0 + 1, name: selectedCategoryString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
             updatedCategory.trackerArray?.append(newHabit)
             categories[existingCategoryIndex] = updatedCategory
         } else {
+            // Если категория не существует, создаем новую категорию и добавляем в нее новый трекер
+            let newHabit = Tracker(id: 1, name: createdCategoryName ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
             let newCategory = TrackerCategory(label: selectedCategoryString ?? "", trackerArray: [newHabit])
             categories.append(newCategory)
         }
-        
+
         collectionViewTrackers.reloadData()
-        didCreateHabitCalled = true
     }
 }
 
@@ -427,3 +435,4 @@ extension TrackerViewController: ScheduleViewControllerDelegate {
         self.selectedScheduleDays = selectedDays
     }
 }
+
