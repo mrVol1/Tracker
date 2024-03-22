@@ -193,19 +193,18 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     // MARK: - CollectionView setting
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return categories.count
-    }
-    
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 //        return categories.count
 //    }
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        // Возвращаем количество трекеров в данной категории (секции)
-//        print("Number of categories: \(categories.count)")
-//        return categories[section].trackerArray?.count ?? 0
-//    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return categories.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("Number of categories: \(categories.count)")
+        return categories[section].trackerArray?.count ?? 0
+    }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! TrackerViewCell
@@ -408,9 +407,21 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
     }
 
     func didCreateHabit(with trackerCategoryInMain: TrackerCategory) {
-        self.createdCategoryName = trackerCategoryInMain.trackerArray?.first?.name
+        if let trackerArray = trackerCategoryInMain.trackerArray {
+            for tracker in trackerArray {
+                let trackerName = tracker.name
+                self.createdCategoryName = trackerName
+            }
+        }
+        
+        if let trackerArray = trackerCategoryInMain.trackerArray {
+            for tracker in trackerArray {
+                let trackerName = tracker.timetable
+                self.selectedScheduleDays = trackerName
+            }
+        }
+        
         self.selectedCategoryString = trackerCategoryInMain.label
-        self.selectedScheduleDays = trackerCategoryInMain.trackerArray?.first?.timetable ?? []
 
         // Проверяем, существует ли уже категория с таким же названием
         if let existingCategoryIndex = categories.firstIndex(where: { $0.label == selectedCategoryString }) {
