@@ -19,10 +19,9 @@ protocol NewHabitCreateViewControllerDelegate: AnyObject {
 
 final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, AddCategoryViewControllerDelegate {
     
-    var selectedHabitString: String?
     var selectedCategoryString: String?
     var selectedScheduleDays: [WeekDay] = []
-    var selectedTrackerName: [String] = []
+    var selectedTrackerName: String?
     var trackerId: Int = 0
     var cellWithCategoryLabel: CategoryTableViewCell?
     
@@ -254,28 +253,32 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     // MARK: - Screen Func
     
     @objc private func buttonActionForHabitSave() {
-        guard let selectedHabitString = trackerName.text else {
+        selectedTrackerName = trackerName.text
+        
+        guard var selectedTrackerName = selectedTrackerName else {
             return
         }
         
         guard let selectedCategoryString = selectedCategoryString else {
             return
         }
-        
-        let selectedDays = selectedScheduleDays
-        
-        let tracker = Tracker(id: 1, name: selectedHabitString, color: "", emodji: "", timetable: selectedScheduleDays)
+                
+        let tracker = Tracker(id: 1, name: selectedTrackerName, color: "", emodji: "", timetable: selectedScheduleDays)
         
         let trackerCategoryInMain = TrackerCategory(label: selectedCategoryString, trackerArray: [tracker])
         
-        habitCreateDelegate?.didCreateHabit(with: trackerCategoryInMain)
+        if let delegate = habitCreateDelegate {
+            delegate.didCreateHabit(with: trackerCategoryInMain)
+        } else {
+            print("Ошибка: делегат не инициализирован!")
+        }
         
-        selectedTrackerName.append(selectedHabitString)
+        selectedTrackerName.append(selectedTrackerName)
         
         let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
         trackerViewController.createdCategoryName = selectedCategoryString
-        trackerViewController.newHabit = [tracker]
-        trackerViewController.selectedScheduleDays = selectedDays
+        trackerViewController.selectedHabitString = selectedTrackerName
+        trackerViewController.selectedScheduleDays = selectedScheduleDays
         
         finishCreatingHabitAndDismiss()
     }

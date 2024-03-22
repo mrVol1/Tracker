@@ -31,7 +31,6 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     var selectedIndexPath: IndexPath?
     
     private var isCheckmarkSelected: Bool = false
-    private var createdCategoryName: String?
     private var categories: String?
     private var isCellSelected: Bool = false
     private let label = UILabel()

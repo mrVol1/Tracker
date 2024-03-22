@@ -20,7 +20,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     let customFontBold = UIFont(name: "SFProDisplay-Bold", size: UIFont.labelFontSize)
     let categoryNameView = CategoryNameClass()
     
-    var selectedCategoryString: String?
     var selectedHabitString: String?
     var selectedScheduleDays: [WeekDay] = []
     var trackerCategoryInMain: [TrackerCategory] = []
@@ -28,7 +27,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     var completedTrackers: [TrackerRecord]
     var newHabit: [Tracker]
     var createdCategoryName: String?
-    var labelCategory: UILabel!
     var completedDaysCount: Int = 0
     var selectedTrackers: [Int: Bool] = [:]
     var previousHeaderView: CategoryNameClass?
@@ -193,10 +191,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     // MARK: - CollectionView setting
     
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return categories.count
-//    }
-    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return categories.count
     }
@@ -275,7 +269,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                 
         if createdCategoryName != nil {
             categories = [TrackerCategory(label: createdCategoryName!, trackerArray: [])]
-            newHabit = [Tracker(id: 1, name: selectedCategoryString!, color: "", emodji: "", timetable: selectedScheduleDays)]
+            newHabit = [Tracker(id: 1, name: selectedHabitString!, color: "", emodji: "", timetable: selectedScheduleDays)]
             
             updateUI()
         }
@@ -410,7 +404,7 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
         if let trackerArray = trackerCategoryInMain.trackerArray {
             for tracker in trackerArray {
                 let trackerName = tracker.name
-                self.createdCategoryName = trackerName
+                self.selectedHabitString = trackerName
             }
         }
         
@@ -421,19 +415,19 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
             }
         }
         
-        self.selectedCategoryString = trackerCategoryInMain.label
+        self.createdCategoryName = trackerCategoryInMain.label
 
         // Проверяем, существует ли уже категория с таким же названием
-        if let existingCategoryIndex = categories.firstIndex(where: { $0.label == selectedCategoryString }) {
+        if let existingCategoryIndex = categories.firstIndex(where: { $0.label == createdCategoryName }) {
             // Если категория существует, добавляем новый трекер к существующей категории
             let updatedCategory = categories[existingCategoryIndex]
-            let newHabit = Tracker(id: updatedCategory.trackerArray?.count ?? 0 + 1, name: selectedCategoryString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
+            let newHabit = Tracker(id: updatedCategory.trackerArray?.count ?? 0 + 1, name: selectedHabitString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
             updatedCategory.trackerArray?.append(newHabit)
             categories[existingCategoryIndex] = updatedCategory
         } else {
             // Если категория не существует, создаем новую категорию и добавляем в нее новый трекер
-            let newHabit = Tracker(id: 1, name: createdCategoryName ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
-            let newCategory = TrackerCategory(label: selectedCategoryString ?? "", trackerArray: [newHabit])
+            let newHabit = Tracker(id: 1, name: selectedHabitString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
+            let newCategory = TrackerCategory(label: createdCategoryName ?? "", trackerArray: [newHabit])
             categories.append(newCategory)
         }
 
