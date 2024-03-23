@@ -11,17 +11,16 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     private var categoriesLoaded = false
     
+    let customFontBold = UIFont(name: "SFProDisplay-Bold", size: UIFont.labelFontSize)
+    let customFontBoldMidle = UIFont(name: "SFProDisplay-Medium", size: 19)
     let search = UISearchTextField()
     let label = UILabel()
-    let customFontBoldMidle = UIFont(name: "SFProDisplay-Medium", size: 19)
     let newHabitCreateController = NewHabitCreateViewController()
-    let container = UIDatePicker()
-    let customFontBold = UIFont(name: "SFProDisplay-Bold", size: UIFont.labelFontSize)
-    let categoryNameView = CategoryNameClass()
+    let datePicker = UIDatePicker()
     
     var selectedHabitString: String?
     var selectedScheduleDays: [WeekDay] = []
-    var trackerCategoryInMain: [TrackerCategory] = []
+   // var trackerCategoryInMain: [TrackerCategory] = []
     var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord]
     var newHabit: [Tracker]
@@ -105,12 +104,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
         searchTextField()
         
-        if let layout = collectionViewTrackers.collectionViewLayout as? UICollectionViewFlowLayout {
-                layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-                layout.headerReferenceSize = CGSize(width: collectionViewTrackers.frame.width, height: 50)
-        }
-        
-        collectionViewTrackers.register(CategoryNameClass.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CategoryNameClass.reuseIdentifier)
+        layoutSetup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -124,15 +118,20 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     // MARK: - Screen settings
     
+    fileprivate func layoutSetup() {
+        if let layout = collectionViewTrackers.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            layout.headerReferenceSize = CGSize(width: collectionViewTrackers.frame.width, height: 50)
+        }
+    }
+    
     fileprivate func createButton() {
-        //Создание кнопки "+"
         plusButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         plusButton.setImage(UIImage(named: "Add tracker"), for: .normal)
         plusButton.translatesAutoresizingMaskIntoConstraints = false
         plusButton.setTitleColor(.black, for: .normal)
         view.addSubview(plusButton)
         
-        //Настройка констрейтов для кнопки плюс
         NSLayoutConstraint.activate([
             plusButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
             plusButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 6)
@@ -140,24 +139,22 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     fileprivate func timeContainer() {
-        //Создание контейнера для даты
-        container.datePickerMode = .date
-        view.addSubview(container)
+        datePicker.datePickerMode = .date
+        view.addSubview(datePicker)
         
-        container.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            container.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
-            container.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            container.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 222)
+            datePicker.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
+            datePicker.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            datePicker.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 222)
         ])
         
-        container.minimumDate = Date()
-        container.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
+        datePicker.minimumDate = Date()
+        datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
     }
     
     fileprivate func labelTracker() {
-        //создание лейбла "Трекеры"
         label.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 34, weight: UIFont.Weight.bold)).withSize(34)
         label.textColor = .black
         label.text = "Трекеры"
@@ -172,7 +169,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     fileprivate func searchTextField() {
-        //добавление поиска
         search.placeholder = "Поиск"
         view.addSubview(search)
         
@@ -191,11 +187,11 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     // MARK: - CollectionView setting
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
+        print("Number of categories: \(categories.count)")
         return categories.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("Number of categories: \(categories.count)")
         return categories[section].trackerArray?.count ?? 0
     }
     
@@ -267,13 +263,12 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     func loadCategories() {
                 
         if createdCategoryName != nil {
-            categories = [TrackerCategory(label: createdCategoryName!, trackerArray: [])]
             newHabit = [Tracker(id: UUID(), name: selectedHabitString!, color: "", emodji: "", timetable: selectedScheduleDays)]
-            
+            categories = [TrackerCategory(label: createdCategoryName!, trackerArray: newHabit)]
+
             updateUI()
         }
         else {
-            //добавление картинки
             guard let defaultImage = UIImage(named: "Stars") else { return }
             let imageView = UIImageView(image: defaultImage)
             view.addSubview(imageView)
@@ -285,7 +280,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                 imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
             ])
             
-            //добавление надписи под картинкой
             let defultLabel = UILabel()
             defultLabel.textColor = .black
             defultLabel.text = "Что будем отслеживать?"
