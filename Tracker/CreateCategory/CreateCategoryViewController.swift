@@ -8,14 +8,13 @@
 import UIKit
 
 protocol CreateCategoryViewControllerDelegate: NSObject {
-    func didCreatedCategory(_ createdCategory: TrackerCategory, categories: String)
+    func didCreatedCategory(_ createdCategory: TrackerCategory)
 }
 
 final class CreateCategoryViewController: UIViewController, UITextFieldDelegate {
     
     private var category: TrackerCategory?
     private var enteredText: String = ""
-    private var createdCategory: String = ""
     
     let labelNewCategory = UILabel()
     let customFontBold = UIFont(name: "SFProDisplay-Medium", size: UIFont.labelFontSize)
@@ -66,7 +65,6 @@ final class CreateCategoryViewController: UIViewController, UITextFieldDelegate 
     }
     
     fileprivate func constraitsForLabel() {
-        //создание констрейтов для лейбла
         labelNewCategory.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -76,7 +74,6 @@ final class CreateCategoryViewController: UIViewController, UITextFieldDelegate 
     }
     
     fileprivate func categoryTextField() {
-        //создание текстового поля
         categoryName.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
         categoryName.placeholder = "Введите название категории"
         categoryName.font = UIFont(name: "SFProDisplay-Medium", size: 17)
@@ -94,7 +91,6 @@ final class CreateCategoryViewController: UIViewController, UITextFieldDelegate 
     }
     
     fileprivate func constraitsForCategoryTextField() {
-        // Установка констрейтов для размеров текстового поля
         NSLayoutConstraint.activate([
             categoryName.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
             categoryName.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
@@ -118,7 +114,6 @@ final class CreateCategoryViewController: UIViewController, UITextFieldDelegate 
     }
     
     fileprivate func constraitsForDoneButton() {
-        //констрейты кнопки
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         
         doneButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -147,7 +142,7 @@ final class CreateCategoryViewController: UIViewController, UITextFieldDelegate 
         
         let category = TrackerCategory(label: enteredText, trackerArray: nil)
         
-        delegate?.didCreatedCategory(category, categories: createdCategory)
+        delegate?.didCreatedCategory(category)
         dismiss(animated: true) {
             self.onDismiss?()
         }

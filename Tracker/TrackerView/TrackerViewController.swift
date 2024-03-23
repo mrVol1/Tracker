@@ -11,7 +11,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     private var categoriesLoaded = false
     
-    let grayColor = UIColorsForProject()
     let search = UISearchTextField()
     let label = UILabel()
     let customFontBoldMidle = UIFont(name: "SFProDisplay-Medium", size: 19)
@@ -28,7 +27,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     var newHabit: [Tracker]
     var createdCategoryName: String?
     var completedDaysCount: Int = 0
-    var selectedTrackers: [Int: Bool] = [:]
+    var selectedTrackers: [UUID: Bool] = [:]
     var previousHeaderView: CategoryNameClass?
     var didCreateHabitCalled = false
     
@@ -269,13 +268,13 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                 
         if createdCategoryName != nil {
             categories = [TrackerCategory(label: createdCategoryName!, trackerArray: [])]
-            newHabit = [Tracker(id: 1, name: selectedHabitString!, color: "", emodji: "", timetable: selectedScheduleDays)]
+            newHabit = [Tracker(id: UUID(), name: selectedHabitString!, color: "", emodji: "", timetable: selectedScheduleDays)]
             
             updateUI()
         }
         else {
             //добавление картинки
-            guard let defaultImage = UIImage(named: "1") else { return }
+            guard let defaultImage = UIImage(named: "Stars") else { return }
             let imageView = UIImageView(image: defaultImage)
             view.addSubview(imageView)
             
@@ -417,16 +416,13 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
         
         self.createdCategoryName = trackerCategoryInMain.label
 
-        // Проверяем, существует ли уже категория с таким же названием
         if let existingCategoryIndex = categories.firstIndex(where: { $0.label == createdCategoryName }) {
-            // Если категория существует, добавляем новый трекер к существующей категории
             let updatedCategory = categories[existingCategoryIndex]
-            let newHabit = Tracker(id: updatedCategory.trackerArray?.count ?? 0 + 1, name: selectedHabitString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
+            let newHabit = Tracker(id: UUID(), name: selectedHabitString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
             updatedCategory.trackerArray?.append(newHabit)
             categories[existingCategoryIndex] = updatedCategory
         } else {
-            // Если категория не существует, создаем новую категорию и добавляем в нее новый трекер
-            let newHabit = Tracker(id: 1, name: selectedHabitString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
+            let newHabit = Tracker(id: UUID(), name: selectedHabitString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
             let newCategory = TrackerCategory(label: createdCategoryName ?? "", trackerArray: [newHabit])
             categories.append(newCategory)
         }

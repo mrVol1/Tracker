@@ -192,12 +192,12 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             cell.titleLabel.textAlignment = .center
             cell.accessoryType = .disclosureIndicator
             
-            if let selectedCategoryString = selectedCategoryString
-            {
+            if let selectedCategoryString = selectedCategoryString {
                 cell.categoryLabel.text = selectedCategoryString
-            }
-            else {
-                cell.categoryLabel.removeFromSuperview()
+                cell.categoryLabel.isHidden = false
+            } else {
+                cell.categoryLabel.text = ""
+                cell.categoryLabel.isHidden = true
             }
             
             cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
@@ -263,7 +263,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             return
         }
                 
-        let tracker = Tracker(id: 1, name: selectedTrackerName, color: "", emodji: "", timetable: selectedScheduleDays)
+        let tracker = Tracker(id: UUID(), name: selectedTrackerName, color: "", emodji: "", timetable: selectedScheduleDays)
         
         let trackerCategoryInMain = TrackerCategory(label: selectedCategoryString, trackerArray: [tracker])
         
@@ -329,8 +329,8 @@ extension NewHabitCreateViewController: ScheduleViewControllerDelegate {
         updateCreateButtonState()
     }
     
-    func didSelectCategory(_ selectedCategory: TrackerCategory) {
-        self.selectedCategoryString = selectedCategory.label
+    func didSelectCategory(_ selectedCategory: String?) {
+        self.selectedCategoryString = selectedCategory
         tableView.reloadData()
         updateCreateButtonState()
     }
@@ -343,23 +343,5 @@ extension NewHabitCreateViewController: ScheduleViewControllerDelegate {
     @objc
     private func hideKeyboard() {
         self.view.endEditing(true)
-    }
-}
-
-extension NewHabitCreateViewController: CreateCategoryViewControllerDelegate {
-    func didCreatedCategory(_ createdCategory: TrackerCategory, categories: String) {
-        
-    }
-    
-    func didCreateTrackerRecord(_ trackerRecord: TrackerRecord) {
-        
-    }
-    
-    func didSelectCategory(_ categories: String) {
-        selectedCategoryString = categories
-        updateCreateButtonState()
-        if let indexPath = tableView.indexPath(for: cellWithCategoryLabel!) {
-            tableView.reloadRows(at: [indexPath], with: .automatic)
-        }
     }
 }

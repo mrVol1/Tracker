@@ -8,31 +8,25 @@
 import UIKit
 
 protocol AddCategoryViewControllerDelegate: AnyObject {
-    func didSelectCategory(_ categories: String)
-    func didCreateTrackerRecord(_ trackerRecord: TrackerRecord)
+    func didSelectCategory(_ selectedCategory: String?)
 }
 
 final class AddCategoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CreateCategoryViewControllerDelegate {
     
-    
-    weak var delegate: AddCategoryViewControllerDelegate? {
-        didSet {
-        }
-    }
+    weak var delegate: AddCategoryViewControllerDelegate?
     
     let customFontBold = UIFont(name: "SFProDisplay-Medium", size: UIFont.labelFontSize)
-    let defaultImageView = UIImageView(image: UIImage(named: "1"))
+    let defaultImageView = UIImageView(image: UIImage(named: "Stars"))
     let textImage = UILabel()
     
     var textImageBottomAnchor: NSLayoutYAxisAnchor?
     var buttonTopAnchor: NSLayoutConstraint?
     var tableViewHeightAnchor: NSLayoutConstraint?
-    var categoriesList: [TrackerCategory] = []
+    var categories: [TrackerCategory] = []
     var selectedIndexPath: IndexPath?
+    var selectedCategory: String?
     
     private var isCheckmarkSelected: Bool = false
-    private var categories: String?
-    private var isCellSelected: Bool = false
     private let label = UILabel()
     private let tableView = UITableView()
     private let categoryButton = UIButton()
@@ -42,11 +36,7 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
         
         view.backgroundColor = .white
         
-        if categoriesList.isEmpty {
-            defaultScreen()
-        } else {
-            tableScreen()
-        }
+        updateScreen()
         
         creatLabel()
         constraitsForLabel(label)
@@ -106,7 +96,6 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     }
     
     fileprivate func constraitsForSetupButton() {
-        // констрейты кнопки
         categoryButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             categoryButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
@@ -147,12 +136,12 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     // MARK: - UITableView Data Source and Delegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        categoriesList.count
+        categories.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CategoryCellTableViewCell
-        cell.categoryLabel.text = categoriesList[indexPath.row].label
+        cell.categoryLabel.text = categories[indexPath.row].label
         cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
         
         if indexPath == selectedIndexPath {
@@ -176,8 +165,9 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
             if let cell = tableView.cellForRow(at: indexPath) as? CategoryCellTableViewCell {
                 selectedIndexPath = indexPath
                 isCheckmarkSelected = cell.checkmarkImageView.isHidden
-                if let firstCategory = categoriesList.first {
-                    categories = firstCategory.label
+                if let firstCategory = categories.first {
+                    categories = [firstCategory]
+                    selectedCategory = firstCategory.label
                 }
                 updateCategoryButtonTitle()
                 tableView.reloadData()
@@ -187,9 +177,9 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     
     // MARK: - Screen Func
     
-    func didCreatedCategory(_ createdCategory: TrackerCategory, categories: String) {
-        categoriesList.append(createdCategory)
-        delegate?.didSelectCategory(categories)
+    func didCreatedCategory(_ createdCategory: TrackerCategory) {
+        categories.append(createdCategory)
+        delegate?.didSelectCategory(selectedCategory)
         tableView.reloadData()
     }
     
@@ -204,13 +194,26 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
         self.constraitsForTableForCategoriesList(label)
     }
     
+    private func updateScreen() {
+        if categories.isEmpty {
+            defaultScreen()
+        } else {
+            tableScreen()
+        }
+    }
+    
     private func navigateToNewHabitCreateController(selectedCategory: String) {
+        
+        let trackerCategory = TrackerCategory(label: selectedCategory, trackerArray: nil)
+        categories.append(trackerCategory)
+        updateScreen()
         
         if let navigationController = self.navigationController {
             navigationController.popViewController(animated: true)
         } else {
-            dismiss(animated: true) { [self] in
-                delegate?.didSelectCategory(categories!)
+            dismiss(animated: true) { [weak self] in
+                guard (self?.categories) != nil else { return }
+                self?.delegate?.didSelectCategory(selectedCategory)
             }
         }
     }
@@ -222,9 +225,9 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     
     @objc private func screenForCreatedCategory() {
         if isCheckmarkSelected == true {
-            if let delegate = delegate {
-                delegate.didSelectCategory(categories!)
-                navigateToNewHabitCreateController(selectedCategory: categories!)
+            if delegate != nil {
+                guard let selectedCategory = selectedCategory else { return }
+                navigateToNewHabitCreateController(selectedCategory: selectedCategory)
             }
         } else {
             let createCategoryButton = CreateCategoryViewController(delegate: self)

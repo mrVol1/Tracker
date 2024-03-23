@@ -22,7 +22,6 @@
 		D7B12CA62AED9E800006205D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7B12CA42AED9E800006205D /* Main.storyboard */; };
 		D7B12CA82AED9E830006205D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7B12CA72AED9E830006205D /* Assets.xcassets */; };
 		D7B12CAB2AED9E830006205D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7B12CA92AED9E830006205D /* LaunchScreen.storyboard */; };
-		D7B12CBA2AEE16DC0006205D /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B12CB92AEE16DC0006205D /* Colors.swift */; };
 		D7B395422B78F546005FC916 /* CategoryCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B395412B78F546005FC916 /* CategoryCellTableViewCell.swift */; };
 		D7C650F52B130EE800A9F116 /* ChoseHabitOrEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C650F42B130EE800A9F116 /* ChoseHabitOrEventViewController.swift */; };
 		D7C650F72B133FCE00A9F116 /* NewHabitCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C650F62B133FCE00A9F116 /* NewHabitCreateController.swift */; };
@@ -48,7 +47,6 @@
 		D7B12CA72AED9E830006205D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D7B12CAA2AED9E830006205D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D7B12CAC2AED9E830006205D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D7B12CB92AEE16DC0006205D /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		D7B395412B78F546005FC916 /* CategoryCellTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCellTableViewCell.swift; sourceTree = "<group>"; };
 		D7C650F42B130EE800A9F116 /* ChoseHabitOrEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoseHabitOrEventViewController.swift; sourceTree = "<group>"; };
 		D7C650F62B133FCE00A9F116 /* NewHabitCreateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitCreateController.swift; sourceTree = "<group>"; };
@@ -129,7 +127,6 @@
 				D7A6AC932AF7684600851329 /* Models */,
 				D711B8942AF184C60064AAFE /* TabBarController.swift */,
 				D7C650F42B130EE800A9F116 /* ChoseHabitOrEventViewController.swift */,
-				D7B12CB82AEE16CE0006205D /* Colors */,
 				D7B12CB72AEE0EA80006205D /* TrackerView */,
 				D7B12C9E2AED9E800006205D /* AppDelegate.swift */,
 				D7B12CA02AED9E800006205D /* SceneDelegate.swift */,
@@ -149,14 +146,6 @@
 				D7CDABEF2B90DBA000F9554D /* CategoryNameClass.swift */,
 			);
 			path = TrackerView;
-			sourceTree = "<group>";
-		};
-		D7B12CB82AEE16CE0006205D /* Colors */ = {
-			isa = PBXGroup;
-			children = (
-				D7B12CB92AEE16DC0006205D /* Colors.swift */,
-			);
-			path = Colors;
 			sourceTree = "<group>";
 		};
 		D7C650F32B130EAD00A9F116 /* CreateNewHabit */ = {
@@ -240,7 +229,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7B12CA32AED9E800006205D /* TrackerViewController.swift in Sources */,
-				D7B12CBA2AEE16DC0006205D /* Colors.swift in Sources */,
 				D7A6AC972AF7698E00851329 /* TrackerCategory.swift in Sources */,
 				D7CDABF02B90DBA000F9554D /* CategoryNameClass.swift in Sources */,
 				D7B12C9F2AED9E800006205D /* AppDelegate.swift in Sources */,
