@@ -30,7 +30,6 @@ final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateVie
     // MARK: - Screen Config
     
     fileprivate func createLabel() {
-        //создание лейбла
         label.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.semibold)).withSize(16)
         label.textColor = .black
         label.text = "Создание трекера"
@@ -38,7 +37,6 @@ final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateVie
     }
     
     fileprivate func constraitForLabel() {
-        //создание констрейтов для лейбла
         label.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
