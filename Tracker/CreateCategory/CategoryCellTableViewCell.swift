@@ -7,8 +7,8 @@
 
 import UIKit
 
-class CustomCategoryTableViewCell: UITableViewCell {
-
+class CategoryCellTableViewCell: UITableViewCell {
+    
     let categoryLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -18,7 +18,7 @@ class CustomCategoryTableViewCell: UITableViewCell {
 
     let checkmarkImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "checkmark"))
-        imageView.tintColor = .systemGreen
+        imageView.tintColor = .systemBlue
         imageView.contentMode = .scaleAspectFit
         imageView.isHidden = true
         return imageView
@@ -36,7 +36,6 @@ class CustomCategoryTableViewCell: UITableViewCell {
 
     private func setupUI() {
         backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
-        layer.cornerRadius = 16
 
         addSubview(categoryLabel)
         addSubview(checkmarkImageView)
@@ -56,10 +55,4 @@ class CustomCategoryTableViewCell: UITableViewCell {
             checkmarkImageView.heightAnchor.constraint(equalToConstant: 20),
         ])
     }
-
-    func updateCellAppearance(isSelected: Bool) {
-        checkmarkImageView.isHidden = !isSelected
-        backgroundColor = isSelected ? .lightGray : UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
-    }
 }
-

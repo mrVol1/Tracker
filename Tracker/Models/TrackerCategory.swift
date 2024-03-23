@@ -7,15 +7,12 @@
 
 import Foundation
 
-final class TrackerCategory {
+final class TrackerCategory: Codable {
     let label: String
-    let trackerMassiv: [Tracker]
-    
-    init(label: String, trackerMassiv: [Tracker]) {
+    let trackerArray: [Tracker]?
+
+    init(label: String, trackerArray: [Tracker]?) {
         self.label = label
-        self.trackerMassiv = trackerMassiv
+        self.trackerArray = trackerArray
     }
 }
-
-
-

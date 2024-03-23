@@ -12,43 +12,74 @@ enum TableSection: Int, CaseIterable {
     case schedule
 }
 
-final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate {
+protocol NewHabitCreateViewControllerDelegate: AnyObject {
+    func didCreateHabit(with trackerCategoryInMain: TrackerCategory)
+    func didFinishCreatingHabitAndDismiss()
+}
+
+final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, AddCategoryViewControllerDelegate {
+    
+    var selectedCategoryString: String?
+    var selectedScheduleDays: [WeekDay] = []
+    var selectedTrackerName: String?
+    var trackerId: Int = 0
+    var cellWithCategoryLabel: CategoryTableViewCell?
+    
+    weak var scheduleDelegate: ScheduleViewControllerDelegate?
+    weak var habitCreateDelegate: NewHabitCreateViewControllerDelegate?
+    weak var addCategoryDelegate: AddCategoryViewControllerDelegate?
     
     let label = UILabel()
     let trackerName = UITextField()
     let saveButton = UIButton()
     let cancelButton = UIButton()
+    let tableView = UITableView()
     
-    private let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.layer.cornerRadius = 16
-        tableView.clipsToBounds = true
-        tableView.sectionHeaderHeight = 0
-        tableView.separatorStyle = .none
-        tableView.isScrollEnabled = false
-        return tableView
-    }()
+    private var trackerRecord: TrackerRecord?
+    
+    fileprivate func configereKeyboard() {
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGesture)
+        saveButton.addTarget(self, action: #selector(buttonActionForHabitSave), for: .touchUpInside)
+    }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        trackerName.delegate = self
+        
         view.backgroundColor = .white
         
-        //создание лейбла
+        configureLabel()
+        configureTrackerName()
+        configureTableView()
+        configureButtonsContainer()
+        
+        updateCreateButtonState()
+        
+        configereKeyboard()
+    }
+    
+    // MARK: - Screen Config
+    
+    private func configureLabel() {
         let customFontBold = UIFont(name: "SFProDisplay-Medium", size: UIFont.labelFontSize)
         label.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.semibold)).withSize(16)
         label.textColor = .black
         label.text = "Создание привычки"
         view.addSubview(label)
         
-        //создание констрейтов для лейбла
         label.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: view.topAnchor, constant: 73),
             label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
-        
-        //создание текстового поля
+    }
+    
+    private func configureTrackerName() {
         trackerName.delegate = self
         
         trackerName.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
@@ -64,16 +95,26 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
         trackerName.leftView = leftPaddingView
         trackerName.leftViewMode = .always
         
-        // Установка констрейтов для размеров текстового поля
         NSLayoutConstraint.activate([
             trackerName.widthAnchor.constraint(equalToConstant: 343),
             trackerName.heightAnchor.constraint(equalToConstant: 75),
             trackerName.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             trackerName.topAnchor.constraint(equalTo: label.topAnchor, constant: 38)
         ])
+    }
+    
+    private func configureTableView() {
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.layer.cornerRadius = 16
+        tableView.clipsToBounds = true
+        tableView.sectionHeaderHeight = 0
+        tableView.separatorStyle = .none
+        tableView.isScrollEnabled = false
         
-        //таблица с кнопками
         setupTableHeader()
+        tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: "categoryCell")
+        tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: "daysLabel")
         view.addSubview(tableView)
         tableView.dataSource = self
         tableView.delegate = self
@@ -84,16 +125,15 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
             tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             tableView.topAnchor.constraint(equalTo: trackerName.bottomAnchor, constant: 24)
         ])
-        
-        // Кнопка "сохранить"
-        saveButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+    }
+    
+    private func configureButtonsContainer() {
         saveButton.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 17)
         saveButton.setTitle("Создать", for: .normal)
         saveButton.setTitleColor(.white, for: .normal)
         saveButton.layer.cornerRadius = 16
         saveButton.titleEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         
-        // Кнопка "отмена"
         cancelButton.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
         cancelButton.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 17)
         cancelButton.setTitle("Отменить", for: .normal)
@@ -102,9 +142,8 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
         cancelButton.titleEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         cancelButton.layer.borderColor = UIColor.red.cgColor
         cancelButton.layer.borderWidth = 1
-        cancelButton.addTarget(self, action: #selector(buttonActionForHabbitCancel), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(buttonActionForHabitCancel), for: .touchUpInside)
         
-        // Контейнер для кнопок
         let buttonsContainer = UIStackView(arrangedSubviews: [cancelButton, saveButton])
         buttonsContainer.axis = .horizontal
         buttonsContainer.spacing = 16
@@ -120,11 +159,21 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
         ])
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == trackerName {
-            textField.textColor = UIColor.black
+    private func updateCreateButtonState() {
+        guard selectedCategoryString != nil,
+              !selectedScheduleDays.isEmpty,
+              let trackerNameText = trackerName.text,
+              !trackerNameText.isEmpty
+        else {
+            saveButton.isEnabled = false
+            saveButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+            return
         }
+        saveButton.isEnabled = true
+        saveButton.backgroundColor = .black
     }
+    
+    // MARK: - UITableView Data Source and Delegate
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return TableSection.allCases.count
@@ -135,21 +184,45 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
         switch TableSection(rawValue: indexPath.section) {
         case .categories:
-            cell.textLabel?.text = "Категории"
+            let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as! CategoryTableViewCell
+            cell.titleLabel.text = "Категории"
+            cell.titleLabel.textColor = UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 1.0)
+            cell.titleLabel.textAlignment = .center
             cell.accessoryType = .disclosureIndicator
+            
+            if let selectedCategoryString = selectedCategoryString {
+                cell.categoryLabel.text = selectedCategoryString
+                cell.categoryLabel.isHidden = false
+            } else {
+                cell.categoryLabel.text = ""
+                cell.categoryLabel.isHidden = true
+            }
+            
             cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
+            cellWithCategoryLabel = cell
+            return cell
+            
         case .schedule:
-            cell.textLabel?.text = "Расписание"
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CategoryTableViewCell
+            cell.titleLabel.text = "Расписание"
+            cell.titleLabel.textColor = .black
             cell.accessoryType = .disclosureIndicator
             cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
+            
+            if !selectedScheduleDays.isEmpty {
+                let scheduleText = selectedScheduleDays.map { $0.rawValue.prefix(3) }.joined(separator: ", ")
+                cell.daysLabel.text = scheduleText
+            } else {
+                cell.daysLabel.text = nil
+            }
+            
+            return cell
+            
         case .none:
-            break
+            return UITableViewCell()
         }
-        return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -163,7 +236,7 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
         case .categories:
             buttonActionForCreateCategory()
         case .schedule:
-            buttonActionForCreateSculde()
+            buttonActionForCreateSchedule()
         case .none:
             break
         }
@@ -177,18 +250,58 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
         cell.contentView.addSubview(separator)
     }
     
-    @objc private func buttonActionForHabbitCancel() {
+    // MARK: - Screen Func
+    
+    @objc private func buttonActionForHabitSave() {
+        selectedTrackerName = trackerName.text
+        
+        guard var selectedTrackerName = selectedTrackerName else {
+            return
+        }
+        
+        guard let selectedCategoryString = selectedCategoryString else {
+            return
+        }
+                
+        let tracker = Tracker(id: UUID(), name: selectedTrackerName, color: "", emodji: "", timetable: selectedScheduleDays)
+        
+        let trackerCategoryInMain = TrackerCategory(label: selectedCategoryString, trackerArray: [tracker])
+        
+        if let delegate = habitCreateDelegate {
+            delegate.didCreateHabit(with: trackerCategoryInMain)
+        } else {
+            print("Ошибка: делегат не инициализирован!")
+        }
+        
+        selectedTrackerName.append(selectedTrackerName)
+        
+        let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
+        trackerViewController.createdCategoryName = selectedCategoryString
+        trackerViewController.selectedHabitString = selectedTrackerName
+        trackerViewController.selectedScheduleDays = selectedScheduleDays
+        
+        finishCreatingHabitAndDismiss()
+    }
+    
+    func finishCreatingHabitAndDismiss() {
+        dismiss(animated: false) {
+            self.habitCreateDelegate?.didFinishCreatingHabitAndDismiss()
+        }
+    }
+    
+    @objc private func buttonActionForHabitCancel() {
         dismiss(animated: true, completion: nil)
     }
     
     @objc private func buttonActionForCreateCategory() {
-        let createCategoryButton = NewHabbitCategory()
-        let createCategotuButtonNavigationController = UINavigationController(rootViewController: createCategoryButton)
-        present(createCategotuButtonNavigationController, animated: true, completion: nil)
+        let createCategoryButton = AddCategoryViewController()
+        createCategoryButton.delegate = self
+        present(createCategoryButton, animated: true, completion: nil)
     }
     
-    @objc private func buttonActionForCreateSculde() {
+    @objc private func buttonActionForCreateSchedule() {
         let createScheduleButton = ScheduleViewController()
+        createScheduleButton.delegate = self
         let createScheduleButtonNavigationController = UINavigationController(rootViewController: createScheduleButton)
         present(createScheduleButtonNavigationController, animated: true, completion: nil)
     }
@@ -197,6 +310,38 @@ final class NewHabitCreateController: UIViewController, UITextFieldDelegate, UIT
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 343, height: 1))
         tableView.tableHeaderView = headerView
     }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == trackerName {
+            textField.textColor = UIColor.black
+        }
+        updateCreateButtonState()
+    }
 }
 
-
+extension NewHabitCreateViewController: ScheduleViewControllerDelegate {
+    
+    func didSelectScheduleDays(_ selectedDays: [WeekDay]) {
+        let newTrackerRecord = TrackerRecord(id: UUID(), date: Date(), selectedDays: selectedDays, trackerId: trackerId)
+        self.trackerRecord = newTrackerRecord
+        self.selectedScheduleDays = selectedDays
+        tableView.reloadData()
+        updateCreateButtonState()
+    }
+    
+    func didSelectCategory(_ selectedCategory: String?) {
+        self.selectedCategoryString = selectedCategory
+        tableView.reloadData()
+        updateCreateButtonState()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    @objc
+    private func hideKeyboard() {
+        self.view.endEditing(true)
+    }
+}
