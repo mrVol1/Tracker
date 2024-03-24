@@ -181,29 +181,31 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         print("Верни секции: \(category.trackerArray?.count ?? 0)")
         return category.trackerArray?.count ?? 0
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! TrackerViewCell
         
-        let tracker = newHabit[indexPath.section]
-        let isChecked = selectedTrackers[tracker.id] ?? false
-        
-        cell.configure(
-            with: tracker,
-            isChecked: isChecked,
-            completedDaysCount: isChecked ? 1 : 0
-        )
-        
-        cell.completion = { [weak self] in
-            guard let self = self else { return }
-            
-            self.selectedTrackers[tracker.id] = !(self.selectedTrackers[tracker.id] ?? false)
+        let category = categories[indexPath.section]
+        if let tracker = category.trackerArray?[indexPath.item] {
+            let isChecked = selectedTrackers[tracker.id] ?? false
             
             cell.configure(
                 with: tracker,
-                isChecked: self.selectedTrackers[tracker.id] ?? false,
-                completedDaysCount: (self.selectedTrackers[tracker.id] ?? false) ? 1 : 0
+                isChecked: isChecked,
+                completedDaysCount: isChecked ? 1 : 0
             )
+            
+            cell.completion = { [weak self] in
+                guard let self = self else { return }
+                
+                self.selectedTrackers[tracker.id] = !(self.selectedTrackers[tracker.id] ?? false)
+                
+                cell.configure(
+                    with: tracker,
+                    isChecked: self.selectedTrackers[tracker.id] ?? false,
+                    completedDaysCount: (self.selectedTrackers[tracker.id] ?? false) ? 1 : 0
+                )
+            }
         }
         
         return cell
@@ -359,40 +361,52 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
     func didFinishCreatingHabitAndDismiss() {
       loadCategories()
     }
+    
+//    func didCreateHabit(with trackerCategoryInMain: TrackerCategory) {
+//        
+//        if let existingCategoryIndex = categories.firstIndex(where: { $0.label == trackerCategoryInMain.label }) {
+//            // Категория уже существует
+//            let existingCategory = categories[existingCategoryIndex]
+//            let newHabit = Tracker(id: UUID(), name: selectedHabitString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
+//            
+//            // Создание нового массива трекеров и добавление в него нового трекера
+//            var updatedTrackerArray = existingCategory.trackerArray ?? []
+//            updatedTrackerArray.append(newHabit)
+//            
+//            // Создание новой структуры TrackerCategory с обновленным массивом трекеров
+//            let updatedCategory = TrackerCategory(label: existingCategory.label, trackerArray: updatedTrackerArray)
+//            
+//            // Замена существующей категории в массиве categories на обновленную
+//            categories[existingCategoryIndex] = updatedCategory
+//        } else {
+//            // Категория не существует, добавляем новую
+//            let newCategory = TrackerCategory(label: trackerCategoryInMain.label, trackerArray: [Tracker(id: UUID(), name: selectedHabitString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)])
+//            categories.append(newCategory)
+//        }
+//        
+//        collectionViewTrackers.reloadData()
+//    }
+
 
     func didCreateHabit(with trackerCategoryInMain: TrackerCategory) {
+        selectedHabitString = trackerCategoryInMain.trackerArray?.first?.name
+        selectedScheduleDays = trackerCategoryInMain.trackerArray?.first?.timetable ?? []
         
-        if let trackerArray = trackerCategoryInMain.trackerArray {
-            for tracker in trackerArray {
-                let trackerName = tracker.name
-                self.selectedHabitString = trackerName
-            }
-        }
-        
-        if let trackerArray = trackerCategoryInMain.trackerArray {
-            for tracker in trackerArray {
-                let trackerTime = tracker.timetable
-                self.selectedScheduleDays = trackerTime
-            }
-        }
-        
-        self.createdCategoryName = trackerCategoryInMain.label
+        createdCategoryName = trackerCategoryInMain.label
         
         if let existingCategoryIndex = categories.firstIndex(where: { $0.label == createdCategoryName }) {
             let existingCategory = categories[existingCategoryIndex]
             let newHabit = Tracker(id: UUID(), name: selectedHabitString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
-            
             var updatedTrackerArray = existingCategory.trackerArray ?? []
             updatedTrackerArray.append(newHabit)
-            
             let updatedCategory = TrackerCategory(label: existingCategory.label, trackerArray: updatedTrackerArray)
-            
             categories[existingCategoryIndex] = updatedCategory
         } else {
-            let newCategory = TrackerCategory(label: createdCategoryName ?? "", trackerArray: newHabit)
+            let newHabit = Tracker(id: UUID(), name: selectedHabitString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
+            let newCategory = TrackerCategory(label: createdCategoryName ?? "", trackerArray: [newHabit])
             categories.append(newCategory)
         }
-
+        
         collectionViewTrackers.reloadData()
     }
 }
