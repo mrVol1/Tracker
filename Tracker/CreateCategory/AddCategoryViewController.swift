@@ -28,7 +28,7 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     
     private var isCheckmarkSelected: Bool = false
     private let label = UILabel()
-    private let tableView = UITableView()
+    private let tableViewForCategory = UITableView()
     private let categoryButton = UIButton()
     
     override func viewDidLoad() {
@@ -55,25 +55,25 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     }
     
     fileprivate func createdTableForCategoriesList() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(CategoryCellTableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.layer.cornerRadius = 16
-        tableView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        tableView.clipsToBounds = true
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        tableView.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        view.addSubview(tableView)
+        tableViewForCategory.delegate = self
+        tableViewForCategory.dataSource = self
+        tableViewForCategory.register(CategoryCellTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableViewForCategory.layer.cornerRadius = 16
+        tableViewForCategory.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        tableViewForCategory.clipsToBounds = true
+        tableViewForCategory.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableViewForCategory.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        view.addSubview(tableViewForCategory)
     }
     
     fileprivate func constraitsForTableForCategoriesList(_ label: UILabel) {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableViewForCategory.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 16),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 16),
+            tableViewForCategory.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 16),
+            tableViewForCategory.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableViewForCategory.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableViewForCategory.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 16),
         ])
     }
     
@@ -91,7 +91,7 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
         categoryButton.layer.cornerRadius = 16
         categoryButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         categoryButton.backgroundColor = .black
-        categoryButton.addTarget(self, action: #selector(screenForCreatedCategory), for: .touchUpInside)
+        categoryButton.addTarget(self, action: #selector(navigateForCreatedCategoryControllerOrForHaabitCreateContoller), for: .touchUpInside)
         view.addSubview(categoryButton)
     }
     
@@ -179,8 +179,9 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     
     func didCreatedCategory(_ createdCategory: TrackerCategory) {
         categories.append(createdCategory)
+        print("Added category with label: \(createdCategory.label)")
         delegate?.didSelectCategory(selectedCategory)
-        tableView.reloadData()
+        tableViewForCategory.reloadData()
     }
     
     func defaultScreen() {
@@ -223,7 +224,7 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
         categoryButton?.setTitle(isCheckmarkSelected ? "Готово" : "Добавить категорию", for: .normal)
     }
     
-    @objc private func screenForCreatedCategory() {
+    @objc private func navigateForCreatedCategoryControllerOrForHaabitCreateContoller() {
         if isCheckmarkSelected == true {
             if delegate != nil {
                 guard let selectedCategory = selectedCategory else { return }

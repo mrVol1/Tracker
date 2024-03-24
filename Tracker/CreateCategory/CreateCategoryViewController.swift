@@ -22,8 +22,10 @@ final class CreateCategoryViewController: UIViewController, UITextFieldDelegate 
     let categoryName = UITextField()
     
     weak var delegate: CreateCategoryViewControllerDelegate?
+    weak var addCategoryViewController: AddCategoryViewController?
     
     var onDismiss: (() -> Void)?
+    var categories: [TrackerCategory] = []
     
     convenience init(delegate: CreateCategoryViewControllerDelegate) {
         self.init()
@@ -140,9 +142,11 @@ final class CreateCategoryViewController: UIViewController, UITextFieldDelegate 
             return
         }
         
-        let category = TrackerCategory(label: enteredText, trackerArray: nil)
-        
-        delegate?.didCreatedCategory(category)
+        let newCategory = TrackerCategory(label: enteredText, trackerArray: nil)
+        print("New Category Label: \(newCategory.label)")
+        self.categories.append(newCategory)
+
+        delegate?.didCreatedCategory(newCategory)
         dismiss(animated: true) {
             self.onDismiss?()
         }

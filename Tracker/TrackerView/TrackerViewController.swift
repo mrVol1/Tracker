@@ -361,32 +361,6 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
     func didFinishCreatingHabitAndDismiss() {
       loadCategories()
     }
-    
-//    func didCreateHabit(with trackerCategoryInMain: TrackerCategory) {
-//        
-//        if let existingCategoryIndex = categories.firstIndex(where: { $0.label == trackerCategoryInMain.label }) {
-//            // Категория уже существует
-//            let existingCategory = categories[existingCategoryIndex]
-//            let newHabit = Tracker(id: UUID(), name: selectedHabitString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
-//            
-//            // Создание нового массива трекеров и добавление в него нового трекера
-//            var updatedTrackerArray = existingCategory.trackerArray ?? []
-//            updatedTrackerArray.append(newHabit)
-//            
-//            // Создание новой структуры TrackerCategory с обновленным массивом трекеров
-//            let updatedCategory = TrackerCategory(label: existingCategory.label, trackerArray: updatedTrackerArray)
-//            
-//            // Замена существующей категории в массиве categories на обновленную
-//            categories[existingCategoryIndex] = updatedCategory
-//        } else {
-//            // Категория не существует, добавляем новую
-//            let newCategory = TrackerCategory(label: trackerCategoryInMain.label, trackerArray: [Tracker(id: UUID(), name: selectedHabitString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)])
-//            categories.append(newCategory)
-//        }
-//        
-//        collectionViewTrackers.reloadData()
-//    }
-
 
     func didCreateHabit(with trackerCategoryInMain: TrackerCategory) {
         selectedHabitString = trackerCategoryInMain.trackerArray?.first?.name

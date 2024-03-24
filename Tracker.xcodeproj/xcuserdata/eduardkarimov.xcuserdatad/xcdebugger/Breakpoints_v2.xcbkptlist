@@ -35,22 +35,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "93A0C56A-E1D1-49B3-90E6-835D19DB8B34"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tracker/CreateNewHabit/NewHabitCreateController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "260"
-            endingLineNumber = "260"
-            landmarkName = "buttonActionForHabitSave()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "B29C34DE-76B5-426C-83D6-4CC9FD628AAD"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -61,22 +45,6 @@
             startingLineNumber = "223"
             endingLineNumber = "223"
             landmarkName = "collectionView(_:viewForSupplementaryElementOfKind:at:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9B661057-C1F9-4761-BAC0-2EFEF57BF33F"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tracker/CreateNewHabit/NewHabitCreateController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "278"
-            endingLineNumber = "278"
-            landmarkName = "buttonActionForHabitSave()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -122,10 +90,10 @@
             filePath = "Tracker/CreateNewHabit/NewHabitCreateController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "286"
-            endingLineNumber = "286"
-            landmarkName = "NewHabitCreateViewController"
-            landmarkType = "3">
+            startingLineNumber = "275"
+            endingLineNumber = "275"
+            landmarkName = "finishCreatingHabitAndDismiss()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -138,8 +106,8 @@
             filePath = "Tracker/CreateCategory/AddCategoryViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "197"
-            endingLineNumber = "197"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
             landmarkName = "updateScreen()"
             landmarkType = "7">
          </BreakpointContent>
@@ -172,8 +140,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "186"
             endingLineNumber = "186"
-            landmarkName = "NewHabitCreateViewController"
-            landmarkType = "3">
+            landmarkName = "tableView(_:cellForRowAt:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -202,9 +170,25 @@
             filePath = "Tracker/TrackerView/TrackerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "391"
-            endingLineNumber = "391"
+            startingLineNumber = "365"
+            endingLineNumber = "365"
             landmarkName = "didCreateHabit(with:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C25C99DA-D662-498B-9839-8A293B2A27F1"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tracker/CreateCategory/AddCategoryViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
+            landmarkName = "didCreatedCategory(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

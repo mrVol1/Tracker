@@ -234,7 +234,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         
         switch TableSection(rawValue: indexPath.section) {
         case .categories:
-            buttonActionForCreateCategory()
+            firstWayForButtonActionForCreateCategory()
         case .schedule:
             buttonActionForCreateSchedule()
         case .none:
@@ -253,13 +253,9 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     // MARK: - Screen Func
     
     @objc private func buttonActionForHabitSave() {
-        selectedTrackerName = trackerName.text
-        
-        guard var selectedTrackerName = selectedTrackerName else {
-            return
-        }
-        
-        guard let selectedCategoryString = selectedCategoryString else {
+        guard let selectedTrackerName = trackerName.text, !selectedTrackerName.isEmpty,
+              let selectedCategoryString = selectedCategoryString,
+              !selectedScheduleDays.isEmpty else {
             return
         }
                 
@@ -272,13 +268,6 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         } else {
             print("Ошибка: делегат не инициализирован!")
         }
-        
-        selectedTrackerName.append(selectedTrackerName)
-        
-        let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
-        trackerViewController.createdCategoryName = selectedCategoryString
-        trackerViewController.selectedHabitString = selectedTrackerName
-        trackerViewController.selectedScheduleDays = selectedScheduleDays
         
         finishCreatingHabitAndDismiss()
     }
@@ -293,7 +282,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         dismiss(animated: true, completion: nil)
     }
     
-    @objc private func buttonActionForCreateCategory() {
+    @objc private func firstWayForButtonActionForCreateCategory() {
         let createCategoryButton = AddCategoryViewController()
         createCategoryButton.delegate = self
         present(createCategoryButton, animated: true, completion: nil)
