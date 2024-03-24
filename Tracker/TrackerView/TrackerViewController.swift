@@ -8,22 +8,20 @@
 import UIKit
 
 class TrackerViewController: UIViewController, UITextFieldDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    //private var categoriesLoaded = false
-    
+        
     let customFontBold = UIFont(name: "SFProDisplay-Bold", size: UIFont.labelFontSize)
     let customFontBoldMidle = UIFont(name: "SFProDisplay-Medium", size: 19)
     let search = UISearchTextField()
-    let label = UILabel()
+    let defaultLabel = UILabel()
     let newHabitCreateController = NewHabitCreateViewController()
     let datePicker = UIDatePicker()
     
     var selectedHabitString: String?
+    var createdCategoryName: String?
     var selectedScheduleDays: [WeekDay] = []
     var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord]
     var newHabit: [Tracker]
-    var createdCategoryName: String?
     var completedDaysCount: Int = 0
     var selectedTrackers: [UUID: Bool] = [:]
     var previousHeaderView: CategoryNameClass?
@@ -83,11 +81,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
         search.delegate = self
         
-//        if !categoriesLoaded {
-//            loadCategories()
-//            categoriesLoaded = true
-//        }
-        
         loadCategories()
         
         view.backgroundColor = .white
@@ -107,15 +100,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
         layoutSetup()
     }
-    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        if !categoriesLoaded {
-//            loadCategories()
-//            categoriesLoaded = true
-//        }
-//    }
-    
     
     // MARK: - Screen settings
     
@@ -156,16 +140,16 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     fileprivate func labelTracker() {
-        label.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 34, weight: UIFont.Weight.bold)).withSize(34)
-        label.textColor = .black
-        label.text = "Трекеры"
-        view.addSubview(label)
+        defaultLabel.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 34, weight: UIFont.Weight.bold)).withSize(34)
+        defaultLabel.textColor = .black
+        defaultLabel.text = "Трекеры"
+        view.addSubview(defaultLabel)
         
-        label.translatesAutoresizingMaskIntoConstraints = false
+        defaultLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            label.bottomAnchor.constraint(equalTo: plusButton.bottomAnchor, constant: 48),
-            label.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
+            defaultLabel.bottomAnchor.constraint(equalTo: plusButton.bottomAnchor, constant: 48),
+            defaultLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
         ])
     }
     
@@ -177,7 +161,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
         NSLayoutConstraint.activate([
             search.heightAnchor.constraint(equalToConstant: 36),
-            search.topAnchor.constraint(equalTo: label.safeAreaLayoutGuide.topAnchor, constant: 48),
+            search.topAnchor.constraint(equalTo: defaultLabel.safeAreaLayoutGuide.topAnchor, constant: 48),
             search.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             search.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
@@ -188,22 +172,20 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     // MARK: - CollectionView setting
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        print("Number of categories: \(categories.count)")
+        print("Верни категории: \(categories.count)")
         return categories.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let category = categories.first else {
-            return 0
-        }
-        print("Верни категории: \(category.trackerArray?.count ?? 0)")
+        let category = categories[section]
+        print("Верни секции: \(category.trackerArray?.count ?? 0)")
         return category.trackerArray?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! TrackerViewCell
         
-        let tracker = newHabit[indexPath.item]
+        let tracker = newHabit[indexPath.section]
         let isChecked = selectedTrackers[tracker.id] ?? false
         
         cell.configure(
@@ -264,8 +246,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     func loadCategories() {
                 
         if createdCategoryName != nil {
-            print("New habit count: \(newHabit.count)")
-            print("Categories count: \(categories.count)")
 
             guard let selectedHabitString = selectedHabitString else {return}
             guard let createdCategoryName = createdCategoryName else {return}
@@ -399,14 +379,20 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
         self.createdCategoryName = trackerCategoryInMain.label
         
         if let existingCategoryIndex = categories.firstIndex(where: { $0.label == createdCategoryName }) {
-            var updatedCategory = categories[existingCategoryIndex]
+            let existingCategory = categories[existingCategoryIndex]
             let newHabit = Tracker(id: UUID(), name: selectedHabitString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
-            updatedCategory.trackerArray?.append(newHabit)
+            
+            var updatedTrackerArray = existingCategory.trackerArray ?? []
+            updatedTrackerArray.append(newHabit)
+            
+            let updatedCategory = TrackerCategory(label: existingCategory.label, trackerArray: updatedTrackerArray)
+            
             categories[existingCategoryIndex] = updatedCategory
         } else {
-            let newCategory = TrackerCategory(label: createdCategoryName ?? "", trackerArray: trackerCategoryInMain.trackerArray)
+            let newCategory = TrackerCategory(label: createdCategoryName ?? "", trackerArray: newHabit)
             categories.append(newCategory)
         }
+
         collectionViewTrackers.reloadData()
     }
 }
