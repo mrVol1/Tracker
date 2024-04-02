@@ -246,16 +246,8 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     func loadCategories() {
-                
-        if createdCategoryName != nil {
-
-            guard let selectedHabitString = selectedHabitString else {return}
-            guard let createdCategoryName = createdCategoryName else {return}
-            newHabit = [Tracker(id: UUID(), name: selectedHabitString, color: "", emodji: "", timetable: selectedScheduleDays)]
-            categories = [TrackerCategory(label: createdCategoryName, trackerArray: newHabit)]
-            updateUI()
-        }
-        else {
+        
+        if categories.isEmpty {
             guard let defaultImage = UIImage(named: "Stars") else { return }
             let imageView = UIImageView(image: defaultImage)
             view.addSubview(imageView)
@@ -278,6 +270,10 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                 defultLabel.bottomAnchor.constraint(equalTo: imageView.safeAreaLayoutGuide.bottomAnchor, constant: 28),
                 defultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
+        } else {
+            guard let selectedHabitString = selectedHabitString else {return}
+            guard let createdCategoryName = createdCategoryName else {return}
+            updateUI()
         }
     }
     
@@ -361,26 +357,26 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
     func didFinishCreatingHabitAndDismiss() {
       loadCategories()
     }
-
+    
     func didCreateHabit(with trackerCategoryInMain: TrackerCategory) {
         selectedHabitString = trackerCategoryInMain.trackerArray?.first?.name
         selectedScheduleDays = trackerCategoryInMain.trackerArray?.first?.timetable ?? []
-        
         createdCategoryName = trackerCategoryInMain.label
-        
+
         if let existingCategoryIndex = categories.firstIndex(where: { $0.label == createdCategoryName }) {
-            let existingCategory = categories[existingCategoryIndex]
+            // Категория с таким именем уже существует
+            var existingCategory = categories[existingCategoryIndex]
             let newHabit = Tracker(id: UUID(), name: selectedHabitString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
             var updatedTrackerArray = existingCategory.trackerArray ?? []
             updatedTrackerArray.append(newHabit)
             let updatedCategory = TrackerCategory(label: existingCategory.label, trackerArray: updatedTrackerArray)
             categories[existingCategoryIndex] = updatedCategory
         } else {
+            // Категории с таким именем еще нет, создаем новую категорию и добавляем ее в массив categories
             let newHabit = Tracker(id: UUID(), name: selectedHabitString ?? "", color: "", emodji: "", timetable: selectedScheduleDays)
             let newCategory = TrackerCategory(label: createdCategoryName ?? "", trackerArray: [newHabit])
             categories.append(newCategory)
         }
-        
         collectionViewTrackers.reloadData()
     }
 }
