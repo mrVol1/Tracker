@@ -179,7 +179,6 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     
     func didCreatedCategory(_ createdCategory: TrackerCategory) {
         categories.append(createdCategory)
-        print("Added category with label: \(createdCategory.label)")
         delegate?.didSelectCategory(selectedCategory)
         tableViewForCategory.reloadData()
     }

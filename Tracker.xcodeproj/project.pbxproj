@@ -91,6 +91,13 @@
 			path = Schedule;
 			sourceTree = "<group>";
 		};
+		D77DC5A42BBC75CB00D54D89 /* CreateEvent */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CreateEvent;
+			sourceTree = "<group>";
+		};
 		D7A6AC932AF7684600851329 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -120,6 +127,7 @@
 		D7B12C9D2AED9E800006205D /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				D77DC5A42BBC75CB00D54D89 /* CreateEvent */,
 				D72ECD212B471FB100D1A11D /* StateView */,
 				D774245E2B2490BB00C8E065 /* Schedule */,
 				D774245B2B2476C700C8E065 /* CreateCategory */,

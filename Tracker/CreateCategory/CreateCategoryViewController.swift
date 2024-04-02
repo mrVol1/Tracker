@@ -143,7 +143,6 @@ final class CreateCategoryViewController: UIViewController, UITextFieldDelegate 
         }
         
         let newCategory = TrackerCategory(label: enteredText, trackerArray: nil)
-        print("New Category Label: \(newCategory.label)")
         self.categories.append(newCategory)
 
         delegate?.didCreatedCategory(newCategory)

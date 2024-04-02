@@ -11,9 +11,9 @@ final class TrackerRecord {
     let id: UUID
     let date: Date
     let selectedDays: [WeekDay]
-    let trackerId: Int
+    let trackerId: UUID
     
-    init(id: UUID, date: Date, selectedDays: [WeekDay] = [], trackerId: Int) {
+    init(id: UUID, date: Date, selectedDays: [WeekDay] = [], trackerId: UUID) {
         self.id = id
         self.date = date
         self.selectedDays = selectedDays

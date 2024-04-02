@@ -20,7 +20,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     var createdCategoryName: String?
     var selectedScheduleDays: [WeekDay] = []
     var categories: [TrackerCategory] = []
-    var completedTrackers: [TrackerRecord]
+    var completedTrackers: Set<UUID> = []
     var newHabit: [Tracker]
     var completedDaysCount: Int = 0
     var selectedTrackers: [UUID: Bool] = [:]
@@ -65,7 +65,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     init(categories: [TrackerCategory], completedTrackers: [TrackerRecord], newCategories: [Tracker]) {
         self.categories = categories
-        self.completedTrackers = completedTrackers
         self.newHabit = newCategories
         super.init(nibName: nil, bundle: nil)
     }
@@ -177,22 +176,20 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     // MARK: - CollectionView setting
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        print("Верни категории: \(categories.count)")
         return categories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let category = categories[section]
-        print("Верни секции: \(category.trackerArray?.count ?? 0)")
         return category.trackerArray?.count ?? 0
     }
-    
+        
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! TrackerViewCell
         
         let category = categories[indexPath.section]
         if let tracker = category.trackerArray?[indexPath.item] {
-            let isChecked = selectedTrackers[tracker.id] ?? false
+            var isChecked = completedTrackers.contains { $0 == tracker.id }
             
             cell.configure(
                 with: tracker,
@@ -203,12 +200,18 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             cell.completion = { [weak self] in
                 guard let self = self else { return }
                 
-                self.selectedTrackers[tracker.id] = !(self.selectedTrackers[tracker.id] ?? false)
+                if isChecked {
+                    self.completedTrackers.remove(tracker.id)
+                } else {
+                    self.completedTrackers.insert(tracker.id)
+                }
+                
+                isChecked = !isChecked
                 
                 cell.configure(
                     with: tracker,
-                    isChecked: self.selectedTrackers[tracker.id] ?? false,
-                    completedDaysCount: (self.selectedTrackers[tracker.id] ?? false) ? 1 : 0
+                    isChecked: isChecked,
+                    completedDaysCount: isChecked ? 1 : 0
                 )
             }
         }

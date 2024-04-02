@@ -265,8 +265,6 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         
         if let delegate = habitCreateDelegate {
             delegate.didCreateHabit(with: trackerCategoryInMain)
-        } else {
-            print("Ошибка: делегат не инициализирован!")
         }
         
         finishCreatingHabitAndDismiss()
@@ -311,7 +309,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
 extension NewHabitCreateViewController: ScheduleViewControllerDelegate {
     
     func didSelectScheduleDays(_ selectedDays: [WeekDay]) {
-        let newTrackerRecord = TrackerRecord(id: UUID(), date: Date(), selectedDays: selectedDays, trackerId: trackerId)
+        let newTrackerRecord = TrackerRecord(id: UUID(), date: Date(), selectedDays: selectedDays, trackerId: UUID())
         self.trackerRecord = newTrackerRecord
         self.selectedScheduleDays = selectedDays
         tableView.reloadData()
