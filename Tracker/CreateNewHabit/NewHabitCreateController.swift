@@ -22,7 +22,6 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     var selectedCategoryString: String?
     var selectedScheduleDays: [WeekDay] = []
     var selectedTrackerName: String?
-    var trackerId: Int = 0
     var cellWithCategoryLabel: CategoryTableViewCell?
     
     weak var scheduleDelegate: ScheduleViewControllerDelegate?

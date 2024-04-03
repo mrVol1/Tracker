@@ -7,14 +7,19 @@
 
 import UIKit
 
-final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateViewControllerDelegate {
+final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateViewControllerDelegate, NewEventCreateViewControllerDelegate {
     
     let label = UILabel()
     let customFontBold = UIFont(name: "SFProDisplay-Medium", size: UIFont.labelFontSize)
     let habbitButton = UIButton()
     let eventButton = UIButton()
     
+    var didFinishCreatingHabitAndDismissCalled = false
+    var didFinishCreatingEventAndDismissCalled = false
+    
     weak var habitCreateDelegate: NewHabitCreateViewControllerDelegate?
+    weak var eventCreateDelegate: NewEventCreateViewControllerDelegate?
+
         
     override func viewDidLoad() {
         
@@ -75,6 +80,7 @@ final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateVie
         eventButton.layer.cornerRadius = 16
         eventButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         eventButton.backgroundColor = .black
+        eventButton.addTarget(self, action: #selector(buttonActionForCreateEvent), for: .touchUpInside)
         view.addSubview(eventButton)
     }
     
@@ -89,8 +95,6 @@ final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateVie
             eventButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20)
         ])
     }
-    
-    var didFinishCreatingHabitAndDismissCalled = false
 
     func didFinishCreatingHabitAndDismiss() {
         guard !didFinishCreatingHabitAndDismissCalled else {
@@ -107,6 +111,21 @@ final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateVie
         self.habitCreateDelegate?.didCreateHabit(with: trackerCategoryInMain)
     }
     
+    func didCreateEvent(with trackerCategoryInMain: TrackerCategory) {
+        self.eventCreateDelegate?.didCreateEvent(with: trackerCategoryInMain)
+    }
+    
+    func didFinishCreatingEventAndDismiss() {
+        guard !didFinishCreatingEventAndDismissCalled else {
+            return
+        }
+        didFinishCreatingEventAndDismissCalled = true
+        
+        dismiss(animated: true) {
+            self.eventCreateDelegate?.didFinishCreatingEventAndDismiss()
+        }
+    }
+    
     // MARK: - Screen Func
     
     @objc private func buttonActionForCreateHabbit() {
@@ -114,5 +133,12 @@ final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateVie
         createHabbitbutton.habitCreateDelegate = self
         let createNewHabbitButtonNavigationController = UINavigationController(rootViewController: createHabbitbutton)
         present(createNewHabbitButtonNavigationController, animated: true, completion: nil)
+    }
+    
+    @objc private func buttonActionForCreateEvent() {
+        let createEventbutton = NewEventCreateViewController()
+        createEventbutton.eventCreateDelegate = self
+        let createNewEventButtonNavigationController = UINavigationController(rootViewController: createEventbutton)
+        present(createNewEventButtonNavigationController, animated: true, completion: nil)
     }
 }

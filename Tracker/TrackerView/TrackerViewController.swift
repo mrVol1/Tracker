@@ -14,8 +14,10 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     let search = UISearchTextField()
     let defaultLabel = UILabel()
     let newHabitCreateController = NewHabitCreateViewController()
+    let newEventCreateController = NewEventCreateViewController()
     let datePicker = UIDatePicker()
     
+    var selectedEventString: String?
     var selectedHabitString: String?
     var createdCategoryName: String?
     var selectedScheduleDays: [WeekDay] = []
@@ -89,6 +91,8 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         collectionViewTrackers.dataSource = self
         
         newHabitCreateController.habitCreateDelegate = self
+        
+        newEventCreateController.eventCreateDelegate = self
         
         createButton()
         
@@ -280,6 +284,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             ])
         } else {
             guard selectedHabitString != nil else {return}
+            guard selectedEventString != nil else {return}
             guard createdCategoryName != nil else {return}
             updateUI()
         }
@@ -410,6 +415,32 @@ extension TrackerViewController: NewHabitCreateViewControllerDelegate {
 extension TrackerViewController: ScheduleViewControllerDelegate {
     func didSelectScheduleDays(_ selectedDays: [WeekDay]) {
         self.selectedScheduleDays = selectedDays
+    }
+}
+
+extension TrackerViewController: NewEventCreateViewControllerDelegate {
+    
+    func didCreateEvent(with trackerCategoryInMain: TrackerCategory) {
+        selectedEventString = trackerCategoryInMain.trackerArray?.first?.name
+        createdCategoryName = trackerCategoryInMain.label
+
+        if let existingCategoryIndex = categories.firstIndex(where: { $0.label == createdCategoryName }) {
+            let existingCategory = categories[existingCategoryIndex]
+            let newHabit = Tracker(id: UUID(), name: selectedHabitString ?? "", color: "", emodji: "", timetable: [])
+            var updatedTrackerArray = existingCategory.trackerArray ?? []
+            updatedTrackerArray.append(newHabit)
+            let updatedCategory = TrackerCategory(label: existingCategory.label, trackerArray: updatedTrackerArray)
+            categories[existingCategoryIndex] = updatedCategory
+        } else {
+            let newHabit = Tracker(id: UUID(), name: selectedHabitString ?? "", color: "", emodji: "", timetable: [])
+            let newCategory = TrackerCategory(label: createdCategoryName ?? "", trackerArray: [newHabit])
+            categories.append(newCategory)
+        }
+        collectionViewTrackers.reloadData()
+    }
+    
+    func didFinishCreatingEventAndDismiss() {
+        loadCategories()
     }
 }
 
