@@ -44,11 +44,6 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         title = "Расписание"
         view.backgroundColor = .white
         
-        if let savedDaysData = UserDefaults.standard.data(forKey: selectedDaysKey),
-           let savedDays = try? JSONDecoder().decode([WeekDay].self, from: savedDaysData) {
-            selectedDays = savedDays
-        }
-        
         configureTableView()
         configureDoneButton()
         
