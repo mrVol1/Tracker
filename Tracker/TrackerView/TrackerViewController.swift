@@ -367,17 +367,19 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         let selectedWeekDay = weekDayFromNumber(dayOfWeek)
         
         if let selectedWeekDay = selectedWeekDay {
-            let filteredCategories = categories.map { category in
-                TrackerCategory(label: category.label, trackerArray: category.trackerArray?.filter { tracker in
-                    return tracker.timetable.contains(selectedWeekDay)
-                })
-            }.filter { $0.trackerArray != nil && !$0.trackerArray!.isEmpty }
+            var filteredCategories = [TrackerCategory]()
+            for category in categories {
+                if let filteredTrackers = category.trackerArray?.filter({ $0.timetable.contains(selectedWeekDay) }), !filteredTrackers.isEmpty {
+                    let filteredCategory = TrackerCategory(label: category.label, trackerArray: filteredTrackers)
+                    filteredCategories.append(filteredCategory)
+                }
+            }
             
             if filteredCategories.isEmpty {
                 collectionViewTrackers.isHidden = true
             } else {
                 collectionViewTrackers.isHidden = false
-                categories = filteredCategories
+                categories = filteredCategories // Обновляем исходный массив категорий
                 collectionViewTrackers.reloadData()
             }
         }
