@@ -22,7 +22,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     var selectedCategoryString: String?
     var selectedScheduleDays: [WeekDay] = []
     var selectedTrackerName: String?
-    var cellWithCategoryLabel: CategoryTableViewCell?
+    var cellWithCategoryLabel: CategoryTableViewCellForHabit?
     
     weak var scheduleDelegate: ScheduleViewControllerDelegate?
     weak var habitCreateDelegate: NewHabitCreateViewControllerDelegate?
@@ -103,17 +103,14 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     }
     
     private func configureTableView() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.layer.cornerRadius = 16
         tableView.clipsToBounds = true
         tableView.sectionHeaderHeight = 0
         tableView.separatorStyle = .none
         tableView.isScrollEnabled = false
         
-        setupTableHeader()
-        tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: "categoryCell")
-        tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: "daysLabel")
+        tableView.register(CategoryTableViewCellForHabit.self, forCellReuseIdentifier: "categoryCell")
+        tableView.register(CategoryTableViewCellForHabit.self, forCellReuseIdentifier: "cell")
         view.addSubview(tableView)
         tableView.dataSource = self
         tableView.delegate = self
@@ -185,7 +182,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch TableSection(rawValue: indexPath.section) {
         case .categories:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as! CategoryTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as! CategoryTableViewCellForHabit
             cell.titleLabel.text = "Категории"
             cell.titleLabel.textColor = UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 1.0)
             cell.titleLabel.textAlignment = .center
@@ -204,7 +201,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             return cell
             
         case .schedule:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CategoryTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CategoryTableViewCellForHabit
             cell.titleLabel.text = "Расписание"
             cell.titleLabel.textColor = .black
             cell.accessoryType = .disclosureIndicator
@@ -290,11 +287,6 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         createScheduleButton.delegate = self
         let createScheduleButtonNavigationController = UINavigationController(rootViewController: createScheduleButton)
         present(createScheduleButtonNavigationController, animated: true, completion: nil)
-    }
-    
-    private func setupTableHeader() {
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 343, height: 1))
-        tableView.tableHeaderView = headerView
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {

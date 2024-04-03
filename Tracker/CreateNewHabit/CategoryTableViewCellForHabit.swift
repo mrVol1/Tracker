@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CategoryTableViewCell: UITableViewCell {
+final class CategoryTableViewCellForHabit: UITableViewCell {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "SFProDisplay-Medium", size: 17)

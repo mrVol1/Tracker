@@ -20,7 +20,7 @@ final class NewEventCreateViewController: UIViewController, UITextFieldDelegate,
     
     var selectedCategoryStringForEvent: String?
     var selectedTrackerNameForEvent: String?
-    var cellWithCategoryLabel: CategoryTableViewCell?
+    var cellWithCategoryLabel: CategoryTableViewCellForEvent?
 
     weak var eventCreateDelegate: NewEventCreateViewControllerDelegate?
     weak var addCategoryDelegate: AddCategoryViewControllerDelegate?
@@ -99,24 +99,17 @@ final class NewEventCreateViewController: UIViewController, UITextFieldDelegate,
     }
     
     private func configureTableView() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.layer.cornerRadius = 16
-        tableView.layer.masksToBounds = true
-        tableView.clipsToBounds = true
-        tableView.sectionHeaderHeight = 0
-        tableView.separatorStyle = .none
         tableView.isScrollEnabled = false
         
-        setupTableHeader()
-        tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: "categoryCell")
-        tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(CategoryTableViewCellForEvent.self, forCellReuseIdentifier: "categoryCell")
         view.addSubview(tableView)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.widthAnchor.constraint(equalToConstant: 343),
-            tableView.heightAnchor.constraint(equalToConstant: 150),
+            tableView.heightAnchor.constraint(equalToConstant: 75),
             tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             tableView.topAnchor.constraint(equalTo: trackerName.bottomAnchor, constant: 24)
         ])
@@ -179,13 +172,13 @@ final class NewEventCreateViewController: UIViewController, UITextFieldDelegate,
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let section = TableSectionForEvent(rawValue: indexPath.section) else {
-            return CategoryTableViewCell()
+            return CategoryTableViewCellForEvent()
         }
         
-        let cell: CategoryTableViewCell
+        let cell: CategoryTableViewCellForEvent
         
         if section == .categoriesEvent {
-            cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as! CategoryTableViewCell
+            cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as! CategoryTableViewCellForEvent
             cell.titleLabel.text = "Категории"
             cell.titleLabel.textColor = UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 1.0)
             cell.titleLabel.textAlignment = .center
@@ -250,11 +243,6 @@ final class NewEventCreateViewController: UIViewController, UITextFieldDelegate,
         let createCategoryButton = AddCategoryViewController()
         createCategoryButton.delegate = self
         present(createCategoryButton, animated: true, completion: nil)
-    }
-    
-    private func setupTableHeader() {
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 343, height: 1))
-        tableView.tableHeaderView = headerView
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
