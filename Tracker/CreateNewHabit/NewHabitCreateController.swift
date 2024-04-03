@@ -109,6 +109,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         tableView.separatorStyle = .none
         tableView.isScrollEnabled = false
         
+        setupTableHeader()
         tableView.register(CategoryTableViewCellForHabit.self, forCellReuseIdentifier: "categoryCell")
         tableView.register(CategoryTableViewCellForHabit.self, forCellReuseIdentifier: "cell")
         view.addSubview(tableView)
@@ -287,6 +288,11 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         createScheduleButton.delegate = self
         let createScheduleButtonNavigationController = UINavigationController(rootViewController: createScheduleButton)
         present(createScheduleButtonNavigationController, animated: true, completion: nil)
+    }
+    
+    private func setupTableHeader() {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 343, height: 1))
+        tableView.tableHeaderView = headerView
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {

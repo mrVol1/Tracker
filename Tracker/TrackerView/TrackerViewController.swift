@@ -119,7 +119,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     fileprivate func createButton() {
-        plusButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+        plusButton.addTarget(self, action: #selector(buttonActionForHabit), for: .touchUpInside)
         plusButton.setImage(UIImage(named: "Add tracker"), for: .normal)
         plusButton.translatesAutoresizingMaskIntoConstraints = false
         plusButton.setTitleColor(.black, for: .normal)
@@ -282,10 +282,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                 defultLabel.bottomAnchor.constraint(equalTo: imageView.safeAreaLayoutGuide.bottomAnchor, constant: 28),
                 defultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
-        } else {
-            guard selectedHabitString != nil else {return}
-            guard selectedEventString != nil else {return}
-            guard createdCategoryName != nil else {return}
+        } else if selectedHabitString != nil || selectedEventString != nil {
             updateUI()
         }
     }
@@ -339,10 +336,11 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         true
     }
     
-    @objc func buttonAction() {
-        let createHabbit = ChoseHabitOrEventViewController()
-        createHabbit.habitCreateDelegate = self
-        let createHabbitNavigationController = UINavigationController(rootViewController: createHabbit)
+    @objc func buttonActionForHabit() {
+        let createTracker = ChoseHabitOrEventViewController()
+        createTracker.habitCreateDelegate = self
+        createTracker.eventCreateDelegate = self
+        let createHabbitNavigationController = UINavigationController(rootViewController: createTracker)
         present(createHabbitNavigationController, animated: true, completion: nil)
     }
     
@@ -426,13 +424,13 @@ extension TrackerViewController: NewEventCreateViewControllerDelegate {
 
         if let existingCategoryIndex = categories.firstIndex(where: { $0.label == createdCategoryName }) {
             let existingCategory = categories[existingCategoryIndex]
-            let newHabit = Tracker(id: UUID(), name: selectedHabitString ?? "", color: "", emodji: "", timetable: [])
+            let newHabit = Tracker(id: UUID(), name: selectedEventString ?? "", color: "", emodji: "", timetable: [])
             var updatedTrackerArray = existingCategory.trackerArray ?? []
             updatedTrackerArray.append(newHabit)
             let updatedCategory = TrackerCategory(label: existingCategory.label, trackerArray: updatedTrackerArray)
             categories[existingCategoryIndex] = updatedCategory
         } else {
-            let newHabit = Tracker(id: UUID(), name: selectedHabitString ?? "", color: "", emodji: "", timetable: [])
+            let newHabit = Tracker(id: UUID(), name: selectedEventString ?? "", color: "", emodji: "", timetable: [])
             let newCategory = TrackerCategory(label: createdCategoryName ?? "", trackerArray: [newHabit])
             categories.append(newCategory)
         }

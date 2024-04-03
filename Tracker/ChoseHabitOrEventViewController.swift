@@ -19,7 +19,6 @@ final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateVie
     
     weak var habitCreateDelegate: NewHabitCreateViewControllerDelegate?
     weak var eventCreateDelegate: NewEventCreateViewControllerDelegate?
-
         
     override func viewDidLoad() {
         
