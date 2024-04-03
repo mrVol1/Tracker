@@ -36,14 +36,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         }
     }
     
-    let labelCount: UILabel = {
-        let labelCount = UILabel()
-        labelCount.textColor = .black
-        labelCount.text = "0 дней"
-        labelCount.translatesAutoresizingMaskIntoConstraints = false
-        return labelCount
-    }()
-    
     let plusButton: UIButton = {
         let button = UIButton()
         button.setTitle("+", for: .normal)
@@ -133,6 +125,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     fileprivate func timeContainer() {
         datePicker.datePickerMode = .date
+        datePicker.minimumDate = nil
         view.addSubview(datePicker)
         
         datePicker.translatesAutoresizingMaskIntoConstraints = false
@@ -143,7 +136,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             datePicker.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 222)
         ])
         
-        datePicker.minimumDate = Date()
         datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
     }
     
