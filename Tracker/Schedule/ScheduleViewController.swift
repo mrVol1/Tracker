@@ -6,26 +6,37 @@
 //
 
 import UIKit
+import Foundation
 
-enum WeekDay: String, CaseIterable {
-    case monday = "Понедельник"
-    case tuesday = "Вторник"
-    case wednesday = "Среда"
-    case thursday = "Четверг"
-    case friday = "Пятница"
-    case saturday = "Суббота"
-    case sunday = "Воскресенье"
+protocol ScheduleViewControllerDelegate: AnyObject {
+    func didSelectScheduleDays(_ selectedDays: [WeekDay])
 }
 
 class ScheduleViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    weak var delegate: ScheduleViewControllerDelegate?
+    
     private var selectedDays: [WeekDay] = []
     
-    private let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+    private let selectedDaysKey = "SelectedDaysKey"
+    
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .clear
         return tableView
+    }()
+    
+    private lazy var doneButton: UIButton = {
+        let button = UIButton()
+        button.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 16)
+        button.setTitle("Готово", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 16
+        button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        button.backgroundColor = .black
+        button.addTarget(self, action: #selector(buttonActionForCreateSchedule), for: .touchUpInside)
+        return button
     }()
     
     override func viewDidLoad() {
@@ -33,22 +44,40 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         title = "Расписание"
         view.backgroundColor = .white
         
+        configureTableView()
+        configureDoneButton()
+        
+    }
+    
+    private func configureTableView() {
         view.addSubview(tableView)
+        tableView.layer.cornerRadius = 16
+        tableView.layer.masksToBounds = true
         tableView.dataSource = self
         tableView.delegate = self
         
-        // Добавление необходимых констрейнтов для tableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 38),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 56),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -150),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
         
-        // Установка поведения отступов контента
         tableView.contentInsetAdjustmentBehavior = .never
         tableView.layoutIfNeeded()
+    }
+    
+    private func configureDoneButton() {
+        view.addSubview(doneButton)
+        doneButton.translatesAutoresizingMaskIntoConstraints = false
+        doneButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        NSLayoutConstraint.activate([
+            doneButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -48),
+            doneButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            doneButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
+            doneButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20)
+        ])
     }
     
     // MARK: - UITableViewDataSource
@@ -66,9 +95,12 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
         let day = WeekDay.allCases[indexPath.row]
         cell.textLabel?.text = day.rawValue
         
+        cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
+        
         let switchView = UISwitch()
         switchView.tag = indexPath.row
         switchView.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
+        switchView.onTintColor = UIColor.blue
         cell.accessoryView = switchView
         
         switchView.isOn = selectedDays.contains(day)
@@ -91,4 +123,13 @@ class ScheduleViewController: UIViewController, UITableViewDataSource, UITableVi
             selectedDays.removeAll { $0 == day }
         }
     }
+    
+    @objc private func buttonActionForCreateSchedule() {
+           if let savedDaysData = try? JSONEncoder().encode(selectedDays) {
+               UserDefaults.standard.set(savedDaysData, forKey: selectedDaysKey)
+           }
+
+           delegate?.didSelectScheduleDays(selectedDays)
+           dismiss(animated: true, completion: nil)
+       }
 }

@@ -1,0 +1,71 @@
+//
+//  CategoryTableViewCellForEvent.swift
+//  Tracker
+//
+//  Created by Eduard Karimov on 03/04/2024.
+//
+
+import UIKit
+
+final class CategoryTableViewCellForEvent: UITableViewCell {
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "SFProDisplay-Medium", size: 17)
+        label.textColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1.0)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let nameLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "SFProDisplay-Medium", size: 17)
+        label.textColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1.0)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let categoryLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "SFProDisplay-Medium", size: 17)
+        label.textColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1.0)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupViews()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupViews()
+    }
+    
+    private func setupViews() {
+        contentView.addSubview(titleLabel)
+
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 17),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+        ])
+
+        if categoryLabel.superview == nil {
+            contentView.addSubview(categoryLabel)
+
+            NSLayoutConstraint.activate([
+                categoryLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
+                categoryLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            ])
+        }
+        
+        if nameLabel.superview == nil {
+            contentView.addSubview(nameLabel)
+
+            NSLayoutConstraint.activate([
+                nameLabel.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor, constant: 2),
+                nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            ])
+        }
+    }
+}

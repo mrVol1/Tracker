@@ -1,31 +1,28 @@
 //
-//  NewHabitCreateController.swift
+//  NewEventCreateController.swift
 //  Tracker
 //
-//  Created by Eduard Karimov on 26/11/2023.
+//  Created by Eduard Karimov on 03/04/2024.
 //
 
 import UIKit
 
-enum TableSection: Int, CaseIterable {
-    case categories
-    case schedule
+enum TableSectionForEvent: Int, CaseIterable {
+    case categoriesEvent
 }
 
-protocol NewHabitCreateViewControllerDelegate: AnyObject {
-    func didCreateHabit(with trackerCategoryInMain: TrackerCategory)
-    func didFinishCreatingHabitAndDismiss()
+protocol NewEventCreateViewControllerDelegate: AnyObject {
+    func didCreateEvent(with trackerCategoryInMain: TrackerCategory)
+    func didFinishCreatingEventAndDismiss()
 }
 
-final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, AddCategoryViewControllerDelegate {
+final class NewEventCreateViewController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, AddCategoryViewControllerDelegate {
     
-    var selectedCategoryString: String?
-    var selectedScheduleDays: [WeekDay] = []
-    var selectedTrackerName: String?
-    var cellWithCategoryLabel: CategoryTableViewCellForHabit?
-    
-    weak var scheduleDelegate: ScheduleViewControllerDelegate?
-    weak var habitCreateDelegate: NewHabitCreateViewControllerDelegate?
+    var selectedCategoryStringForEvent: String?
+    var selectedTrackerNameForEvent: String?
+    var cellWithCategoryLabel: CategoryTableViewCellForEvent?
+
+    weak var eventCreateDelegate: NewEventCreateViewControllerDelegate?
     weak var addCategoryDelegate: AddCategoryViewControllerDelegate?
     
     let label = UILabel()
@@ -34,14 +31,12 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     let cancelButton = UIButton()
     let tableView = UITableView()
     
-    private var trackerRecord: TrackerRecord?
-    
     fileprivate func configereKeyboard() {
         let tapGesture = UITapGestureRecognizer(target: self,
                                                 action: #selector(hideKeyboard))
         tapGesture.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tapGesture)
-        saveButton.addTarget(self, action: #selector(buttonActionForHabitSave), for: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(buttonActionForEventSave), for: .touchUpInside)
     }
     
     override func viewDidLoad() {
@@ -61,13 +56,14 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         configereKeyboard()
     }
     
+    
     // MARK: - Screen Config
     
     private func configureLabel() {
         let customFontBold = UIFont(name: "SFProDisplay-Medium", size: UIFont.labelFontSize)
         label.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.semibold)).withSize(16)
         label.textColor = .black
-        label.text = "Создание привычки"
+        label.text = "Новое нерегулярное событие"
         view.addSubview(label)
         
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -104,21 +100,16 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     
     private func configureTableView() {
         tableView.layer.cornerRadius = 16
-        tableView.clipsToBounds = true
-        tableView.sectionHeaderHeight = 0
-        tableView.separatorStyle = .none
         tableView.isScrollEnabled = false
         
-        setupTableHeader()
-        tableView.register(CategoryTableViewCellForHabit.self, forCellReuseIdentifier: "categoryCell")
-        tableView.register(CategoryTableViewCellForHabit.self, forCellReuseIdentifier: "cell")
+        tableView.register(CategoryTableViewCellForEvent.self, forCellReuseIdentifier: "categoryCell")
         view.addSubview(tableView)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.widthAnchor.constraint(equalToConstant: 343),
-            tableView.heightAnchor.constraint(equalToConstant: 150),
+            tableView.heightAnchor.constraint(equalToConstant: 75),
             tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             tableView.topAnchor.constraint(equalTo: trackerName.bottomAnchor, constant: 24)
         ])
@@ -139,7 +130,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         cancelButton.titleEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         cancelButton.layer.borderColor = UIColor.red.cgColor
         cancelButton.layer.borderWidth = 1
-        cancelButton.addTarget(self, action: #selector(buttonActionForHabitCancel), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(buttonActionForEventCancel), for: .touchUpInside)
         
         let buttonsContainer = UIStackView(arrangedSubviews: [cancelButton, saveButton])
         buttonsContainer.axis = .horizontal
@@ -157,8 +148,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     }
     
     private func updateCreateButtonState() {
-        guard selectedCategoryString != nil,
-              !selectedScheduleDays.isEmpty,
+        guard selectedCategoryStringForEvent != nil,
               let trackerNameText = trackerName.text,
               !trackerNameText.isEmpty
         else {
@@ -171,9 +161,9 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     }
     
     // MARK: - UITableView Data Source and Delegate
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
-        return TableSection.allCases.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -181,16 +171,21 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch TableSection(rawValue: indexPath.section) {
-        case .categories:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as! CategoryTableViewCellForHabit
+        guard let section = TableSectionForEvent(rawValue: indexPath.section) else {
+            return CategoryTableViewCellForEvent()
+        }
+        
+        let cell: CategoryTableViewCellForEvent
+        
+        if section == .categoriesEvent {
+            cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as! CategoryTableViewCellForEvent
             cell.titleLabel.text = "Категории"
             cell.titleLabel.textColor = UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 1.0)
             cell.titleLabel.textAlignment = .center
             cell.accessoryType = .disclosureIndicator
             
-            if let selectedCategoryString = selectedCategoryString {
-                cell.categoryLabel.text = selectedCategoryString
+            if let selectedCategoryStringForEvent = selectedCategoryStringForEvent {
+                cell.categoryLabel.text = selectedCategoryStringForEvent
                 cell.categoryLabel.isHidden = false
             } else {
                 cell.categoryLabel.text = ""
@@ -200,27 +195,10 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
             cellWithCategoryLabel = cell
             return cell
-            
-        case .schedule:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CategoryTableViewCellForHabit
-            cell.titleLabel.text = "Расписание"
-            cell.titleLabel.textColor = .black
-            cell.accessoryType = .disclosureIndicator
-            cell.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
-            
-            if !selectedScheduleDays.isEmpty {
-                let scheduleText = selectedScheduleDays.map { $0.rawValue.prefix(3) }.joined(separator: ", ")
-                cell.daysLabel.text = scheduleText
-            } else {
-                cell.daysLabel.text = nil
-            }
-            
-            return cell
-            
-        case .none:
-            return UITableViewCell()
         }
+        return UITableViewCell()
     }
+    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
@@ -228,52 +206,36 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        switch TableSection(rawValue: indexPath.section) {
-        case .categories:
-            firstWayForButtonActionForCreateCategory()
-        case .schedule:
-            buttonActionForCreateSchedule()
-        case .none:
-            break
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let separatorWidth: CGFloat = 311
-        let separatorHeight: CGFloat = 1
-        let separator = UIView(frame: CGRect(x: (cell.frame.width - separatorWidth) / 2, y: cell.frame.height - separatorHeight, width: separatorWidth, height: separatorHeight))
-        separator.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
-        cell.contentView.addSubview(separator)
+        firstWayForButtonActionForCreateCategory()
     }
     
     // MARK: - Screen Func
     
-    @objc private func buttonActionForHabitSave() {
+    @objc private func buttonActionForEventSave() {
         guard let selectedTrackerName = trackerName.text, !selectedTrackerName.isEmpty,
-              let selectedCategoryString = selectedCategoryString,
-              !selectedScheduleDays.isEmpty else {
+              let selectedCategoryStringForEvent = selectedCategoryStringForEvent
+        else {
             return
         }
                 
-        let tracker = Tracker(id: UUID(), name: selectedTrackerName, color: "", emodji: "", timetable: selectedScheduleDays)
+        let tracker = Tracker(id: UUID(), name: selectedTrackerName, color: "", emodji: "", timetable: [])
         
-        let trackerCategoryInMain = TrackerCategory(label: selectedCategoryString, trackerArray: [tracker])
+        let trackerCategoryInMain = TrackerCategory(label: selectedCategoryStringForEvent, trackerArray: [tracker])
         
-        if let delegate = habitCreateDelegate {
-            delegate.didCreateHabit(with: trackerCategoryInMain)
+        if let delegate = eventCreateDelegate {
+            delegate.didCreateEvent(with: trackerCategoryInMain)
         }
         
-        finishCreatingHabitAndDismiss()
+        finishCreatingEventAndDismiss()
     }
     
-    func finishCreatingHabitAndDismiss() {
+    func finishCreatingEventAndDismiss() {
         dismiss(animated: false) {
-            self.habitCreateDelegate?.didFinishCreatingHabitAndDismiss()
+            self.eventCreateDelegate?.didFinishCreatingEventAndDismiss()
         }
     }
     
-    @objc private func buttonActionForHabitCancel() {
+    @objc private func buttonActionForEventCancel() {
         dismiss(animated: true, completion: nil)
     }
     
@@ -283,38 +245,15 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         present(createCategoryButton, animated: true, completion: nil)
     }
     
-    @objc private func buttonActionForCreateSchedule() {
-        let createScheduleButton = ScheduleViewController()
-        createScheduleButton.delegate = self
-        let createScheduleButtonNavigationController = UINavigationController(rootViewController: createScheduleButton)
-        present(createScheduleButtonNavigationController, animated: true, completion: nil)
-    }
-    
-    private func setupTableHeader() {
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 343, height: 1))
-        tableView.tableHeaderView = headerView
-    }
-    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == trackerName {
             textField.textColor = UIColor.black
         }
         updateCreateButtonState()
     }
-}
-
-extension NewHabitCreateViewController: ScheduleViewControllerDelegate {
-    
-    func didSelectScheduleDays(_ selectedDays: [WeekDay]) {
-        let newTrackerRecord = TrackerRecord(id: UUID(), date: Date(), selectedDays: selectedDays, trackerId: UUID())
-        self.trackerRecord = newTrackerRecord
-        self.selectedScheduleDays = selectedDays
-        tableView.reloadData()
-        updateCreateButtonState()
-    }
     
     func didSelectCategory(_ selectedCategory: String?) {
-        self.selectedCategoryString = selectedCategory
+        self.selectedCategoryStringForEvent = selectedCategory
         tableView.reloadData()
         updateCreateButtonState()
     }
