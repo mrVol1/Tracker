@@ -17,12 +17,13 @@ protocol NewHabitCreateViewControllerDelegate: AnyObject {
     func didFinishCreatingHabitAndDismiss()
 }
 
-final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, AddCategoryViewControllerDelegate {
+final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, AddCategoryViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var selectedCategoryString: String?
     var selectedScheduleDays: [WeekDay] = []
     var selectedTrackerName: String?
     var cellWithCategoryLabel: CategoryTableViewCellForHabit?
+    var selectedIndexEmoji: Set<IndexPath> = []
     
     weak var scheduleDelegate: ScheduleViewControllerDelegate?
     weak var habitCreateDelegate: NewHabitCreateViewControllerDelegate?
@@ -35,6 +36,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     let tableView = UITableView()
     
     private var trackerRecord: TrackerRecord?
+    private let emojis: [String] = ["🙂", "😺", "🌺", "🐶", "♥️", "😱", "😇", "😡", "🥶", "🤔", "🙌", "🍔", "🥦", "🏓", "🥇", "🎸", "🌴", "😪"]
     
     fileprivate func configereKeyboard() {
         let tapGesture = UITapGestureRecognizer(target: self,
@@ -54,11 +56,14 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         configureLabel()
         configureTrackerName()
         configureTableView()
+        emojiCollectionView.dataSource = self
+        emojiCollectionView.delegate = self
         configureButtonsContainer()
         
         updateCreateButtonState()
         
         configereKeyboard()
+        updateCollectionView()
     }
     
     // MARK: - Screen Config
@@ -123,6 +128,16 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             tableView.topAnchor.constraint(equalTo: trackerName.bottomAnchor, constant: 24)
         ])
     }
+    
+    private let emojiCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .clear
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "EmojiCell")
+        return collectionView
+    }()
     
     private func configureButtonsContainer() {
         saveButton.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 17)
@@ -245,6 +260,64 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         let separator = UIView(frame: CGRect(x: (cell.frame.width - separatorWidth) / 2, y: cell.frame.height - separatorHeight, width: separatorWidth, height: separatorHeight))
         separator.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
         cell.contentView.addSubview(separator)
+    }
+    
+    
+    // MARK: - collectionViewSettings
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+            return emojis.count
+        }
+
+        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath)
+            // Настройте ячейку вашего UICollectionView
+            // Например, установите эмодзи в ячейке
+            cell.backgroundColor = .clear
+            cell.contentView.backgroundColor = .clear
+            //cell.layer.cornerRadius = 8
+            //cell.layer.borderWidth = 1
+            //cell.layer.borderColor = UIColor.lightGray.cgColor
+            // Установите эмодзи в ячейке
+            let emojiLabel = UILabel(frame: cell.bounds)
+            emojiLabel.textAlignment = .center
+            emojiLabel.text = emojis[indexPath.item]
+            cell.contentView.addSubview(emojiLabel)
+            return cell
+        }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if selectedIndexEmoji.contains(indexPath) { // Проверяем, выбрана ли уже эта ячейка
+            // Если выбрана, то убираем выбор и меняем стиль
+            selectedIndexEmoji.remove(indexPath)
+            if let cell = collectionView.cellForItem(at: indexPath) {
+                cell.contentView.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 1.0) // Серый цвет #E6E8EB
+                cell.contentView.layer.cornerRadius = 16 // Закругленные углы
+            }
+        } else {
+            // Если ячейка не выбрана, то выбираем и меняем стиль
+            selectedIndexEmoji.insert(indexPath)
+            if let cell = collectionView.cellForItem(at: indexPath) {
+                cell.contentView.backgroundColor = .white
+                cell.contentView.layer.cornerRadius = 16 // Закругленные углы
+            }
+        }
+        // Обрабатываем выбор эмодзи
+        let selectedEmoji = emojis[indexPath.item]
+        // Можете выполнить какие-то действия с выбранным эмодзи
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 52, height: 52)
+    }
+    
+    func updateCollectionView() {
+        view.addSubview(emojiCollectionView)
+        NSLayoutConstraint.activate([
+            emojiCollectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 16),
+            emojiCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            emojiCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -19),
+            emojiCollectionView.heightAnchor.constraint(equalToConstant: 200)
+        ])
     }
     
     // MARK: - Screen Func
