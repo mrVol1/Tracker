@@ -12,7 +12,6 @@ enum TableSection: Int, CaseIterable {
     case schedule
 }
 
-
 protocol NewHabitCreateViewControllerDelegate: AnyObject {
     func didCreateHabit(with trackerCategoryInMain: TrackerCategory)
     func didFinishCreatingHabitAndDismiss()
