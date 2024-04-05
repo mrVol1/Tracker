@@ -28,6 +28,8 @@
 		D7C650F52B130EE800A9F116 /* ChoseHabitOrEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C650F42B130EE800A9F116 /* ChoseHabitOrEventViewController.swift */; };
 		D7C650F72B133FCE00A9F116 /* NewHabitCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C650F62B133FCE00A9F116 /* NewHabitCreateController.swift */; };
 		D7CDABF02B90DBA000F9554D /* CategoryNameClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CDABEF2B90DBA000F9554D /* CategoryNameClass.swift */; };
+		D7E8C5822BC05CA900076DB8 /* ColorsForHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E8C5812BC05CA900076DB8 /* ColorsForHabit.swift */; };
+		D7E8C5842BC0665B00076DB8 /* ColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E8C5832BC0665B00076DB8 /* ColorCollectionViewCell.swift */; };
 		D7F67EF62B375B2B00F81F06 /* TrackerViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F67EF52B375B2B00F81F06 /* TrackerViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +57,8 @@
 		D7C650F42B130EE800A9F116 /* ChoseHabitOrEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoseHabitOrEventViewController.swift; sourceTree = "<group>"; };
 		D7C650F62B133FCE00A9F116 /* NewHabitCreateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabitCreateController.swift; sourceTree = "<group>"; };
 		D7CDABEF2B90DBA000F9554D /* CategoryNameClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryNameClass.swift; sourceTree = "<group>"; };
+		D7E8C5812BC05CA900076DB8 /* ColorsForHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsForHabit.swift; sourceTree = "<group>"; };
+		D7E8C5832BC0665B00076DB8 /* ColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewCell.swift; sourceTree = "<group>"; };
 		D7F67EF52B375B2B00F81F06 /* TrackerViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -133,6 +137,7 @@
 		D7B12C9D2AED9E800006205D /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				D7E8C5812BC05CA900076DB8 /* ColorsForHabit.swift */,
 				D77DC5A72BBCFC9600D54D89 /* StateView */,
 				D77DC5A42BBC75CB00D54D89 /* CreateEvent */,
 				D774245E2B2490BB00C8E065 /* Schedule */,
@@ -167,6 +172,7 @@
 			children = (
 				D73B27762B37369F00E7B59A /* CategoryTableViewCellForHabit.swift */,
 				D7C650F62B133FCE00A9F116 /* NewHabitCreateController.swift */,
+				D7E8C5832BC0665B00076DB8 /* ColorCollectionViewCell.swift */,
 			);
 			path = CreateNewHabit;
 			sourceTree = "<group>";
@@ -242,6 +248,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7E8C5822BC05CA900076DB8 /* ColorsForHabit.swift in Sources */,
 				D7B12CA32AED9E800006205D /* TrackerViewController.swift in Sources */,
 				D73A35A02BBDB166007DA4AE /* CategoryTableViewCellForEvent.swift in Sources */,
 				D7A6AC972AF7698E00851329 /* TrackerCategory.swift in Sources */,
@@ -256,6 +263,7 @@
 				D77DC5A92BBCFCA200D54D89 /* StatViewController.swift in Sources */,
 				D774245A2B24575E00C8E065 /* AddCategoryViewController.swift in Sources */,
 				D7B12CA12AED9E800006205D /* SceneDelegate.swift in Sources */,
+				D7E8C5842BC0665B00076DB8 /* ColorCollectionViewCell.swift in Sources */,
 				D7C650F52B130EE800A9F116 /* ChoseHabitOrEventViewController.swift in Sources */,
 				D7A6AC952AF7685C00851329 /* Tracker.swift in Sources */,
 				D7B395422B78F546005FC916 /* CategoryCellTableViewCell.swift in Sources */,
