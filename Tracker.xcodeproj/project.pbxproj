@@ -30,7 +30,7 @@
 		D7CDABF02B90DBA000F9554D /* CategoryNameClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CDABEF2B90DBA000F9554D /* CategoryNameClass.swift */; };
 		D7E8C5822BC05CA900076DB8 /* ColorsForHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E8C5812BC05CA900076DB8 /* ColorsForHabit.swift */; };
 		D7E8C5842BC0665B00076DB8 /* ColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E8C5832BC0665B00076DB8 /* ColorCollectionViewCell.swift */; };
-		D7E8C5AA2BC1B3EA00076DB8 /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D7E8C5A82BC1B3EA00076DB8 /* CoreData.xcdatamodeld */; };
+		D7E8C5AA2BC1B3EA00076DB8 /* TrackerCoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D7E8C5A82BC1B3EA00076DB8 /* TrackerCoreData.xcdatamodeld */; };
 		D7F67EF62B375B2B00F81F06 /* TrackerViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F67EF52B375B2B00F81F06 /* TrackerViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -139,7 +139,7 @@
 		D7B12C9D2AED9E800006205D /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
-				D7E8C5A82BC1B3EA00076DB8 /* CoreData.xcdatamodeld */,
+				D7E8C5A82BC1B3EA00076DB8 /* TrackerCoreData.xcdatamodeld */,
 				D7E8C5812BC05CA900076DB8 /* ColorsForHabit.swift */,
 				D77DC5A72BBCFC9600D54D89 /* StateView */,
 				D77DC5A42BBC75CB00D54D89 /* CreateEvent */,
@@ -265,7 +265,7 @@
 				D73B27772B37369F00E7B59A /* CategoryTableViewCellForHabit.swift in Sources */,
 				D77DC5A92BBCFCA200D54D89 /* StatViewController.swift in Sources */,
 				D774245A2B24575E00C8E065 /* AddCategoryViewController.swift in Sources */,
-				D7E8C5AA2BC1B3EA00076DB8 /* CoreData.xcdatamodeld in Sources */,
+				D7E8C5AA2BC1B3EA00076DB8 /* TrackerCoreData.xcdatamodeld in Sources */,
 				D7B12CA12AED9E800006205D /* SceneDelegate.swift in Sources */,
 				D7E8C5842BC0665B00076DB8 /* ColorCollectionViewCell.swift in Sources */,
 				D7C650F52B130EE800A9F116 /* ChoseHabitOrEventViewController.swift in Sources */,
@@ -499,13 +499,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		D7E8C5A82BC1B3EA00076DB8 /* CoreData.xcdatamodeld */ = {
+		D7E8C5A82BC1B3EA00076DB8 /* TrackerCoreData.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				D7E8C5A92BC1B3EA00076DB8 /* CoreData.xcdatamodel */,
 			);
 			currentVersion = D7E8C5A92BC1B3EA00076DB8 /* CoreData.xcdatamodel */;
-			path = CoreData.xcdatamodeld;
+			path = TrackerCoreData.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

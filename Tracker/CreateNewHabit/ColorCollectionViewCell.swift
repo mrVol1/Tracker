@@ -25,7 +25,6 @@ class ColorCollectionViewCell: UICollectionViewCell {
         colorView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(colorView)
         
-        // Установите constraints для colorView, чтобы она заполняла ячейку
         NSLayoutConstraint.activate([
             colorView.topAnchor.constraint(equalTo: contentView.topAnchor),
             colorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
