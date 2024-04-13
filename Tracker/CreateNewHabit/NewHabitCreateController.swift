@@ -117,7 +117,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         
         let buttonsContainer = UIStackView(arrangedSubviews: [cancelButton, saveButton])
         buttonsContainer.axis = .horizontal
-        buttonsContainer.spacing = 16
+        //buttonsContainer.spacing = 16
         buttonsContainer.distribution = .fillEqually
         return buttonsContainer
     }()
@@ -165,51 +165,50 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         scrollContentView.addSubview(tableView)
         scrollContentView.addSubview(labelEmoji)
         scrollContentView.addSubview(emojiCollectionView)
-        emojiCollectionView.translatesAutoresizingMaskIntoConstraints = false
         scrollContentView.addSubview(labelColors)
         scrollContentView.addSubview(colorsCollectionView)
-        colorsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         scrollContentView.addSubview(buttonsContainer)
         
         NSLayoutConstraint.activate([
             scrollContentView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollContentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollContentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollContentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            //scrollContentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollContentView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 1200),
             
-            label.topAnchor.constraint(equalTo: scrollContentView.topAnchor, constant: 10),
+            label.topAnchor.constraint(equalTo: scrollContentView.bottomAnchor, constant: 10),
             label.centerXAnchor.constraint(equalTo: scrollContentView.centerXAnchor),
             
             trackerName.widthAnchor.constraint(equalToConstant: 343),
             trackerName.heightAnchor.constraint(equalToConstant: 75),
             trackerName.centerXAnchor.constraint(equalTo: scrollContentView.centerXAnchor),
-            trackerName.topAnchor.constraint(equalTo: label.topAnchor, constant: 38),
+            trackerName.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 38),
             
             tableView.widthAnchor.constraint(equalToConstant: 343),
             tableView.heightAnchor.constraint(equalToConstant: 150),
             tableView.centerXAnchor.constraint(equalTo: scrollContentView.centerXAnchor),
-            tableView.topAnchor.constraint(equalTo: trackerName.topAnchor, constant: 104),
+            tableView.topAnchor.constraint(equalTo: trackerName.bottomAnchor, constant: 24),
             
-            labelEmoji.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 182),
+            labelEmoji.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32),
             labelEmoji.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: 28),
             labelEmoji.heightAnchor.constraint(equalToConstant: 18),
             
-            emojiCollectionView.topAnchor.constraint(equalTo: labelEmoji.topAnchor, constant: 44),
+            emojiCollectionView.topAnchor.constraint(equalTo: labelEmoji.bottomAnchor, constant: 24),
             emojiCollectionView.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: 24),
-            emojiCollectionView.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: -19),
+            emojiCollectionView.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: 360),
             emojiCollectionView.heightAnchor.constraint(equalToConstant: 180),
             
-            labelColors.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 228),
+            labelColors.topAnchor.constraint(equalTo: emojiCollectionView.bottomAnchor, constant: 44),
             labelColors.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: 28),
             
-            colorsCollectionView.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 248),
+            colorsCollectionView.topAnchor.constraint(equalTo: labelColors.bottomAnchor, constant: 24),
             colorsCollectionView.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: 24),
-            colorsCollectionView.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: -19),
+            colorsCollectionView.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: 360),
             colorsCollectionView.heightAnchor.constraint(equalToConstant: 180),
             
-            buttonsContainer.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 284),
+            buttonsContainer.bottomAnchor.constraint(equalTo: scrollContentView.bottomAnchor, constant: 24),
             buttonsContainer.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: 16),
-            buttonsContainer.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: -16),
+            buttonsContainer.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: 320),
             buttonsContainer.heightAnchor.constraint(equalToConstant: 60)
         ])
 }
