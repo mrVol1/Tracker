@@ -102,6 +102,8 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         saveButton.setTitle("Создать", for: .normal)
         saveButton.setTitleColor(.white, for: .normal)
         saveButton.layer.cornerRadius = 16
+        saveButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1.0)
+        saveButton.widthAnchor.constraint(equalToConstant: 160).isActive = true
         saveButton.titleEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         
         let cancelButton = UIButton()
@@ -113,18 +115,21 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         cancelButton.titleEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         cancelButton.layer.borderColor = UIColor.red.cgColor
         cancelButton.layer.borderWidth = 1
+        cancelButton.widthAnchor.constraint(equalToConstant: 160).isActive = true
         cancelButton.addTarget(self, action: #selector(buttonActionForHabitCancel), for: .touchUpInside)
         
         let buttonsContainer = UIStackView(arrangedSubviews: [cancelButton, saveButton])
         buttonsContainer.axis = .horizontal
-        //buttonsContainer.spacing = 16
+        buttonsContainer.spacing = 16
         buttonsContainer.distribution = .fillEqually
+        buttonsContainer.translatesAutoresizingMaskIntoConstraints = false
         return buttonsContainer
     }()
     
     private lazy var scrollContentView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.isScrollEnabled = true
         return scrollView
     }()
     
@@ -173,10 +178,9 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             scrollContentView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollContentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollContentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            //scrollContentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            scrollContentView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 1200),
+            scrollContentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            label.topAnchor.constraint(equalTo: scrollContentView.bottomAnchor, constant: 10),
+            label.topAnchor.constraint(equalTo: scrollContentView.topAnchor, constant: 10),
             label.centerXAnchor.constraint(equalTo: scrollContentView.centerXAnchor),
             
             trackerName.widthAnchor.constraint(equalToConstant: 343),
@@ -206,10 +210,10 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             colorsCollectionView.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: 360),
             colorsCollectionView.heightAnchor.constraint(equalToConstant: 180),
             
-            buttonsContainer.bottomAnchor.constraint(equalTo: scrollContentView.bottomAnchor, constant: 24),
-            buttonsContainer.leadingAnchor.constraint(equalTo: scrollContentView.leadingAnchor, constant: 16),
-            buttonsContainer.trailingAnchor.constraint(equalTo: scrollContentView.trailingAnchor, constant: 320),
-            buttonsContainer.heightAnchor.constraint(equalToConstant: 60)
+            buttonsContainer.topAnchor.constraint(equalTo: colorsCollectionView.bottomAnchor, constant: 24),
+            buttonsContainer.centerXAnchor.constraint(equalTo: scrollContentView.centerXAnchor),
+            buttonsContainer.heightAnchor.constraint(equalToConstant: 60),
+            buttonsContainer.bottomAnchor.constraint(equalTo: scrollContentView.bottomAnchor, constant: -24)
         ])
 }
     
