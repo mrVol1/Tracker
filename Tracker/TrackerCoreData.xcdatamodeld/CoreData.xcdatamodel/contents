@@ -12,9 +12,7 @@
         <attribute name="timetable" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
     <entity name="TrackerRecordCoreData" representedClassName="TrackerRecordCoreData" syncable="YES" codeGenerationType="class">
-        <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="selectedDays" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="trackerId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="dateRecord" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="trackerID" attributeType="UUID" usesScalarValueType="NO"/>
     </entity>
 </model>
