@@ -26,11 +26,15 @@ class ColorCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(colorView)
         
         NSLayoutConstraint.activate([
-            colorView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            colorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            colorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            colorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            colorView.widthAnchor.constraint(equalToConstant: 40),
+            colorView.heightAnchor.constraint(equalToConstant: 40),
+            colorView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            colorView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+                    
         ])
+        
+        colorView.layer.cornerRadius = 8
+
     }
     
     func configure(withColor color: UIColor) {

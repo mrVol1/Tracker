@@ -30,6 +30,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     var selectedTrackerName: String?
     var cellWithCategoryLabel: CategoryTableViewCellForHabit?
     var selectedIndexEmoji: Set<IndexPath> = []
+    var selectedIndexColor: Set<IndexPath> = []
     
     weak var scheduleDelegate: ScheduleViewControllerDelegate?
     weak var habitCreateDelegate: NewHabitCreateViewControllerDelegate?
@@ -385,32 +386,52 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
                 emojiLabel.text = emojis[indexPath.item]
                 emojiLabel.font = UIFont.systemFont(ofSize: 32)
                 cell.contentView.addSubview(emojiLabel)
-                return cell }
-            else if collectionView == colorsCollectionView {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorsCell", for: indexPath)
-                cell.contentView.backgroundColor = .clear
-                cell.layer.cornerRadius = 8
-                cell.backgroundColor = tableColors[indexPath.item]
                 return cell
             }
+            else if collectionView == colorsCollectionView {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorsCell", for: indexPath) as! ColorCollectionViewCell
+                cell.layer.cornerRadius = 8
+                    
+                let color = tableColors[indexPath.item]
+                cell.configure(withColor: color)
+                    
+                return cell
+                }            
             return UICollectionViewCell()
         }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if selectedIndexEmoji.contains(indexPath) {
-            selectedIndexEmoji.remove(indexPath)
-            if let cell = collectionView.cellForItem(at: indexPath) {
-                cell.contentView.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 1.0)
-                cell.contentView.layer.cornerRadius = 16
+        if collectionView == emojiCollectionView {
+            if selectedIndexEmoji.contains(indexPath) {
+                selectedIndexEmoji.remove(indexPath)
+                if let cell = collectionView.cellForItem(at: indexPath) {
+                    cell.contentView.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 1.0)
+                    cell.contentView.layer.cornerRadius = 16
+                }
+            } else {
+                selectedIndexEmoji.insert(indexPath)
+                if let cell = collectionView.cellForItem(at: indexPath) {
+                    cell.contentView.backgroundColor = .clear
+                    cell.contentView.layer.cornerRadius = 16
+                }
             }
-        } else {
-            selectedIndexEmoji.insert(indexPath)
-            if let cell = collectionView.cellForItem(at: indexPath) {
-                cell.contentView.backgroundColor = .white
-                cell.contentView.layer.cornerRadius = 16
+            let selectedEmoji = emojis[indexPath.item]
+        } else if collectionView == colorsCollectionView {
+            if selectedIndexColor.contains(indexPath) {
+                selectedIndexColor.remove(indexPath)
+                if let cell = collectionView.cellForItem(at: indexPath) {
+                    cell.layer.borderColor = UIColor.clear.cgColor
+                }
+            } else {
+                selectedIndexColor.removeAll()
+                selectedIndexColor.insert(indexPath)
+                if let cell = collectionView.cellForItem(at: indexPath) {
+                    cell.contentView.layer.cornerRadius = 8
+                    cell.layer.borderColor = tableColors[indexPath.item].cgColor
+                    cell.layer.borderWidth = 2
+                }
             }
         }
-       // let selectedEmoji = emojis[indexPath.item]
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
