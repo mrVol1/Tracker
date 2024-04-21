@@ -13,10 +13,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     lazy var persistentContainer: NSPersistentContainer = {
-            let container = NSPersistentContainer(name: "Library")
-            container.loadPersistentStores(completionHandler: { (storeDescription, error) in // 3
+            let container = NSPersistentContainer(name: "TrackerCoreData")
+            container.loadPersistentStores(completionHandler: { (storeDescription, error) in
                 if let error = error as NSError? {
-                    // Код для обработки ошибки
+                    print("error for bd")
                 }
             })
             return container
@@ -28,12 +28,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        // Создаем главный экран с таббаром
         let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
         let tabBarController = TabBarController()
         tabBarController.viewControllers = [trackerViewController]
         
-        // Создаем окно
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
         return true
