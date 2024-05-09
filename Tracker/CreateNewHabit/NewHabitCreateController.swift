@@ -447,7 +447,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             return
         }
                 
-        let tracker = Tracker(id: UUID(), name: selectedTrackerName, color: "", emodji: "", timetable: selectedScheduleDays)
+        let tracker = Tracker(id: UUID(), name: selectedTrackerName, color: selectedIndexColor, emodji: selectedIndexEmoji, timetable: selectedScheduleDays)
         
         let trackerCategoryInMain = TrackerCategory(label: selectedCategoryString, trackerArray: [tracker])
         

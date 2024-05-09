@@ -14,7 +14,7 @@ final class TabBarController: UITabBarController {
         super.viewDidLoad()
         
         // Экземпляры контроллеров
-        let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
+        let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [], color: [], emodji: [])
         let statViewController = StatViewController()
         
         let activeImageTracker = UIImage(named: "blue ball")

@@ -20,11 +20,11 @@ enum WeekDay: String, CaseIterable, Codable {
 final class Tracker: Codable {
     let id: UUID
     let name: String
-    let color: String
-    let emodji: String
+    let color: Set<IndexPath>
+    let emodji: Set<IndexPath>
     let timetable: [WeekDay]
 
-    init(id: UUID, name: String, color: String, emodji: String, timetable: [WeekDay]) {
+    init(id: UUID, name: String, color: Set<IndexPath>, emodji: Set<IndexPath>, timetable: [WeekDay]) {
         self.id = id
         self.name = name
         self.color = color
