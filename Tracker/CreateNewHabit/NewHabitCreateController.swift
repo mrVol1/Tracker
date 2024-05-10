@@ -33,7 +33,6 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     var selectedIndexColor: Set<IndexPath> = []
     var selectedEmoji: String?
     var selectedColor: String?
-    var isSelectedEmodji: Bool?
     
     weak var scheduleDelegate: ScheduleViewControllerDelegate?
     weak var habitCreateDelegate: NewHabitCreateViewControllerDelegate?
@@ -370,19 +369,19 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath) as! EmodjiCollectionViewCell
                 
                 let emoji = emojis[indexPath.item]
-                let isSelected = selectedIndexEmoji.contains(indexPath)
+                let isSelectedEmodji = selectedIndexEmoji.contains(indexPath)
                 let colorSelectedEmodji = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 1.0)
                 
-                cell.configure(withEmoji: emoji, colorEmodji: colorSelectedEmodji, colorCornerRadius: 16, isSelectedEmodji: isSelected)
+                cell.configure(withEmoji: emoji, colorEmodji: colorSelectedEmodji, colorCornerRadius: 16, isSelectedEmodji: isSelectedEmodji)
                 
                 return cell
             }
             else if collectionView == colorsCollectionView {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorsCell", for: indexPath) as! ColorCollectionViewCell
-                cell.layer.cornerRadius = 8
                     
                 let color = tableColors[indexPath.item]
-                cell.configure(withColor: color)
+                let isSelectedColor = selectedIndexColor.contains(indexPath)
+                cell.configure(withColor: color, isSelectedColor: isSelectedColor)
                     
                 return cell
                 }
@@ -401,24 +400,18 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             
             collectionView.reloadItems(at: [indexPath])
         } else if collectionView == colorsCollectionView {
-            if selectedIndexColor.contains(indexPath) {
-                let tableColorsStrings = tableColors.compactMap { $0.toRGBString() }
-                selectedColor = tableColorsStrings[indexPath.item]
+            
+            let isSelectedColor = selectedIndexColor.contains(indexPath)
+            
+            if isSelectedColor {
                 selectedIndexColor.remove(indexPath)
-                if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorsCell", for: indexPath) as? ColorCollectionViewCell {
-                    cell.configureColor(withColor: selectedColor ?? "")
-                    cell.layer.borderColor = UIColor.clear.cgColor
-                }
             } else {
-                selectedIndexColor.removeAll()
                 selectedIndexColor.insert(indexPath)
-                if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorsCell", for: indexPath) as? ColorCollectionViewCell {
-                    cell.contentView.layer.cornerRadius = 8
-                    cell.layer.borderColor = tableColors[indexPath.item].cgColor
-                    cell.layer.borderWidth = 2
-                }
             }
-        }
+            
+            collectionView.reloadItems(at: [indexPath])
+    
+            }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

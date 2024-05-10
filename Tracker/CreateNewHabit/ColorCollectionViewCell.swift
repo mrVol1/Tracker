@@ -9,13 +9,26 @@ import Foundation
 import UIKit
 
 class ColorCollectionViewCell: UICollectionViewCell {
-    var colorView: UIView!
     
-    private let colorLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 32)
-        return label
+    private let contentViewContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let borderView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 8
+        view.layer.borderWidth = 1
+        return view
+    }()
+    
+    private let colorView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 8
+        return view
     }()
     
     override init(frame: CGRect) {
@@ -28,27 +41,30 @@ class ColorCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupViews() {
-        colorView = UIView()
-        colorView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(colorView)
+        contentView.addSubview(contentViewContainer)
+        contentViewContainer.addSubview(borderView)
+        borderView.addSubview(colorView)
         
         NSLayoutConstraint.activate([
+            contentViewContainer.widthAnchor.constraint(equalToConstant: 46),
+            contentViewContainer.heightAnchor.constraint(equalToConstant: 46),
+            contentViewContainer.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            contentViewContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            
+            borderView.widthAnchor.constraint(equalToConstant: 46),
+            borderView.heightAnchor.constraint(equalToConstant: 46),
+            borderView.centerXAnchor.constraint(equalTo: contentViewContainer.centerXAnchor),
+            borderView.centerYAnchor.constraint(equalTo: contentViewContainer.centerYAnchor),
+            
             colorView.widthAnchor.constraint(equalToConstant: 40),
             colorView.heightAnchor.constraint(equalToConstant: 40),
-            colorView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            colorView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            colorView.centerXAnchor.constraint(equalTo: borderView.centerXAnchor),
+            colorView.centerYAnchor.constraint(equalTo: borderView.centerYAnchor)
         ])
-        
-        colorView.layer.cornerRadius = 8
-        
-        contentView.addSubview(colorLabel)
     }
     
-    func configure(withColor color: UIColor) {
+    func configure(withColor color: UIColor, isSelectedColor: Bool) {
         colorView.backgroundColor = color
-    }
-    
-    func configureColor(withColor color: String) {
-        colorLabel.text = color
+        borderView.layer.borderColor = isSelectedColor ? color.cgColor : UIColor.clear.cgColor
     }
 }

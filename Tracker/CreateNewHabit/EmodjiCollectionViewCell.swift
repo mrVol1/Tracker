@@ -23,11 +23,9 @@ class EmodjiCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        // Добавляем subviews
         contentView.addSubview(emodjiColorView)
         contentView.addSubview(emojiLabel)
         
-        // Настраиваем constraints
         emodjiColorView.translatesAutoresizingMaskIntoConstraints = false
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         
