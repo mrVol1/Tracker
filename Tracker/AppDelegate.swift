@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [], color: [], emodji: [])
+        let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [], color: "", emodji: "")
         let tabBarController = TabBarController()
         tabBarController.viewControllers = [trackerViewController]
         

@@ -30,3 +30,16 @@ struct HabitColors {
     static let greenColor = UIColor(red: 47/255, green: 208/255, blue: 88/255, alpha: 1)
 }
 
+extension UIColor {
+    func toRGBString() -> String? {
+        guard let components = self.cgColor.components else {
+            return nil
+        }
+        
+        let red = Int(components[0] * 255.0)
+        let green = Int(components[1] * 255.0)
+        let blue = Int(components[2] * 255.0)
+        
+        return String(format: "RGB(%d, %d, %d)", red, green, blue)
+    }
+}

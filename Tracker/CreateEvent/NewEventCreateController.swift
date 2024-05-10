@@ -218,7 +218,7 @@ final class NewEventCreateViewController: UIViewController, UITextFieldDelegate,
             return
         }
                 
-        let tracker = Tracker(id: UUID(), name: selectedTrackerName, color: [], emodji: [], timetable: [])
+        let tracker = Tracker(id: UUID(), name: selectedTrackerName, color: "", emodji: "", timetable: [])
         
         let trackerCategoryInMain = TrackerCategory(label: selectedCategoryStringForEvent, trackerArray: [tracker])
         

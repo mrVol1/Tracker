@@ -31,6 +31,9 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     var cellWithCategoryLabel: CategoryTableViewCellForHabit?
     var selectedIndexEmoji: Set<IndexPath> = []
     var selectedIndexColor: Set<IndexPath> = []
+    var selectedEmoji: String?
+    var selectedColor: String?
+    var isSelectedEmodji: Bool?
     
     weak var scheduleDelegate: ScheduleViewControllerDelegate?
     weak var habitCreateDelegate: NewHabitCreateViewControllerDelegate?
@@ -83,7 +86,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         let collectionViewEmodji = UICollectionView(frame: .zero, collectionViewLayout: layoutEmodji)
         collectionViewEmodji.translatesAutoresizingMaskIntoConstraints = false
         collectionViewEmodji.backgroundColor = .clear
-        collectionViewEmodji.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "EmojiCell")
+        collectionViewEmodji.register(EmodjiCollectionViewCell.self, forCellWithReuseIdentifier: "EmojiCell")
         return collectionViewEmodji
     }()
     
@@ -274,20 +277,6 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         
     }
     
-    private func updateCreateButtonState() {
-        guard selectedCategoryString != nil,
-              !selectedScheduleDays.isEmpty,
-              let trackerNameText = trackerName.text,
-              !trackerNameText.isEmpty
-        else {
-            saveButton.isEnabled = false
-            saveButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
-            return
-        }
-        saveButton.isEnabled = true
-        saveButton.backgroundColor = .black
-    }
-    
     // MARK: - UITableView Data Source and Delegate
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -378,14 +367,14 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
 
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
             if collectionView == emojiCollectionView {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath)
-                cell.backgroundColor = .clear
-                cell.contentView.backgroundColor = .clear
-                let emojiLabel = UILabel(frame: cell.bounds)
-                emojiLabel.textAlignment = .center
-                emojiLabel.text = emojis[indexPath.item]
-                emojiLabel.font = UIFont.systemFont(ofSize: 32)
-                cell.contentView.addSubview(emojiLabel)
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath) as! EmodjiCollectionViewCell
+                
+                let emoji = emojis[indexPath.item]
+                let isSelected = selectedIndexEmoji.contains(indexPath)
+                let colorSelectedEmodji = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 1.0)
+                
+                cell.configure(withEmoji: emoji, colorEmodji: colorSelectedEmodji, colorCornerRadius: 16, isSelectedEmodji: isSelected)
+                
                 return cell
             }
             else if collectionView == colorsCollectionView {
@@ -396,36 +385,34 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
                 cell.configure(withColor: color)
                     
                 return cell
-                }            
+                }
             return UICollectionViewCell()
         }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == emojiCollectionView {
-            if selectedIndexEmoji.contains(indexPath) {
+            let isSelectedEmodji = selectedIndexEmoji.contains(indexPath)
+            
+            if isSelectedEmodji {
                 selectedIndexEmoji.remove(indexPath)
-                if let cell = collectionView.cellForItem(at: indexPath) {
-                    cell.contentView.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 1.0)
-                    cell.contentView.layer.cornerRadius = 16
-                }
             } else {
                 selectedIndexEmoji.insert(indexPath)
-                if let cell = collectionView.cellForItem(at: indexPath) {
-                    cell.contentView.backgroundColor = .clear
-                    cell.contentView.layer.cornerRadius = 16
-                }
             }
-            let selectedEmoji = emojis[indexPath.item]
+            
+            collectionView.reloadItems(at: [indexPath])
         } else if collectionView == colorsCollectionView {
             if selectedIndexColor.contains(indexPath) {
+                let tableColorsStrings = tableColors.compactMap { $0.toRGBString() }
+                selectedColor = tableColorsStrings[indexPath.item]
                 selectedIndexColor.remove(indexPath)
-                if let cell = collectionView.cellForItem(at: indexPath) {
+                if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorsCell", for: indexPath) as? ColorCollectionViewCell {
+                    cell.configureColor(withColor: selectedColor ?? "")
                     cell.layer.borderColor = UIColor.clear.cgColor
                 }
             } else {
                 selectedIndexColor.removeAll()
                 selectedIndexColor.insert(indexPath)
-                if let cell = collectionView.cellForItem(at: indexPath) {
+                if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorsCell", for: indexPath) as? ColorCollectionViewCell {
                     cell.contentView.layer.cornerRadius = 8
                     cell.layer.borderColor = tableColors[indexPath.item].cgColor
                     cell.layer.borderWidth = 2
@@ -439,15 +426,18 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     }
     
     // MARK: - Screen Func
-    
+
     @objc private func buttonActionForHabitSave() {
-        guard let selectedTrackerName = trackerName.text, !selectedTrackerName.isEmpty,
+        guard let selectedTrackerName = trackerName.text,
+              !selectedTrackerName.isEmpty,
               let selectedCategoryString = selectedCategoryString,
+              let selectedEmoji = selectedEmoji,
+              let selectedColor = selectedColor,
               !selectedScheduleDays.isEmpty else {
             return
         }
                 
-        let tracker = Tracker(id: UUID(), name: selectedTrackerName, color: selectedIndexColor, emodji: selectedIndexEmoji, timetable: selectedScheduleDays)
+        let tracker = Tracker(id: UUID(), name: selectedTrackerName, color: selectedColor, emodji: selectedEmoji, timetable: selectedScheduleDays)
         
         let trackerCategoryInMain = TrackerCategory(label: selectedCategoryString, trackerArray: [tracker])
         
@@ -486,6 +476,22 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         tableView.tableHeaderView = headerView
     }
     
+    private func updateCreateButtonState() {
+        guard selectedCategoryString != nil,
+              !selectedScheduleDays.isEmpty,
+              selectedEmoji != nil,
+              selectedColor != nil,
+              let trackerNameText = trackerName.text,
+              !trackerNameText.isEmpty
+        else {
+            saveButton.isEnabled = false
+            saveButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+            return
+        }
+        saveButton.isEnabled = true
+        saveButton.backgroundColor = .black
+    }
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == trackerName {
             textField.textColor = UIColor.black
@@ -497,7 +503,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
 extension NewHabitCreateViewController: ScheduleViewControllerDelegate {
     
     func didSelectScheduleDays(_ selectedDays: [WeekDay]) {
-        let newTrackerRecord = TrackerRecord(id: UUID(), date: Date(), selectedDays: selectedDays, trackerId: UUID())
+        let newTrackerRecord = TrackerRecord(date: Date(), trackerId: UUID())
         self.trackerRecord = newTrackerRecord
         self.selectedScheduleDays = selectedDays
         tableView.reloadData()
