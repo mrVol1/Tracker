@@ -33,6 +33,10 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     var selectedIndexColor: Set<IndexPath> = []
     var selectedEmoji: String?
     var selectedColor: String?
+    var isSelectedEmodji: Bool?
+    var isSelectedColor: Bool?
+    var colorSelectedEmodji: UIColor?
+    var emoji: String?
     
     weak var scheduleDelegate: ScheduleViewControllerDelegate?
     weak var habitCreateDelegate: NewHabitCreateViewControllerDelegate?
@@ -364,54 +368,70 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             return 0
         }
 
-        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            if collectionView == emojiCollectionView {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath) as! EmodjiCollectionViewCell
-                
-                let emoji = emojis[indexPath.item]
-                let isSelectedEmodji = selectedIndexEmoji.contains(indexPath)
-                let colorSelectedEmodji = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 1.0)
-                
-                cell.configure(withEmoji: emoji, colorEmodji: colorSelectedEmodji, colorCornerRadius: 16, isSelectedEmodji: isSelectedEmodji)
-                
-                return cell
-            }
-            else if collectionView == colorsCollectionView {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorsCell", for: indexPath) as! ColorCollectionViewCell
-                    
-                let color = tableColors[indexPath.item]
-                let isSelectedColor = selectedIndexColor.contains(indexPath)
-                cell.configure(withColor: color, isSelectedColor: isSelectedColor)
-                    
-                return cell
-                }
-            return UICollectionViewCell()
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if collectionView == emojiCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath) as! EmodjiCollectionViewCell
+            
+            let emoji = emojis[indexPath.item]
+            let isSelectedEmodji = selectedIndexEmoji.contains(indexPath)
+            let colorSelectedEmodji = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 1.0)
+            
+            cell.configure(withEmoji: emoji, colorEmodji: colorSelectedEmodji, colorCornerRadius: 16, isSelectedEmodji: isSelectedEmodji)
+            
+            return cell
+        } else if collectionView == colorsCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorsCell", for: indexPath) as! ColorCollectionViewCell
+            
+            let color = tableColors[indexPath.item]
+            let isSelectedColor = selectedIndexColor.contains(indexPath)
+            cell.configure(withColor: color, isSelectedColor: isSelectedColor)
+            
+            return cell
         }
+        
+        return UICollectionViewCell()
+    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == emojiCollectionView {
+            selectedEmoji = emojis[indexPath.item]
             let isSelectedEmodji = selectedIndexEmoji.contains(indexPath)
             
             if isSelectedEmodji {
                 selectedIndexEmoji.remove(indexPath)
             } else {
+                if let currentSelectedIndexPath = selectedIndexEmoji.first {
+                    selectedIndexEmoji.remove(currentSelectedIndexPath)
+                    
+                    if let cell = collectionView.cellForItem(at: currentSelectedIndexPath) as? EmodjiCollectionViewCell {
+                        let emoji = emojis[currentSelectedIndexPath.item]
+                        let colorSelectedEmodji = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 1.0)
+                        cell.configure(withEmoji: emoji, colorEmodji: colorSelectedEmodji, colorCornerRadius: 16, isSelectedEmodji: false)
+                    }
+                }
+                
                 selectedIndexEmoji.insert(indexPath)
             }
-            
-            collectionView.reloadItems(at: [indexPath])
-        } else if collectionView == colorsCollectionView {
-            
-            let isSelectedColor = selectedIndexColor.contains(indexPath)
-            
-            if isSelectedColor {
-                selectedIndexColor.remove(indexPath)
-            } else {
-                selectedIndexColor.insert(indexPath)
-            }
-            
-            collectionView.reloadItems(at: [indexPath])
-    
-            }
+                collectionView.reloadData()
+            } else if collectionView == colorsCollectionView {
+                let color = tableColors[indexPath.item]
+                selectedColor = color.description
+                let isSelectedColor = selectedIndexColor.contains(indexPath)
+                
+                if isSelectedColor {
+                    selectedIndexColor.remove(indexPath)
+                } else {
+                    if let currentSelectedIndexPath = selectedIndexColor.first {
+                        selectedIndexColor.remove(currentSelectedIndexPath)
+                        if let cell = collectionView.cellForItem(at: currentSelectedIndexPath) as? ColorCollectionViewCell {
+                            cell.configure(withColor: tableColors[currentSelectedIndexPath.item], isSelectedColor: false)
+                        }
+                    }
+                    
+                    selectedIndexColor.insert(indexPath)
+                }
+                collectionView.reloadData()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
