@@ -167,11 +167,16 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateCreateButtonState()
+    }
+    
     // MARK: - Screen Config
     
     fileprivate func configerScrollView() {
         view.addSubview(scrollContentView)
-
+        
         scrollContentView.addSubview(label)
         scrollContentView.addSubview(trackerName)
         scrollContentView.addSubview(tableView)
@@ -222,7 +227,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             buttonsContainer.heightAnchor.constraint(equalToConstant: 60),
             buttonsContainer.bottomAnchor.constraint(equalTo: scrollContentView.bottomAnchor, constant: -24)
         ])
-}
+    }
     
     private func configureLabel() {
         label.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.semibold)).withSize(16)
@@ -245,7 +250,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: trackerName.frame.height))
         trackerName.leftView = leftPaddingView
         trackerName.leftViewMode = .always
-
+        
     }
     
     private func configureTableView() {
@@ -360,14 +365,14 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     
     // MARK: - collectionViewSettings
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            if collectionView == emojiCollectionView {
-                return emojis.count
-            } else if collectionView == colorsCollectionView {
-                return tableColors.count
-            }
-            return 0
+        if collectionView == emojiCollectionView {
+            return emojis.count
+        } else if collectionView == colorsCollectionView {
+            return tableColors.count
         }
-
+        return 0
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == emojiCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath) as! EmodjiCollectionViewCell
@@ -396,41 +401,35 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         if collectionView == emojiCollectionView {
             selectedEmoji = emojis[indexPath.item]
             let isSelectedEmodji = selectedIndexEmoji.contains(indexPath)
+            print("Updating button state - emodji")
+            updateCreateButtonState()
             
             if isSelectedEmodji {
                 selectedIndexEmoji.remove(indexPath)
             } else {
                 if let currentSelectedIndexPath = selectedIndexEmoji.first {
                     selectedIndexEmoji.remove(currentSelectedIndexPath)
-                    
-                    if let cell = collectionView.cellForItem(at: currentSelectedIndexPath) as? EmodjiCollectionViewCell {
-                        let emoji = emojis[currentSelectedIndexPath.item]
-                        let colorSelectedEmodji = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 1.0)
-                        cell.configure(withEmoji: emoji, colorEmodji: colorSelectedEmodji, colorCornerRadius: 16, isSelectedEmodji: false)
-                    }
                 }
                 
                 selectedIndexEmoji.insert(indexPath)
             }
-                collectionView.reloadData()
-            } else if collectionView == colorsCollectionView {
-                let color = tableColors[indexPath.item]
-                selectedColor = color.description
-                let isSelectedColor = selectedIndexColor.contains(indexPath)
-                
-                if isSelectedColor {
-                    selectedIndexColor.remove(indexPath)
-                } else {
-                    if let currentSelectedIndexPath = selectedIndexColor.first {
-                        selectedIndexColor.remove(currentSelectedIndexPath)
-                        if let cell = collectionView.cellForItem(at: currentSelectedIndexPath) as? ColorCollectionViewCell {
-                            cell.configure(withColor: tableColors[currentSelectedIndexPath.item], isSelectedColor: false)
-                        }
-                    }
-                    
-                    selectedIndexColor.insert(indexPath)
+            collectionView.reloadData()
+        } else if collectionView == colorsCollectionView {
+            let color = tableColors[indexPath.item]
+            selectedColor = color.description
+            let isSelectedColor = selectedIndexColor.contains(indexPath)
+            print("Updating button state - color")
+            updateCreateButtonState()
+            
+            if isSelectedColor {
+                selectedIndexColor.remove(indexPath)
+            } else {
+                if let currentSelectedIndexPath = selectedIndexColor.first {
+                    selectedIndexColor.remove(currentSelectedIndexPath)
                 }
-                collectionView.reloadData()
+                selectedIndexColor.insert(indexPath)
+            }
+            collectionView.reloadData()
         }
     }
     
@@ -439,7 +438,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     }
     
     // MARK: - Screen Func
-
+    
     @objc private func buttonActionForHabitSave() {
         guard let selectedTrackerName = trackerName.text,
               !selectedTrackerName.isEmpty,
@@ -449,7 +448,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
               !selectedScheduleDays.isEmpty else {
             return
         }
-                
+        
         let tracker = Tracker(id: UUID(), name: selectedTrackerName, color: selectedColor, emodji: selectedEmoji, timetable: selectedScheduleDays)
         
         let trackerCategoryInMain = TrackerCategory(label: selectedCategoryString, trackerArray: [tracker])
@@ -490,25 +489,29 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     }
     
     private func updateCreateButtonState() {
-        guard selectedCategoryString != nil,
-              !selectedScheduleDays.isEmpty,
-              selectedEmoji != nil,
-              selectedColor != nil,
-              let trackerNameText = trackerName.text,
-              !trackerNameText.isEmpty
+        guard let selectedTrackerName = trackerName.text,
+              !selectedTrackerName.isEmpty,
+              let selectedCategoryString = selectedCategoryString,
+              let selectedEmoji = selectedEmoji,
+              let selectedColor = selectedColor,
+              !selectedScheduleDays.isEmpty
         else {
             saveButton.isEnabled = false
-            saveButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+            print("Button disabled: Not all required fields are filled")
             return
         }
         saveButton.isEnabled = true
         saveButton.backgroundColor = .black
+        print("Button enabled: All required fields are filled")
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == trackerName {
             textField.textColor = UIColor.black
+            
+            selectedTrackerName = textField.text
         }
+        print("Updating button state - text")
         updateCreateButtonState()
     }
 }
@@ -520,12 +523,14 @@ extension NewHabitCreateViewController: ScheduleViewControllerDelegate {
         self.trackerRecord = newTrackerRecord
         self.selectedScheduleDays = selectedDays
         tableView.reloadData()
+        print("Updating button state - расписание")
         updateCreateButtonState()
     }
     
     func didSelectCategory(_ selectedCategory: String?) {
         self.selectedCategoryString = selectedCategory
         tableView.reloadData()
+        print("Updating button state - категории")
         updateCreateButtonState()
     }
     
