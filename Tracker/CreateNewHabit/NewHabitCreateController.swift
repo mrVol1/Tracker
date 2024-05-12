@@ -104,7 +104,6 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     }()
     
     private lazy var buttonsContainer: UIStackView = {
-        let saveButton = UIButton()
         saveButton.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 17)
         saveButton.setTitle("Создать", for: .normal)
         saveButton.setTitleColor(.white, for: .normal)
@@ -113,7 +112,6 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         saveButton.widthAnchor.constraint(equalToConstant: 160).isActive = true
         saveButton.titleEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         
-        let cancelButton = UIButton()
         cancelButton.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3)
         cancelButton.titleLabel?.font = UIFont(name: "SFProDisplay-Medium", size: 17)
         cancelButton.setTitle("Отменить", for: .normal)
@@ -401,8 +399,6 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         if collectionView == emojiCollectionView {
             selectedEmoji = emojis[indexPath.item]
             let isSelectedEmodji = selectedIndexEmoji.contains(indexPath)
-            print("Updating button state - emodji")
-            updateCreateButtonState()
             
             if isSelectedEmodji {
                 selectedIndexEmoji.remove(indexPath)
@@ -414,12 +410,11 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
                 selectedIndexEmoji.insert(indexPath)
             }
             collectionView.reloadData()
+            updateCreateButtonState()
         } else if collectionView == colorsCollectionView {
             let color = tableColors[indexPath.item]
             selectedColor = color.description
             let isSelectedColor = selectedIndexColor.contains(indexPath)
-            print("Updating button state - color")
-            updateCreateButtonState()
             
             if isSelectedColor {
                 selectedIndexColor.remove(indexPath)
@@ -430,6 +425,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
                 selectedIndexColor.insert(indexPath)
             }
             collectionView.reloadData()
+            updateCreateButtonState()
         }
     }
     
@@ -497,22 +493,23 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
               !selectedScheduleDays.isEmpty
         else {
             saveButton.isEnabled = false
-            print("Button disabled: Not all required fields are filled")
             return
         }
+        
         saveButton.isEnabled = true
         saveButton.backgroundColor = .black
-        print("Button enabled: All required fields are filled")
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == trackerName {
-            textField.textColor = UIColor.black
+            let currentText = textField.text ?? ""
+            let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
+            selectedTrackerName = updatedText
+            textField.textColor = .black
             
-            selectedTrackerName = textField.text
+            updateCreateButtonState()
         }
-        print("Updating button state - text")
-        updateCreateButtonState()
+        return true
     }
 }
 
@@ -523,14 +520,12 @@ extension NewHabitCreateViewController: ScheduleViewControllerDelegate {
         self.trackerRecord = newTrackerRecord
         self.selectedScheduleDays = selectedDays
         tableView.reloadData()
-        print("Updating button state - расписание")
         updateCreateButtonState()
     }
     
     func didSelectCategory(_ selectedCategory: String?) {
         self.selectedCategoryString = selectedCategory
         tableView.reloadData()
-        print("Updating button state - категории")
         updateCreateButtonState()
     }
     
