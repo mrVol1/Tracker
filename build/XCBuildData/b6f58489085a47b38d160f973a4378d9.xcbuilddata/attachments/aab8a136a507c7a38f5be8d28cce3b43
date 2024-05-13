@@ -1,0 +1,348 @@
+{
+  "" : {
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/Tracker-master.dia",
+    "emit-module-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/Tracker-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/Tracker-master-emit-module.dia",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/Tracker-master.swiftdeps"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/DerivedSources/CoreDataGenerated/TrackerCoreData/TrackerCategoryCoreData+CoreDataClass.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategoryCoreData+CoreDataClass.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategoryCoreData+CoreDataClass.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategoryCoreData+CoreDataClass.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategoryCoreData+CoreDataClass.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategoryCoreData+CoreDataClass.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategoryCoreData+CoreDataClass.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategoryCoreData+CoreDataClass.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategoryCoreData+CoreDataClass~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/DerivedSources/CoreDataGenerated/TrackerCoreData/TrackerCategoryCoreData+CoreDataProperties.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategoryCoreData+CoreDataProperties.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategoryCoreData+CoreDataProperties.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategoryCoreData+CoreDataProperties.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategoryCoreData+CoreDataProperties.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategoryCoreData+CoreDataProperties.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategoryCoreData+CoreDataProperties.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategoryCoreData+CoreDataProperties.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategoryCoreData+CoreDataProperties~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/DerivedSources/CoreDataGenerated/TrackerCoreData/TrackerCoreData+CoreDataClass.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataClass.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataClass.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataClass.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataClass.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataClass.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataClass.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataClass.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataClass~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/DerivedSources/CoreDataGenerated/TrackerCoreData/TrackerCoreData+CoreDataModel.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataModel.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataModel.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataModel.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataModel.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataModel.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataModel.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataModel.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataModel~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/DerivedSources/CoreDataGenerated/TrackerCoreData/TrackerCoreData+CoreDataProperties.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataProperties.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataProperties.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataProperties.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataProperties.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataProperties.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataProperties.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataProperties.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCoreData+CoreDataProperties~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/DerivedSources/CoreDataGenerated/TrackerCoreData/TrackerRecordCoreData+CoreDataClass.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecordCoreData+CoreDataClass.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecordCoreData+CoreDataClass.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecordCoreData+CoreDataClass.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecordCoreData+CoreDataClass.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecordCoreData+CoreDataClass.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecordCoreData+CoreDataClass.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecordCoreData+CoreDataClass.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecordCoreData+CoreDataClass~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/DerivedSources/CoreDataGenerated/TrackerCoreData/TrackerRecordCoreData+CoreDataProperties.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecordCoreData+CoreDataProperties.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecordCoreData+CoreDataProperties.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecordCoreData+CoreDataProperties.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecordCoreData+CoreDataProperties.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecordCoreData+CoreDataProperties.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecordCoreData+CoreDataProperties.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecordCoreData+CoreDataProperties.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecordCoreData+CoreDataProperties~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/AppDelegate.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/AppDelegate.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/AppDelegate.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/AppDelegate.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/AppDelegate.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/AppDelegate.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/AppDelegate.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/AppDelegate.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/AppDelegate~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/ChoseHabitOrEventViewController.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ChoseHabitOrEventViewController.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ChoseHabitOrEventViewController.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ChoseHabitOrEventViewController.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ChoseHabitOrEventViewController.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ChoseHabitOrEventViewController.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ChoseHabitOrEventViewController.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ChoseHabitOrEventViewController.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ChoseHabitOrEventViewController~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/ColorsForHabit.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ColorsForHabit.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ColorsForHabit.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ColorsForHabit.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ColorsForHabit.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ColorsForHabit.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ColorsForHabit.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ColorsForHabit.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ColorsForHabit~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/CreateCategory/AddCategoryViewController.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/AddCategoryViewController.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/AddCategoryViewController.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/AddCategoryViewController.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/AddCategoryViewController.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/AddCategoryViewController.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/AddCategoryViewController.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/AddCategoryViewController.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/AddCategoryViewController~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/CreateCategory/CategoryCellTableViewCell.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryCellTableViewCell.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryCellTableViewCell.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryCellTableViewCell.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryCellTableViewCell.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryCellTableViewCell.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryCellTableViewCell.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryCellTableViewCell.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryCellTableViewCell~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/CreateCategory/CreateCategoryViewController.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CreateCategoryViewController.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CreateCategoryViewController.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CreateCategoryViewController.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CreateCategoryViewController.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CreateCategoryViewController.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CreateCategoryViewController.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CreateCategoryViewController.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CreateCategoryViewController~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/CreateEvent/CategoryTableViewCellForEvent.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryTableViewCellForEvent.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryTableViewCellForEvent.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryTableViewCellForEvent.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryTableViewCellForEvent.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryTableViewCellForEvent.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryTableViewCellForEvent.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryTableViewCellForEvent.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryTableViewCellForEvent~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/CreateEvent/NewEventCreateController.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/NewEventCreateController.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/NewEventCreateController.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/NewEventCreateController.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/NewEventCreateController.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/NewEventCreateController.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/NewEventCreateController.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/NewEventCreateController.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/NewEventCreateController~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/CreateNewHabit/CategoryTableViewCellForHabit.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryTableViewCellForHabit.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryTableViewCellForHabit.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryTableViewCellForHabit.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryTableViewCellForHabit.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryTableViewCellForHabit.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryTableViewCellForHabit.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryTableViewCellForHabit.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryTableViewCellForHabit~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/CreateNewHabit/ColorCollectionViewCell.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ColorCollectionViewCell.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ColorCollectionViewCell.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ColorCollectionViewCell.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ColorCollectionViewCell.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ColorCollectionViewCell.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ColorCollectionViewCell.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ColorCollectionViewCell.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ColorCollectionViewCell~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/CreateNewHabit/EmodjiCollectionViewCell.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/EmodjiCollectionViewCell.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/EmodjiCollectionViewCell.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/EmodjiCollectionViewCell.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/EmodjiCollectionViewCell.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/EmodjiCollectionViewCell.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/EmodjiCollectionViewCell.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/EmodjiCollectionViewCell.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/EmodjiCollectionViewCell~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/CreateNewHabit/NewHabitCreateController.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/NewHabitCreateController.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/NewHabitCreateController.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/NewHabitCreateController.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/NewHabitCreateController.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/NewHabitCreateController.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/NewHabitCreateController.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/NewHabitCreateController.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/NewHabitCreateController~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/CreateNewHabit/TransformerValue.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TransformerValue.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TransformerValue.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TransformerValue.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TransformerValue.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TransformerValue.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TransformerValue.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TransformerValue.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TransformerValue~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/Models/Tracker.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/Tracker.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/Tracker.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/Tracker.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/Tracker.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/Tracker.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/Tracker.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/Tracker.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/Tracker~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/Models/TrackerCategory.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategory-cf801dac028e362f11fb167452c2d5f9.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategory-cf801dac028e362f11fb167452c2d5f9.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategory-cf801dac028e362f11fb167452c2d5f9.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategory-cf801dac028e362f11fb167452c2d5f9.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategory-cf801dac028e362f11fb167452c2d5f9.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategory-cf801dac028e362f11fb167452c2d5f9.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategory-cf801dac028e362f11fb167452c2d5f9.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategory-cf801dac028e362f11fb167452c2d5f9~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/Models/TrackerRecord.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecord-3cf2ded2c9f2c8b2029cde852d4b618f.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecord-3cf2ded2c9f2c8b2029cde852d4b618f.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecord-3cf2ded2c9f2c8b2029cde852d4b618f.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecord-3cf2ded2c9f2c8b2029cde852d4b618f.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecord-3cf2ded2c9f2c8b2029cde852d4b618f.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecord-3cf2ded2c9f2c8b2029cde852d4b618f.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecord-3cf2ded2c9f2c8b2029cde852d4b618f.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecord-3cf2ded2c9f2c8b2029cde852d4b618f~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/SceneDelegate.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/SceneDelegate.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/SceneDelegate.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/SceneDelegate.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/SceneDelegate.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/SceneDelegate.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/SceneDelegate.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/SceneDelegate.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/SceneDelegate~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/Schedule/ScheduleViewController.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ScheduleViewController.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ScheduleViewController.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ScheduleViewController.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ScheduleViewController.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ScheduleViewController.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ScheduleViewController.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ScheduleViewController.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/ScheduleViewController~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/StateView/StatViewController.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/StatViewController.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/StatViewController.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/StatViewController.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/StatViewController.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/StatViewController.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/StatViewController.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/StatViewController.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/StatViewController~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/Store/TrackerCategory.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategory-e2206d1355f091fd65bf7d1e7703c7b5.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategory-e2206d1355f091fd65bf7d1e7703c7b5.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategory-e2206d1355f091fd65bf7d1e7703c7b5.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategory-e2206d1355f091fd65bf7d1e7703c7b5.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategory-e2206d1355f091fd65bf7d1e7703c7b5.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategory-e2206d1355f091fd65bf7d1e7703c7b5.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategory-e2206d1355f091fd65bf7d1e7703c7b5.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerCategory-e2206d1355f091fd65bf7d1e7703c7b5~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/Store/TrackerRecord.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecord-67ef5336efcf8882c157b8c25fbdbf00.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecord-67ef5336efcf8882c157b8c25fbdbf00.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecord-67ef5336efcf8882c157b8c25fbdbf00.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecord-67ef5336efcf8882c157b8c25fbdbf00.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecord-67ef5336efcf8882c157b8c25fbdbf00.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecord-67ef5336efcf8882c157b8c25fbdbf00.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecord-67ef5336efcf8882c157b8c25fbdbf00.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerRecord-67ef5336efcf8882c157b8c25fbdbf00~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/Store/TrackerStory.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerStory.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerStory.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerStory.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerStory.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerStory.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerStory.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerStory.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerStory~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/TabBarController.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TabBarController.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TabBarController.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TabBarController.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TabBarController.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TabBarController.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TabBarController.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TabBarController.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TabBarController~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/TrackerView/CategoryNameClass.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryNameClass.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryNameClass.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryNameClass.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryNameClass.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryNameClass.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryNameClass.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryNameClass.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/CategoryNameClass~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/TrackerView/TrackerViewCell.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerViewCell.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerViewCell.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerViewCell.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerViewCell.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerViewCell.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerViewCell.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerViewCell.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerViewCell~partial.swiftmodule"
+  },
+  "/Users/eduardkarimov/Documents/Tracker/Tracker/TrackerView/TrackerViewController.swift" : {
+    "const-values" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerViewController.swiftconstvalues",
+    "dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerViewController.d",
+    "diagnostics" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerViewController.dia",
+    "index-unit-output-path" : "/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerViewController.o",
+    "llvm-bc" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerViewController.bc",
+    "object" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerViewController.o",
+    "swift-dependencies" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerViewController.swiftdeps",
+    "swiftmodule" : "/Users/eduardkarimov/Documents/Tracker/build/Tracker.build/Debug-iphonesimulator/Tracker.build/Objects-normal/arm64/TrackerViewController~partial.swiftmodule"
+  }
+}
