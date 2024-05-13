@@ -15,6 +15,7 @@
 		D77424602B2490DF00C8E065 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D774245F2B2490DF00C8E065 /* ScheduleViewController.swift */; };
 		D77DC5A62BBCFA6F00D54D89 /* NewEventCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77DC5A52BBCFA6F00D54D89 /* NewEventCreateController.swift */; };
 		D77DC5A92BBCFCA200D54D89 /* StatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77DC5A82BBCFCA200D54D89 /* StatViewController.swift */; };
+		D77E02342BF0E04100490E60 /* TransformerValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77E02332BF0E04100490E60 /* TransformerValue.swift */; };
 		D7848A2A2BED21B1007B754C /* EmodjiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7848A292BED21B1007B754C /* EmodjiCollectionViewCell.swift */; };
 		D7A6AC952AF7685C00851329 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A6AC942AF7685C00851329 /* Tracker.swift */; };
 		D7A6AC972AF7698E00851329 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A6AC962AF7698E00851329 /* TrackerCategory.swift */; };
@@ -44,6 +45,7 @@
 		D774245F2B2490DF00C8E065 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		D77DC5A52BBCFA6F00D54D89 /* NewEventCreateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventCreateController.swift; sourceTree = "<group>"; };
 		D77DC5A82BBCFCA200D54D89 /* StatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatViewController.swift; sourceTree = "<group>"; };
+		D77E02332BF0E04100490E60 /* TransformerValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformerValue.swift; sourceTree = "<group>"; };
 		D7848A292BED21B1007B754C /* EmodjiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmodjiCollectionViewCell.swift; sourceTree = "<group>"; };
 		D7A6AC942AF7685C00851329 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		D7A6AC962AF7698E00851329 /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				D7C650F62B133FCE00A9F116 /* NewHabitCreateController.swift */,
 				D7E8C5832BC0665B00076DB8 /* ColorCollectionViewCell.swift */,
 				D7848A292BED21B1007B754C /* EmodjiCollectionViewCell.swift */,
+				D77E02332BF0E04100490E60 /* TransformerValue.swift */,
 			);
 			path = CreateNewHabit;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 				D711B8952AF184C60064AAFE /* TabBarController.swift in Sources */,
 				D77424602B2490DF00C8E065 /* ScheduleViewController.swift in Sources */,
 				D7A6AC992AF769D400851329 /* TrackerRecord.swift in Sources */,
+				D77E02342BF0E04100490E60 /* TransformerValue.swift in Sources */,
 				D7C650F72B133FCE00A9F116 /* NewHabitCreateController.swift in Sources */,
 				D774245D2B2476E600C8E065 /* CreateCategoryViewController.swift in Sources */,
 				D73B27772B37369F00E7B59A /* CategoryTableViewCellForHabit.swift in Sources */,

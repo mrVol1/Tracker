@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 enum TableSection: Int, CaseIterable {
     case categories
@@ -50,6 +51,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     let labelEmoji = UILabel()
     let labelColors = UILabel()
     let customFontBold = UIFont(name: "SFProDisplay-Medium", size: UIFont.labelFontSize)
+    let entityTrackerName = "TrackerCoreData"
     
     private var trackerRecord: TrackerRecord?
     private let emojis: [String] = ["🙂", "😺", "🌺", "🐶", "♥️", "😱", "😇", "😡", "🥶", "🤔", "🙌", "🍔", "🥦", "🏓", "🥇", "🎸", "🌴", "😪"]
@@ -445,12 +447,41 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
             return
         }
         
-        let tracker = Tracker(id: UUID(), name: selectedTrackerName, color: selectedColor, emodji: selectedEmoji, timetable: selectedScheduleDays)
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        let managedContext = appDelegate.persistentContainer.viewContext
         
-        let trackerCategoryInMain = TrackerCategory(label: selectedCategoryString, trackerArray: [tracker])
+        guard let trackerEntity = NSEntityDescription.entity(forEntityName: entityTrackerName, in: managedContext) else {
+            fatalError("Entity description for \(entityTrackerName) not found")
+        }
+
+        let tracker = NSManagedObject(entity: trackerEntity, insertInto: managedContext)
+        
+        tracker.setValue(selectedTrackerName, forKey: "name")
+        tracker.setValue(selectedColor, forKey: "color")
+        tracker.setValue(selectedEmoji, forKey: "emodji")
+        tracker.setValue(UUID(), forKey: "id")
+        
+        let transformer = TransformerValue()
+        
+        if let transformedDays = transformer.transformedValue(selectedScheduleDays) as? NSData {
+            tracker.setValue(transformedDays, forKey: "timetable")
+        }
+        
+        do {
+            try managedContext.save()
+            print("Tracker saved successfully.")
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
+        
+//        let tracker = Tracker(id: UUID(), name: selectedTrackerName, color: selectedColor, emodji: selectedEmoji, timetable: selectedScheduleDays)
+        
+       // let trackerCategoryInMain = TrackerCategory(label: selectedCategoryString, trackerArray: [tracker])
         
         if let delegate = habitCreateDelegate {
-            delegate.didCreateHabit(with: trackerCategoryInMain)
+           // delegate.didCreateHabit(with: trackerCategoryInMain)
         }
         
         finishCreatingHabitAndDismiss()
