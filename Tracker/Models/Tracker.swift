@@ -17,7 +17,11 @@ enum WeekDay: String, CaseIterable, Codable {
     case sunday = "Воскресенье"
 }
 
-final class Tracker: Codable {
+final class Tracker: NSObject, NSSecureCoding, Codable {
+    static var supportsSecureCoding: Bool {
+        return true
+    }
+
     let id: UUID
     let name: String
     let color: String
@@ -30,5 +34,25 @@ final class Tracker: Codable {
         self.color = color
         self.emodji = emodji
         self.timetable = timetable
+    }
+
+    required convenience init?(coder aDecoder: NSCoder) {
+        guard let id = aDecoder.decodeObject(forKey: "id") as? UUID,
+              let name = aDecoder.decodeObject(forKey: "name") as? String,
+              let color = aDecoder.decodeObject(forKey: "color") as? String,
+              let emodji = aDecoder.decodeObject(forKey: "emodji") as? String,
+              let timetable = aDecoder.decodeObject(forKey: "timetable") as? [WeekDay] else {
+            return nil
+        }
+
+        self.init(id: id, name: name, color: color, emodji: emodji, timetable: timetable)
+    }
+
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(color, forKey: "color")
+        aCoder.encode(emodji, forKey: "emodji")
+        aCoder.encode(timetable, forKey: "timetable")
     }
 }

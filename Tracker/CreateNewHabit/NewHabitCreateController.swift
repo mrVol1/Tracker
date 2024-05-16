@@ -451,11 +451,10 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
                                                               color: selectedColor,
                                                               emoji: selectedEmoji,
                                                               scheduleDays: selectedScheduleDays) {
-            TrackerStore.shared.saveTracker(newTracker)
-            print("Save to CoreData")
-            myTrackersArray.append(newTracker)
             
-//            let trackerCategoryInMain = TrackerCategory(label: selectedCategoryString, trackerArray: [myTrackersArray])
+            let trackerCategoryInMain = TrackerCategoryStore.shared.createTrackerCategory(label: selectedCategoryString, trackers: [newTracker])
+//            print("Category: \(trackerCategoryInMain.label)")
+//            print("Trackers: \(String(describing: trackerCategoryInMain.trackerArray))")
             
 //            // Вызов метода делегата, если нужно
 //            if let delegate = habitCreateDelegate {
