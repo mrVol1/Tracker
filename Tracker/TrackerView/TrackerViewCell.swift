@@ -46,6 +46,20 @@ class TrackerViewCell: UICollectionViewCell {
         return labelCount
     }()
     
+    private let emojiLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 32)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    private let colorView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 8
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     lazy var addButton: UIButton = {
         let button = UIButton()
         button.setTitle("+", for: .normal)
@@ -73,6 +87,8 @@ class TrackerViewCell: UICollectionViewCell {
     private func setupUI() {
         contentView.addSubview(containerView)
         contentView.addSubview(label)
+        containerView.addSubview(emojiLabel)
+        containerView.addSubview(colorView)
         contentView.addSubview(labelCount)
         contentView.addSubview(addButton)
 
@@ -81,6 +97,18 @@ class TrackerViewCell: UICollectionViewCell {
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             containerView.heightAnchor.constraint(equalToConstant: 90)
+        ])
+        
+        NSLayoutConstraint.activate([
+            emojiLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
+            emojiLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+        ])
+
+        NSLayoutConstraint.activate([
+            colorView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            colorView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            colorView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            colorView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
         ])
 
         NSLayoutConstraint.activate([
@@ -105,17 +133,19 @@ class TrackerViewCell: UICollectionViewCell {
     // MARK: - configs
 
     func configure(with tracker: Tracker, isChecked: Bool, completedDaysCount: Int) {
-        label.text = tracker.name
+         label.text = tracker.name
+         emojiLabel.text = tracker.emodji
+         colorView.backgroundColor = UIColor(named: tracker.color)
 
-        if isChecked {
-            addButton.setTitle("✓", for: .normal)
-            addButton.alpha = 0.3
-        } else {
-            addButton.setTitle("+", for: .normal)
-            addButton.alpha = 1.0
-        }
-        labelCount.text = "\(completedDaysCount) дней"
-    }
+         if isChecked {
+             addButton.setTitle("✓", for: .normal)
+             addButton.alpha = 0.3
+         } else {
+             addButton.setTitle("+", for: .normal)
+             addButton.alpha = 1.0
+         }
+         labelCount.text = "\(completedDaysCount) дней"
+     }
 
     // MARK: - actions
 

@@ -19,22 +19,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B29C34DE-76B5-426C-83D6-4CC9FD628AAD"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tracker/TrackerView/TrackerViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "233"
-            endingLineNumber = "233"
-            landmarkName = "collectionView(_:viewForSupplementaryElementOfKind:at:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "A1EAF20C-4E48-48A7-99E4-DE03BB4205BC"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -74,9 +58,9 @@
             filePath = "Tracker/TrackerView/TrackerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "258"
-            endingLineNumber = "258"
-            landmarkName = "loadCategories()"
+            startingLineNumber = "313"
+            endingLineNumber = "313"
+            landmarkName = "applySearchFilter(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -106,10 +90,8 @@
             filePath = "Tracker/TrackerView/TrackerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "392"
-            endingLineNumber = "392"
-            landmarkName = "didCreateHabit(with:)"
-            landmarkType = "7">
+            startingLineNumber = "470"
+            endingLineNumber = "470">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -122,9 +104,9 @@
             filePath = "Tracker/TrackerView/TrackerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "363"
-            endingLineNumber = "363"
-            landmarkName = "filterTrackersByDate(_:)"
+            startingLineNumber = "430"
+            endingLineNumber = "430"
+            landmarkName = "didCreateEvent(with:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -138,10 +120,8 @@
             filePath = "Tracker/TrackerView/TrackerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "423"
-            endingLineNumber = "423"
-            landmarkName = "didCreateEvent(with:)"
-            landmarkType = "7">
+            startingLineNumber = "511"
+            endingLineNumber = "511">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

@@ -452,14 +452,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
                                                               emoji: selectedEmoji,
                                                               scheduleDays: selectedScheduleDays) {
             
-            let trackerCategoryInMain = TrackerCategoryStore.shared.createTrackerCategory(label: selectedCategoryString, trackers: [newTracker])
-//            print("Category: \(trackerCategoryInMain.label)")
-//            print("Trackers: \(String(describing: trackerCategoryInMain.trackerArray))")
-            
-//            // Вызов метода делегата, если нужно
-//            if let delegate = habitCreateDelegate {
-//                // delegate.didCreateHabit(with: newTracker)
-//            }
+            let _ = TrackerCategoryStore.shared.createTrackerCategory(label: selectedCategoryString, trackers: [newTracker])
             
             finishCreatingHabitAndDismiss()
         }

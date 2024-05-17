@@ -188,38 +188,37 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! TrackerViewCell
-        
+
         let category = categories[indexPath.section]
         if let tracker = category.trackerArray?[indexPath.item] {
-            var isChecked = completedTrackers.contains { $0 == tracker.id }
-            
+            let isChecked = completedTrackers.contains { $0 == tracker.id }
+
             cell.configure(
                 with: tracker,
                 isChecked: isChecked,
                 completedDaysCount: isChecked ? 1 : 0
             )
-            
+
             cell.completion = { [weak self] in
                 guard let self = self else { return }
-                
+
                 if isChecked {
                     self.completedTrackers.remove(tracker.id)
                 } else {
                     self.completedTrackers.insert(tracker.id)
                 }
-                
-                isChecked = !isChecked
-                
+
                 cell.configure(
                     with: tracker,
-                    isChecked: isChecked,
-                    completedDaysCount: isChecked ? 1 : 0
+                    isChecked: !isChecked,
+                    completedDaysCount: !isChecked ? 1 : 0
                 )
             }
         }
-        
+
         return cell
     }
+
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
@@ -363,7 +362,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     private func filterTrackersByDate(_ date: Date) {
         let dayOfWeek = Calendar.current.component(.weekday, from: date)
         let selectedWeekDay = weekDayFromNumber(dayOfWeek)
-        
+
         if let selectedWeekDay = selectedWeekDay {
             var filteredCategories = [TrackerCategory]()
             for category in categories {
@@ -372,12 +371,12 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                     filteredCategories.append(filteredCategory)
                 }
             }
-            
+
             if filteredCategories.isEmpty {
                 collectionViewTrackers.isHidden = true
             } else {
                 collectionViewTrackers.isHidden = false
-                categories = filteredCategories // Обновляем исходный массив категорий
+                categories = filteredCategories
                 collectionViewTrackers.reloadData()
             }
         }
@@ -446,3 +445,19 @@ extension TrackerViewController: NewEventCreateViewControllerDelegate {
     }
 }
 
+extension UIColor {
+    convenience init(hex: String) {
+        var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
+
+        var rgb: UInt64 = 0
+
+        Scanner(string: hexSanitized).scanHexInt64(&rgb)
+
+        let red = CGFloat((rgb & 0xFF0000) >> 16) / 255.0
+        let green = CGFloat((rgb & 0x00FF00) >> 8) / 255.0
+        let blue = CGFloat(rgb & 0x0000FF) / 255.0
+
+        self.init(red: red, green: green, blue: blue, alpha: 1.0)
+    }
+}
