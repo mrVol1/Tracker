@@ -5,7 +5,8 @@
 //  Created by Eduard Karimov on 12/05/2024.
 //
 
-import Foundation
+import UIKit
+import CoreData
 
 final class TransformerValue: ValueTransformer {
     
@@ -25,7 +26,7 @@ final class TransformerValue: ValueTransformer {
     static func register() {
         ValueTransformer.setValueTransformer(
             TransformerValue(),
-            forName: NSValueTransformerName(rawValue: String(describing: TransformerValue.self))
+            forName: NSValueTransformerName("TransformerValue")
         )
     }
 }

@@ -26,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        TransformerValue.register()
         window = UIWindow(frame: UIScreen.main.bounds)
         
         let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [], color: "", emodji: "")
@@ -34,7 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
-        TransformerValue.register()
         return true
     }
     

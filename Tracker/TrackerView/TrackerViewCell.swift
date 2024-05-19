@@ -23,7 +23,6 @@ class TrackerViewCell: UICollectionViewCell {
 
     private let containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 0x33 / 255.0, green: 0xCF / 255.0, blue: 0x69 / 255.0, alpha: 1.0)
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -135,8 +134,8 @@ class TrackerViewCell: UICollectionViewCell {
     func configure(with tracker: Tracker, isChecked: Bool, completedDaysCount: Int) {
          label.text = tracker.name
          emojiLabel.text = tracker.emodji
-         colorView.backgroundColor = UIColor(named: tracker.color)
-
+         colorView.backgroundColor = UIColor(hex: tracker.color)
+        
          if isChecked {
              addButton.setTitle("✓", for: .normal)
              addButton.alpha = 0.3
@@ -151,5 +150,22 @@ class TrackerViewCell: UICollectionViewCell {
 
     @objc func addButtonTapped() {
         completion?()
+    }
+}
+
+extension UIColor {
+    convenience init(hex: String) {
+        var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
+
+        var rgb: UInt64 = 0
+
+        Scanner(string: hexSanitized).scanHexInt64(&rgb)
+
+        let red = CGFloat((rgb & 0xFF0000) >> 16) / 255.0
+        let green = CGFloat((rgb & 0x00FF00) >> 8) / 255.0
+        let blue = CGFloat(rgb & 0x0000FF) / 255.0
+
+        self.init(red: red, green: green, blue: blue, alpha: 1.0)
     }
 }

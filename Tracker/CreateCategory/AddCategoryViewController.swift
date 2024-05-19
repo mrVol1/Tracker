@@ -217,7 +217,7 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
             }
         }
     }
-    
+
     private func updateCategoryButtonTitle() {
         let categoryButton = view.subviews.compactMap { $0 as? UIButton }.first
         categoryButton?.setTitle(isCheckmarkSelected ? "Готово" : "Добавить категорию", for: .normal)

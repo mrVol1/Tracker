@@ -31,7 +31,6 @@ class TrackerCategoryStore {
         categoryManagedObject.setValue(label, forKey: "label")
         
         do {
-            // Используем JSONEncoder для сериализации массива Tracker в Data
             let jsonEncoder = JSONEncoder()
             let trackersData = try jsonEncoder.encode(trackers)
             

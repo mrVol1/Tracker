@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import CoreData
 
-class TrackerViewController: UIViewController, UITextFieldDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
+class TrackerViewController: UIViewController, UITextFieldDelegate, UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate {
     
     let customFontBold = UIFont(name: "SFProDisplay-Bold", size: UIFont.labelFontSize)
     let customFontBoldMidle = UIFont(name: "SFProDisplay-Medium", size: 19)
@@ -24,6 +25,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     var selectedEmodji: String?
     var selectedScheduleDays: [WeekDay] = []
     var categories: [TrackerCategory] = []
+    var trackers: [Tracker] = []
     var completedTrackers: Set<UUID> = []
     var newHabit: [Tracker]
     var completedDaysCount: Int = 0
@@ -31,6 +33,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     var previousHeaderView: CategoryNameClass?
     var didCreateHabitCalled = false
     var isDatePickerSelected = false
+    var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData>!
     
     var currentDate: Date = Date() {
         didSet {
@@ -49,7 +52,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         return button
     }()
     
-    private let collectionViewTrackers: UICollectionView = {
+    let collectionViewTrackers: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -78,36 +81,66 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        search.delegate = self
-        
-        loadCategories()
-        
         view.backgroundColor = .white
         
         collectionViewTrackers.delegate = self
         collectionViewTrackers.dataSource = self
         
-        newHabitCreateController.habitCreateDelegate = self
+        setupFetchedResultsController()
+        fetchData()
         
-        newEventCreateController.eventCreateDelegate = self
+        setupUI()
         
         createButton()
-        
         timeContainer()
-        
         labelTracker()
-        
         searchTextField()
         
-        layoutSetup()
+        loadCategories()
+    }
+    
+    private func setupFetchedResultsController() {
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "label", ascending: true)]
+
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController.delegate = self
+
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            print("Failed to fetch data: \(error)")
+        }
+    }
+    
+    private func fetchData() {
+        guard let fetchedResultsController = fetchedResultsController else {
+            print("fetchedResultsController is nil")
+            return
+        }
         
-        if isDatePickerSelected {
-            filterTrackersByDate(datePicker.date)
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            print("Failed to fetch data: \(error)")
         }
     }
     
     // MARK: - Screen settings
+    
+    private func setupUI() {
+        view.addSubview(collectionViewTrackers)
+        collectionViewTrackers.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            collectionViewTrackers.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionViewTrackers.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionViewTrackers.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionViewTrackers.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
     
     fileprivate func layoutSetup() {
         if let layout = collectionViewTrackers.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -178,53 +211,65 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     // MARK: - CollectionView setting
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return categories.count
+        return fetchedResultsController.sections?.count ?? 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let sections = fetchedResultsController.sections else {
+            return 0
+        }
+        return sections[section].numberOfObjects
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let category = categories[section]
-        return category.trackerArray?.count ?? 0
-    }
-        
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as! TrackerViewCell
+        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as? TrackerViewCell else {
+            fatalError("Failed to dequeue TrackerViewCell")
+        }
 
-        let category = categories[indexPath.section]
-        if let tracker = category.trackerArray?[indexPath.item] {
-            let isChecked = completedTrackers.contains { $0 == tracker.id }
+        let trackerCategory = fetchedResultsController.object(at: indexPath)
 
-            cell.configure(
-                with: tracker,
-                isChecked: isChecked,
-                completedDaysCount: isChecked ? 1 : 0
-            )
-
-            cell.completion = { [weak self] in
-                guard let self = self else { return }
-
-                if isChecked {
-                    self.completedTrackers.remove(tracker.id)
-                } else {
-                    self.completedTrackers.insert(tracker.id)
+        if let trackersData = trackerCategory.trackerArray {
+            do {
+                let decoder = JSONDecoder()
+                let trackers = try decoder.decode([Tracker].self, from: trackersData as! Data)
+                
+                if indexPath.item < trackers.count {
+                    let tracker = trackers[indexPath.item]
+                    
+                    let isChecked = completedTrackers.contains(tracker.id)
+                    let completedDaysCount = isChecked ? 1 : 0
+                    
+                    
+                    cell.configure(with: tracker, isChecked: isChecked, completedDaysCount: completedDaysCount)
+                    
+                    cell.completion = { [weak self] in
+                        guard let self = self else { return }
+                        
+                        if isChecked {
+                            self.completedTrackers.remove(tracker.id)
+                        } else {
+                            self.completedTrackers.insert(tracker.id)
+                        }
+                        
+                        cell.configure(with: tracker, isChecked: !isChecked, completedDaysCount: !isChecked ? 1 : 0)
+                    }
                 }
-
-                cell.configure(
-                    with: tracker,
-                    isChecked: !isChecked,
-                    completedDaysCount: !isChecked ? 1 : 0
-                )
+            }
+            catch {
+                print("Failed to decode trackers: \(error)")
             }
         }
 
         return cell
     }
-
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CategoryNameClass.reuseIdentifier, for: indexPath) as! CategoryNameClass
-            headerView.titleLabel.text = categories[indexPath.section].label
+            let trackerCategory = fetchedResultsController.sections?[indexPath.section]
+            headerView.titleLabel.text = trackerCategory?.name
             return headerView
         default:
             fatalError("Unexpected element kind")
@@ -246,6 +291,16 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         return CGSize(width: collectionView.bounds.width, height: 60)
     }
     
+    // MARK: - NSFetchedResultsControllerDelegate
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        collectionViewTrackers.performBatchUpdates(nil, completion: nil)
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        collectionViewTrackers.reloadData()
+        loadCategories()
+    }
     
     // MARK: - Screen Func
     
@@ -256,7 +311,9 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     func loadCategories() {
         
+        print("Загрузка категорий: \(categories.count)")
         if categories.isEmpty {
+            print("Категории пусты")
             guard let defaultImage = UIImage(named: "Stars") else { return }
             let imageView = UIImageView(image: defaultImage)
             view.addSubview(imageView)
@@ -279,12 +336,14 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                 defultLabel.bottomAnchor.constraint(equalTo: imageView.safeAreaLayoutGuide.bottomAnchor, constant: 28),
                 defultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
-        } else if selectedHabitString != nil || selectedEventString != nil {
+        } else {
+            print("Категории найдены")
             updateUI()
         }
     }
     
     func updateUI() {
+        print("Обновление интерфейса")
         view.addSubview(collectionViewTrackers)
         
         collectionViewTrackers.translatesAutoresizingMaskIntoConstraints = false
@@ -363,6 +422,8 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         let dayOfWeek = Calendar.current.component(.weekday, from: date)
         let selectedWeekDay = weekDayFromNumber(dayOfWeek)
 
+        print("Фильтрация трекеров по дате: \(date), день недели: \(String(describing: selectedWeekDay))")
+
         if let selectedWeekDay = selectedWeekDay {
             var filteredCategories = [TrackerCategory]()
             for category in categories {
@@ -374,10 +435,12 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
 
             if filteredCategories.isEmpty {
                 collectionViewTrackers.isHidden = true
+                print("Трекеры не найдены для выбранной даты")
             } else {
                 collectionViewTrackers.isHidden = false
                 categories = filteredCategories
                 collectionViewTrackers.reloadData()
+                print("Найдено трекеров для выбранной даты: \(filteredCategories.count)")
             }
         }
     }
@@ -442,22 +505,5 @@ extension TrackerViewController: NewEventCreateViewControllerDelegate {
     
     func didFinishCreatingEventAndDismiss() {
         loadCategories()
-    }
-}
-
-extension UIColor {
-    convenience init(hex: String) {
-        var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
-        hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
-
-        var rgb: UInt64 = 0
-
-        Scanner(string: hexSanitized).scanHexInt64(&rgb)
-
-        let red = CGFloat((rgb & 0xFF0000) >> 16) / 255.0
-        let green = CGFloat((rgb & 0x00FF00) >> 8) / 255.0
-        let blue = CGFloat(rgb & 0x0000FF) / 255.0
-
-        self.init(red: red, green: green, blue: blue, alpha: 1.0)
     }
 }
