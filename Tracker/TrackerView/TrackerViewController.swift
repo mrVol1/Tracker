@@ -99,6 +99,20 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         loadCategories()
     }
     
+    private func fetchData() {
+        guard let fetchedResultsController = fetchedResultsController else {
+            print("fetchedResultsController is nil")
+            return
+        }
+        
+        do {
+            try fetchedResultsController.performFetch()
+            print("Fetch successful, number of sections: \(fetchedResultsController.sections?.count ?? 0)")
+        } catch {
+            print("Failed to fetch data: \(error)")
+        }
+    }
+
     private func setupFetchedResultsController() {
         let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "label", ascending: true)]
@@ -110,19 +124,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
 
         do {
             try fetchedResultsController.performFetch()
-        } catch {
-            print("Failed to fetch data: \(error)")
-        }
-    }
-    
-    private func fetchData() {
-        guard let fetchedResultsController = fetchedResultsController else {
-            print("fetchedResultsController is nil")
-            return
-        }
-        
-        do {
-            try fetchedResultsController.performFetch()
+            print("Fetched results controller setup successful")
         } catch {
             print("Failed to fetch data: \(error)")
         }
@@ -211,18 +213,21 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     // MARK: - CollectionView setting
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return fetchedResultsController.sections?.count ?? 0
+        let numberOfSections = fetchedResultsController.sections?.count ?? 0
+        print("Number of sections: \(numberOfSections)")
+        return numberOfSections
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let sections = fetchedResultsController.sections else {
             return 0
         }
-        return sections[section].numberOfObjects
+        let numberOfItems = sections[section].numberOfObjects
+        print("Number of items in section \(section): \(numberOfItems)")
+        return numberOfItems
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "trackerCell", for: indexPath) as? TrackerViewCell else {
             fatalError("Failed to dequeue TrackerViewCell")
         }
@@ -240,7 +245,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                     let isChecked = completedTrackers.contains(tracker.id)
                     let completedDaysCount = isChecked ? 1 : 0
                     
-                    
                     cell.configure(with: tracker, isChecked: isChecked, completedDaysCount: completedDaysCount)
                     
                     cell.completion = { [weak self] in
@@ -255,12 +259,10 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
                         cell.configure(with: tracker, isChecked: !isChecked, completedDaysCount: !isChecked ? 1 : 0)
                     }
                 }
-            }
-            catch {
+            } catch {
                 print("Failed to decode trackers: \(error)")
             }
         }
-
         return cell
     }
     
@@ -294,11 +296,13 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     // MARK: - NSFetchedResultsControllerDelegate
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        print("Controller will change content")
         collectionViewTrackers.performBatchUpdates(nil, completion: nil)
     }
-    
+
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        collectionViewTrackers.reloadData()
+        print("Controller did change content")
+//        collectionViewTrackers.reloadData()
         loadCategories()
     }
     
@@ -310,35 +314,24 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
     func loadCategories() {
+        guard let sections = fetchedResultsController.sections else {
+            print("No sections found")
+            return
+        }
+        
+        categories = sections.reduce(into: [TrackerCategory]()) { result, section in
+            if let coreDataCategories = section.objects as? [TrackerCategoryCoreData] {
+                let newCategories = coreDataCategories.map { coreDataCategory in
+                    let trackers = (try? JSONDecoder().decode([Tracker].self, from: (coreDataCategory.trackerArray ?? Data() as NSObject) as! Data)) ?? []
+                    return TrackerCategory(label: coreDataCategory.label ?? "", trackerArray: trackers)
+                }
+                result.append(contentsOf: newCategories)
+            }
+        }
         
         print("Загрузка категорий: \(categories.count)")
-        if categories.isEmpty {
-            print("Категории пусты")
-            guard let defaultImage = UIImage(named: "Stars") else { return }
-            let imageView = UIImageView(image: defaultImage)
-            view.addSubview(imageView)
-            
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            
-            NSLayoutConstraint.activate([
-                imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-            ])
-            
-            let defultLabel = UILabel()
-            defultLabel.textColor = .black
-            defultLabel.text = "Что будем отслеживать?"
-            view.addSubview(defultLabel)
-            
-            defultLabel.translatesAutoresizingMaskIntoConstraints = false
-            
-            NSLayoutConstraint.activate([
-                defultLabel.bottomAnchor.constraint(equalTo: imageView.safeAreaLayoutGuide.bottomAnchor, constant: 28),
-                defultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-            ])
-        } else {
-            print("Категории найдены")
-            updateUI()
+        DispatchQueue.main.async {
+            self.collectionViewTrackers.reloadData()
         }
     }
     
@@ -394,8 +387,6 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
     
     @objc func buttonActionForHabit() {
         let createTracker = ChoseHabitOrEventViewController()
-        createTracker.habitCreateDelegate = self
-        createTracker.eventCreateDelegate = self
         let createHabbitNavigationController = UINavigationController(rootViewController: createTracker)
         present(createHabbitNavigationController, animated: true, completion: nil)
     }
@@ -418,7 +409,7 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
         }
     }
     
-    private func filterTrackersByDate(_ date: Date) {
+    func filterTrackersByDate(_ date: Date) {
         let dayOfWeek = Calendar.current.component(.weekday, from: date)
         let selectedWeekDay = weekDayFromNumber(dayOfWeek)
 
@@ -439,71 +430,11 @@ class TrackerViewController: UIViewController, UITextFieldDelegate, UICollection
             } else {
                 collectionViewTrackers.isHidden = false
                 categories = filteredCategories
-                collectionViewTrackers.reloadData()
+                DispatchQueue.main.async {
+                    self.collectionViewTrackers.reloadData()
+                }
                 print("Найдено трекеров для выбранной даты: \(filteredCategories.count)")
             }
         }
-    }
-}
-
-extension TrackerViewController: NewHabitCreateViewControllerDelegate {
-    func didFinishCreatingHabitAndDismiss() {
-      loadCategories()
-    }
-    
-    func didCreateHabit(with trackerCategoryInMain: TrackerCategory) {
-        selectedHabitString = trackerCategoryInMain.trackerArray?.first?.name
-        selectedScheduleDays = trackerCategoryInMain.trackerArray?.first?.timetable ?? []
-        createdCategoryName = trackerCategoryInMain.label
-        selectedColor = trackerCategoryInMain.trackerArray?.first?.color
-        selectedEmodji = trackerCategoryInMain.trackerArray?.first?.emodji
-
-        if let existingCategoryIndex = categories.firstIndex(where: { $0.label == createdCategoryName }) {
-            let existingCategory = categories[existingCategoryIndex]
-            let newHabit = Tracker(id: UUID(), name: selectedHabitString ?? "", color: selectedColor ?? "", emodji: selectedEmodji ?? "", timetable: selectedScheduleDays)
-            var updatedTrackerArray = existingCategory.trackerArray ?? []
-            updatedTrackerArray.append(newHabit)
-            let updatedCategory = TrackerCategory(label: existingCategory.label, trackerArray: updatedTrackerArray)
-            categories[existingCategoryIndex] = updatedCategory
-        } else {
-            let newHabit = Tracker(id: UUID(), name: selectedHabitString ?? "", color: selectedColor ?? "", emodji: selectedEmodji ?? "", timetable: selectedScheduleDays)
-            let newCategory = TrackerCategory(label: createdCategoryName ?? "", trackerArray: [newHabit])
-            categories.append(newCategory)
-        }
-        collectionViewTrackers.reloadData()
-    }
-}
-
-extension TrackerViewController: ScheduleViewControllerDelegate {
-    func didSelectScheduleDays(_ selectedDays: [WeekDay]) {
-        self.selectedScheduleDays = selectedDays
-    }
-}
-
-extension TrackerViewController: NewEventCreateViewControllerDelegate {
-    
-    func didCreateEvent(with trackerCategoryInMain: TrackerCategory) {
-        selectedEventString = trackerCategoryInMain.trackerArray?.first?.name
-        createdCategoryName = trackerCategoryInMain.label
-        selectedColor = trackerCategoryInMain.trackerArray?.first?.color
-        selectedEmodji = trackerCategoryInMain.trackerArray?.first?.emodji
-
-        if let existingCategoryIndex = categories.firstIndex(where: { $0.label == createdCategoryName }) {
-            let existingCategory = categories[existingCategoryIndex]
-            let newHabit = Tracker(id: UUID(), name: selectedEventString ?? "", color: selectedColor ?? "", emodji: selectedEmodji ?? "", timetable: [])
-            var updatedTrackerArray = existingCategory.trackerArray ?? []
-            updatedTrackerArray.append(newHabit)
-            let updatedCategory = TrackerCategory(label: existingCategory.label, trackerArray: updatedTrackerArray)
-            categories[existingCategoryIndex] = updatedCategory
-        } else {
-            let newHabit = Tracker(id: UUID(), name: selectedEventString ?? "", color: selectedColor ?? "", emodji: selectedEmodji ?? "", timetable: [])
-            let newCategory = TrackerCategory(label: createdCategoryName ?? "", trackerArray: [newHabit])
-            categories.append(newCategory)
-        }
-        collectionViewTrackers.reloadData()
-    }
-    
-    func didFinishCreatingEventAndDismiss() {
-        loadCategories()
     }
 }

@@ -63,7 +63,6 @@ class TrackerViewCell: UICollectionViewCell {
         let button = UIButton()
         button.setTitle("+", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(red: 0x33 / 255.0, green: 0xCF / 255.0, blue: 0x69 / 255.0, alpha: 1.0)
         button.layer.cornerRadius = Const.plusButtonSize / 2.0
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -86,14 +85,14 @@ class TrackerViewCell: UICollectionViewCell {
     private func setupUI() {
         contentView.addSubview(containerView)
         contentView.addSubview(label)
-        containerView.addSubview(emojiLabel)
-        containerView.addSubview(colorView)
         contentView.addSubview(labelCount)
         contentView.addSubview(addButton)
+        containerView.addSubview(emojiLabel)
+        containerView.addSubview(colorView)
 
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 74),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             containerView.heightAnchor.constraint(equalToConstant: 90)
         ])
@@ -135,6 +134,7 @@ class TrackerViewCell: UICollectionViewCell {
          label.text = tracker.name
          emojiLabel.text = tracker.emodji
          colorView.backgroundColor = UIColor(hex: tracker.color)
+         addButton.backgroundColor = UIColor(hex: tracker.color)
         
          if isChecked {
              addButton.setTitle("✓", for: .normal)
