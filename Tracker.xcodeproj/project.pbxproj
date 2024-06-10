@@ -16,7 +16,7 @@
 		D77DC5A62BBCFA6F00D54D89 /* NewEventCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77DC5A52BBCFA6F00D54D89 /* NewEventCreateController.swift */; };
 		D77DC5A92BBCFCA200D54D89 /* StatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77DC5A82BBCFCA200D54D89 /* StatViewController.swift */; };
 		D77E02342BF0E04100490E60 /* TransformerValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77E02332BF0E04100490E60 /* TransformerValue.swift */; };
-		D7848A2A2BED21B1007B754C /* EmodjiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7848A292BED21B1007B754C /* EmodjiCollectionViewCell.swift */; };
+		D7848A2A2BED21B1007B754C /* EmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7848A292BED21B1007B754C /* EmojiCollectionViewCell.swift */; };
 		D7A6AC952AF7685C00851329 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A6AC942AF7685C00851329 /* Tracker.swift */; };
 		D7A6AC972AF7698E00851329 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A6AC962AF7698E00851329 /* TrackerCategory.swift */; };
 		D7A6AC992AF769D400851329 /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A6AC982AF769D400851329 /* TrackerRecord.swift */; };
@@ -43,13 +43,14 @@
 		D711B8942AF184C60064AAFE /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		D73A359F2BBDB166007DA4AE /* CategoryTableViewCellForEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCellForEvent.swift; sourceTree = "<group>"; };
 		D73B27762B37369F00E7B59A /* CategoryTableViewCellForHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCellForHabit.swift; sourceTree = "<group>"; };
+		D76AD5232C158CCD0028577E /* CoreDataV2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataV2.xcdatamodel; sourceTree = "<group>"; };
 		D77424592B24575E00C8E065 /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		D774245C2B2476E600C8E065 /* CreateCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCategoryViewController.swift; sourceTree = "<group>"; };
 		D774245F2B2490DF00C8E065 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		D77DC5A52BBCFA6F00D54D89 /* NewEventCreateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventCreateController.swift; sourceTree = "<group>"; };
 		D77DC5A82BBCFCA200D54D89 /* StatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatViewController.swift; sourceTree = "<group>"; };
 		D77E02332BF0E04100490E60 /* TransformerValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformerValue.swift; sourceTree = "<group>"; };
-		D7848A292BED21B1007B754C /* EmodjiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmodjiCollectionViewCell.swift; sourceTree = "<group>"; };
+		D7848A292BED21B1007B754C /* EmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewCell.swift; sourceTree = "<group>"; };
 		D7A6AC942AF7685C00851329 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		D7A6AC962AF7698E00851329 /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		D7A6AC982AF769D400851329 /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
@@ -197,7 +198,7 @@
 				D73B27762B37369F00E7B59A /* CategoryTableViewCellForHabit.swift */,
 				D7C650F62B133FCE00A9F116 /* NewHabitCreateController.swift */,
 				D7E8C5832BC0665B00076DB8 /* ColorCollectionViewCell.swift */,
-				D7848A292BED21B1007B754C /* EmodjiCollectionViewCell.swift */,
+				D7848A292BED21B1007B754C /* EmojiCollectionViewCell.swift */,
 				D77E02332BF0E04100490E60 /* TransformerValue.swift */,
 			);
 			path = CreateNewHabit;
@@ -290,7 +291,7 @@
 				D77DC5A92BBCFCA200D54D89 /* StatViewController.swift in Sources */,
 				D774245A2B24575E00C8E065 /* AddCategoryViewController.swift in Sources */,
 				D7E8C5AA2BC1B3EA00076DB8 /* TrackerCoreData.xcdatamodeld in Sources */,
-				D7848A2A2BED21B1007B754C /* EmodjiCollectionViewCell.swift in Sources */,
+				D7848A2A2BED21B1007B754C /* EmojiCollectionViewCell.swift in Sources */,
 				D7B12CA12AED9E800006205D /* SceneDelegate.swift in Sources */,
 				D7A80AB22BF2720300657461 /* TrackerCategoryStory.swift in Sources */,
 				D7E8C5842BC0665B00076DB8 /* ColorCollectionViewCell.swift in Sources */,
@@ -530,9 +531,10 @@
 		D7E8C5A82BC1B3EA00076DB8 /* TrackerCoreData.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				D76AD5232C158CCD0028577E /* CoreDataV2.xcdatamodel */,
 				D7E8C5A92BC1B3EA00076DB8 /* CoreData.xcdatamodel */,
 			);
-			currentVersion = D7E8C5A92BC1B3EA00076DB8 /* CoreData.xcdatamodel */;
+			currentVersion = D76AD5232C158CCD0028577E /* CoreDataV2.xcdatamodel */;
 			path = TrackerCoreData.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

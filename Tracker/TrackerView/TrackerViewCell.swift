@@ -87,14 +87,15 @@ class TrackerViewCell: UICollectionViewCell {
         contentView.addSubview(label)
         contentView.addSubview(labelCount)
         contentView.addSubview(addButton)
-        containerView.addSubview(emojiLabel)
-        containerView.addSubview(colorView)
+        contentView.addSubview(emojiLabel)
+        contentView.addSubview(colorView)
 
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 74),
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 174),
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            containerView.heightAnchor.constraint(equalToConstant: 90)
+            containerView.heightAnchor.constraint(equalToConstant: 90),
+            containerView.widthAnchor.constraint(equalToConstant: 240)
         ])
         
         NSLayoutConstraint.activate([
@@ -132,7 +133,7 @@ class TrackerViewCell: UICollectionViewCell {
 
     func configure(with tracker: Tracker, isChecked: Bool, completedDaysCount: Int) {
          label.text = tracker.name
-         emojiLabel.text = tracker.emodji
+         emojiLabel.text = tracker.emoji
          colorView.backgroundColor = UIColor(hex: tracker.color)
          addButton.backgroundColor = UIColor(hex: tracker.color)
         

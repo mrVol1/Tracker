@@ -19,7 +19,7 @@ enum CollectionType {
 
 
 protocol NewHabitCreateViewControllerDelegate: AnyObject {
-    func didCreateHabit(with trackerCategoryInMain: TrackerCategory)
+    func didCreateHabit(with category: TrackerCategoryCoreData)
     func didFinishCreatingHabitAndDismiss()
 }
 
@@ -33,9 +33,9 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     var selectedIndexColor: Set<IndexPath> = []
     var selectedEmoji: String?
     var selectedColor: String?
-    var isSelectedEmodji: Bool?
+    var isSelectedEmoji: Bool?
     var isSelectedColor: Bool?
-    var colorSelectedEmodji: UIColor?
+    var colorSelectedEmoji: UIColor?
     var emoji: String?
     var myTrackersArray: Array<Tracker> = []
     
@@ -86,13 +86,13 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     }
     
     private let emojiCollectionView: UICollectionView = {
-        let layoutEmodji = UICollectionViewFlowLayout()
-        layoutEmodji.scrollDirection = .horizontal
-        let collectionViewEmodji = UICollectionView(frame: .zero, collectionViewLayout: layoutEmodji)
-        collectionViewEmodji.translatesAutoresizingMaskIntoConstraints = false
-        collectionViewEmodji.backgroundColor = .clear
-        collectionViewEmodji.register(EmodjiCollectionViewCell.self, forCellWithReuseIdentifier: "EmojiCell")
-        return collectionViewEmodji
+        let layoutEmoji = UICollectionViewFlowLayout()
+        layoutEmoji.scrollDirection = .horizontal
+        let collectionViewEmoji = UICollectionView(frame: .zero, collectionViewLayout: layoutEmoji)
+        collectionViewEmoji.translatesAutoresizingMaskIntoConstraints = false
+        collectionViewEmoji.backgroundColor = .clear
+        collectionViewEmoji.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "EmojiCell")
+        return collectionViewEmoji
     }()
     
     private let colorsCollectionView: UICollectionView = {
@@ -150,7 +150,7 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         configureLabel()
         configureTrackerName()
         configureTableView()
-        configerEmodjiLabel()
+        configerEmojiLabel()
         configerColorsLabel()
         
         emojiCollectionView.dataSource = self
@@ -268,10 +268,10 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
         tableView.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    private func configerEmodjiLabel() {
+    private func configerEmojiLabel() {
         labelEmoji.font = UIFontMetrics.default.scaledFont(for: customFontBold ?? UIFont.systemFont(ofSize: 19, weight: UIFont.Weight.semibold)).withSize(19)
         labelEmoji.textColor = .black
-        labelEmoji.text = "Emodji"
+        labelEmoji.text = "Emoji"
         
         labelEmoji.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -375,13 +375,13 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == emojiCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath) as! EmodjiCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath) as! EmojiCollectionViewCell
             
             let emoji = emojis[indexPath.item]
-            let isSelectedEmodji = selectedIndexEmoji.contains(indexPath)
-            let colorSelectedEmodji = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 1.0)
+            let isSelectedEmoji = selectedIndexEmoji.contains(indexPath)
+            let colorSelectedEmoji = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 1.0)
             
-            cell.configure(withEmoji: emoji, colorEmodji: colorSelectedEmodji, colorCornerRadius: 16, isSelectedEmodji: isSelectedEmodji)
+            cell.configure(withEmoji: emoji, colorEmoji: colorSelectedEmoji, colorCornerRadius: 16, isSelectedEmoji: isSelectedEmoji)
             
             return cell
         } else if collectionView == colorsCollectionView {
@@ -400,9 +400,9 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == emojiCollectionView {
             selectedEmoji = emojis[indexPath.item]
-            let isSelectedEmodji = selectedIndexEmoji.contains(indexPath)
+            let isSelectedEmoji = selectedIndexEmoji.contains(indexPath)
             
-            if isSelectedEmodji {
+            if isSelectedEmoji {
                 selectedIndexEmoji.remove(indexPath)
             } else {
                 if let currentSelectedIndexPath = selectedIndexEmoji.first {
@@ -446,18 +446,25 @@ final class NewHabitCreateViewController: UIViewController, UITextFieldDelegate,
               !selectedScheduleDays.isEmpty else {
             return
         }
-        
+
         if let newTracker = TrackerStore.shared.createTracker(name: selectedTrackerName,
                                                               color: selectedColor,
                                                               emoji: selectedEmoji,
-                                                              scheduleDays: selectedScheduleDays) {
-            
-            let _ = TrackerCategoryStore.shared.createTrackerCategory(label: selectedCategoryString, trackers: [newTracker])
-            
+                                                              scheduleDays: selectedScheduleDays,
+                                                              categoryLabel: selectedCategoryString) {
+            // Попробуем добавить новый трекер в уже существующую категорию
+            if let existingCategory = TrackerCategoryStore.shared.createTrackerCategory(label: selectedCategoryString, trackers: [newTracker]) {
+                habitCreateDelegate?.didCreateHabit(with: existingCategory)
+            } else {
+                // Если категория не существует, создаем новую и добавляем в нее трекер
+                if let newCategory = TrackerCategoryStore.shared.createTrackerCategory(label: selectedCategoryString, trackers: [newTracker]) {
+                    habitCreateDelegate?.didCreateHabit(with: newCategory)
+                }
+            }
             finishCreatingHabitAndDismiss()
         }
     }
-    
+
     func finishCreatingHabitAndDismiss() {
         dismiss(animated: false) {
             self.habitCreateDelegate?.didFinishCreatingHabitAndDismiss()

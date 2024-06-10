@@ -204,7 +204,7 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     
     private func navigateToNewHabitCreateController(selectedCategory: String) {
         
-        let trackerCategory = TrackerCategory(label: selectedCategory, trackerArray: nil)
+        let trackerCategory = TrackerCategory(label: selectedCategory, trackers: [])
         categories.append(trackerCategory)
         updateScreen()
         
