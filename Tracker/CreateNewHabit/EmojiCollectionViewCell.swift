@@ -1,5 +1,5 @@
 //
-//  EmodjiCollectionViewCell.swift
+//  EmojiCollectionViewCell.swift
 //  Tracker
 //
 //  Created by Eduard Karimov on 09/05/2024.
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class EmodjiCollectionViewCell: UICollectionViewCell {
+class EmojiCollectionViewCell: UICollectionViewCell {
     private let emojiLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -16,24 +16,24 @@ class EmodjiCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let emodjiColorView: UIView = {
+    private let emojiColorView: UIView = {
         let view = UIView()
         return view
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.addSubview(emodjiColorView)
+        contentView.addSubview(emojiColorView)
         contentView.addSubview(emojiLabel)
         
-        emodjiColorView.translatesAutoresizingMaskIntoConstraints = false
+        emojiColorView.translatesAutoresizingMaskIntoConstraints = false
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            emodjiColorView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            emodjiColorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            emodjiColorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            emodjiColorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            emojiColorView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            emojiColorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            emojiColorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            emojiColorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
             emojiLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             emojiLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
@@ -44,9 +44,9 @@ class EmodjiCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(withEmoji emoji: String, colorEmodji: UIColor, colorCornerRadius: Int, isSelectedEmodji: Bool) {
+    func configure(withEmoji emoji: String, colorEmoji: UIColor, colorCornerRadius: Int, isSelectedEmoji: Bool) {
         emojiLabel.text = emoji
-        emodjiColorView.backgroundColor = isSelectedEmodji ? colorEmodji : .clear
-        emodjiColorView.layer.cornerRadius = isSelectedEmodji ? CGFloat(colorCornerRadius) : 0
+        emojiColorView.backgroundColor = isSelectedEmoji ? colorEmoji : .clear
+        emojiColorView.layer.cornerRadius = isSelectedEmoji ? CGFloat(colorCornerRadius) : 0
     }
 }
