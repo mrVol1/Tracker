@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateViewControllerDelegate, NewEventCreateViewControllerDelegate {
+final class ChoseHabitOrEventViewController: UIViewController {
     
     let label = UILabel()
     let customFontBold = UIFont(name: "SFProDisplay-Medium", size: UIFont.labelFontSize)
@@ -106,13 +106,13 @@ final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateVie
         }
     }
     
-    func didCreateHabit(with trackerCategoryInMain: TrackerCategory) {
-        self.habitCreateDelegate?.didCreateHabit(with: trackerCategoryInMain)
-    }
-    
-    func didCreateEvent(with trackerCategoryInMain: TrackerCategory) {
-        self.eventCreateDelegate?.didCreateEvent(with: trackerCategoryInMain)
-    }
+//    func didCreateHabit(with trackerCategoryInMain: TrackerCategory) {
+//        self.habitCreateDelegate?.didCreateHabit(with: trackerCategoryInMain)
+//    }
+//    
+//    func didCreateEvent(with trackerCategoryInMain: TrackerCategory) {
+//        self.eventCreateDelegate?.didCreateEvent(with: trackerCategoryInMain)
+//    }
     
     func didFinishCreatingEventAndDismiss() {
         guard !didFinishCreatingEventAndDismissCalled else {
@@ -129,14 +129,14 @@ final class ChoseHabitOrEventViewController: UIViewController, NewHabitCreateVie
     
     @objc private func buttonActionForCreateHabbit() {
         let createHabbitbutton = NewHabitCreateViewController()
-        createHabbitbutton.habitCreateDelegate = self
+//        createHabbitbutton.habitCreateDelegate = self
         let createNewHabbitButtonNavigationController = UINavigationController(rootViewController: createHabbitbutton)
         present(createNewHabbitButtonNavigationController, animated: true, completion: nil)
     }
     
     @objc private func buttonActionForCreateEvent() {
         let createEventbutton = NewEventCreateViewController()
-        createEventbutton.eventCreateDelegate = self
+//        createEventbutton.eventCreateDelegate = self
         let createNewEventButtonNavigationController = UINavigationController(rootViewController: createEventbutton)
         present(createNewEventButtonNavigationController, animated: true, completion: nil)
     }

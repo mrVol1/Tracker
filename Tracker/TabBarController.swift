@@ -13,8 +13,7 @@ final class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Экземпляры контроллеров
-        let trackerViewController = TrackerViewController(categories: [], completedTrackers: [], newCategories: [])
+        let trackerViewController = TrackerViewController()
         let statViewController = StatViewController()
         
         let activeImageTracker = UIImage(named: "blue ball")

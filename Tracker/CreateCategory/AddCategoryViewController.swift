@@ -204,7 +204,7 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
     
     private func navigateToNewHabitCreateController(selectedCategory: String) {
         
-        let trackerCategory = TrackerCategory(label: selectedCategory, trackerArray: nil)
+        let trackerCategory = TrackerCategory(label: selectedCategory, trackers: [])
         categories.append(trackerCategory)
         updateScreen()
         
@@ -217,7 +217,7 @@ final class AddCategoryViewController: UIViewController, UITableViewDelegate, UI
             }
         }
     }
-    
+
     private func updateCategoryButtonTitle() {
         let categoryButton = view.subviews.compactMap { $0 as? UIButton }.first
         categoryButton?.setTitle(isCheckmarkSelected ? "Готово" : "Добавить категорию", for: .normal)
